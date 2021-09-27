@@ -28,9 +28,9 @@ Bonjour,
 
 Je suis ravie de t’avoir dans l’équipe pour cette nouvelle étape du projet.
 
-Comme tu le sais, les sites offrant des recettes de cuisine sont nombreux et l’équipe a pensé que l’un des éléments qui peuvent faire la différence sur notre site est la fluidité du moteur de recherche. L’équipe Back-end n’étant pas encore formée, nous disposons uniquement d’un [fichier JavaScript contenant un tableau JSON de 50 recettes](mission/P11-front-end-search-engine.html).
+Comme tu le sais, les sites offrant des recettes de cuisine sont nombreux et l’équipe a pensé que l’un des éléments qui peuvent faire la différence sur notre site est la fluidité du moteur de recherche. L’équipe Back-end n’étant pas encore formée, nous disposons uniquement d’un [fichier JavaScript contenant un tableau JSON de 50 recettes](mission/recipes.js).
 
-Ta première mission sera donc d’implémenter la fonctionnalité de recherche. Tu trouveras ici la [description du cas d’utilisation de recherche](mission/Cas+d’utilisation+#03+Filtrer+les+recettes+dans+l’interface+utilisateur.pdf). C’est ce document qui te servira de référence pour tout le développement de cette fonctionnalité. En plus de ça, voici [la maquette de la page sur Figma](https://www.figma.com/file/xqeE1ZKlHUWi2Efo8r73NK), assure-toi de bien respecter le design à la lettre.
+Ta première mission sera donc d’implémenter la fonctionnalité de recherche. Tu trouveras ici la [description du cas d’utilisation de recherche](mission/cas_utilisations_recherche.pdf). C’est ce document qui te servira de référence pour tout le développement de cette fonctionnalité. En plus de ça, voici [la maquette de la page sur Figma](https://www.figma.com/file/xqeE1ZKlHUWi2Efo8r73NK), assure-toi de bien respecter le design à la lettre.
 
 Ce que l’on veut avant tout c’est quelque chose de performant car nos utilisateurs veulent une recherche rapide, presque instantanée ! Ton travail sera transmis au Back-end dans un second temps pour être adapté par leurs soins. C’est pourquoi il faudra que tu leur transmettes un document expliquant bien ton travail. Je te laisse voir comment procéder en détail directement avec Jean-Baptiste.
 
@@ -45,7 +45,7 @@ En fin de matinée, vous recevez une notification Slack de Jean-Baptiste, votre 
 ### **JB**
 
 > Salut ! Comme tu as pu le voir, la recherche est une fonctionnalité très importante pour l’équipe et on compte sur toi pour la développer d’une manière optimale.
-> Dans notre équipe, pour tout algorithme important qu’on développe, on a pour habitude d’en faire deux implémentations différentes pour pouvoir comparer leurs performances et choisir la meilleure. Il faudra donc que tu fasses de même ! Pour ça il faudra que tu crées un document de comparaison qu’on appelle “fiche d’investigation de fonctionnalité”. Nous avons récemment fait ça pour la fonctionnalité ["connexion / inscription" dont voici le résultat](mission/Fiche+d’investigation+fonctionnalité.pdf). Donc réutilise directement le même modèle de document.
+> Dans notre équipe, pour tout algorithme important qu’on développe, on a pour habitude d’en faire deux implémentations différentes pour pouvoir comparer leurs performances et choisir la meilleure. Il faudra donc que tu fasses de même ! Pour ça il faudra que tu crées un document de comparaison qu’on appelle “fiche d’investigation de fonctionnalité”. Nous avons récemment fait ça pour la fonctionnalité ["connexion / inscription" dont voici le résultat](mission/fiche_investigation_fonctionnalite.pdf). Donc réutilise directement le même modèle de document.
 
 ### **Vous**
 

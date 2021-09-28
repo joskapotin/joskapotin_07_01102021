@@ -1,0 +1,4 @@
+**/node_modules
+_reset.scss
+public/
+src/index.html

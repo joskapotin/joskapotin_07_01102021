@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Les petits plats</title>
+
+    <link rel="stylesheet" href="assets/css/main.css" />
+
+    <script src="assets/js/app.js" type="module"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&family=Lato:wght@400;700&family=Roboto&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <header class="container">
+      <h1 class="site-heading">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 52 47">
+          <defs />
+          <path
+            fill="#D04F4F"
+            fill-rule="evenodd"
+            d="M39.508 25.342v9.8H12.402v-9.8c-4.404 0-7.793-3.378-7.793-7.771s3.389-7.772 7.793-7.772c3.05 0 5.76 1.69 7.116 4.393l3.388-1.69c-1.016-1.69-2.033-3.379-3.727-4.392 1.355-2.366 3.727-4.055 6.776-4.055 4.405 0 7.793 3.379 7.793 7.771 0 1.352-.338 2.704-1.016 4.055l3.388 2.028a11.645 11.645 0 001.694-6.082v-1.69c.678-.338 1.355-.338 2.033-.338 4.405 0 7.793 3.38 7.793 7.772s-3.727 7.771-8.132 7.771zm0 17.571H12.402v-3.717h27.106v3.717zm0-36.83c-1.016 0-2.033.337-3.388.337C34.087 2.703 30.36 0 25.955 0c-4.404 0-8.47 2.365-10.164 6.42-1.017-.338-2.033-.338-3.389-.338-6.437 0-11.52 5.069-11.52 11.489 0 5.068 3.389 9.46 7.793 10.813v17.908h34.9v-17.57c4.404-1.69 7.792-5.745 7.792-10.813 0-6.42-5.421-11.827-11.859-11.827zm-17.28 25.004h-3.727v-7.434h3.727v7.434zm11.52 0h-3.727v-7.434h3.727v7.434z"
+            clip-rule="evenodd"
+          />
+        </svg>
+        Les petits Plats
+      </h1>
+    </header>
+
+    <nav class="container nav-primary" aria-label="Primary">
+      <input
+        type="text"
+        class="form-control form-control-primary"
+        placeholder="Rechercher un ingrédient, appareil, ustensiles ou une recette"
+        aria-label="Rechercher un ingrédient, appareil, ustensiles ou une recette"
+      />
+    </nav>
+    <!-- END OF .nav-primary -->
+
+    <nav class="container nav-secondary" aria-label="Secondary">
+      <div class="dropdown dropdown-ingredients" data-dropdown>
+        <input type="text" class="form-control form-control-ingredients" placeholder="Ingrédients" aria-label="Rechercher un ingrédient" data-dropdown-button />
+        <ul class="dropdown-menu dropdown-menu-ingredients">
+          <li class="dropdown-menu__item">Lorem.</li>
+          <li class="dropdown-menu__item">Fugit!</li>
+          <li class="dropdown-menu__item">Placeat.</li>
+          <li class="dropdown-menu__item">Ipsum.</li>
+          <li class="dropdown-menu__item">Qui.</li>
+          <li class="dropdown-menu__item">At.</li>
+          <li class="dropdown-menu__item">Similique.</li>
+          <li class="dropdown-menu__item">Officia.</li>
+          <li class="dropdown-menu__item">Obcaecati?</li>
+          <li class="dropdown-menu__item">Aliquam.</li>
+          <li class="dropdown-menu__item">Porro!</li>
+          <li class="dropdown-menu__item">Delectus?</li>
+          <li class="dropdown-menu__item">Architecto.</li>
+          <li class="dropdown-menu__item">Reprehenderit?</li>
+          <li class="dropdown-menu__item">Ullam!</li>
+          <li class="dropdown-menu__item">Vel.</li>
+          <li class="dropdown-menu__item">Possimus.</li>
+          <li class="dropdown-menu__item">Impedit.</li>
+          <li class="dropdown-menu__item">Placeat!</li>
+          <li class="dropdown-menu__item">Iure?</li>
+          <li class="dropdown-menu__item">Consequatur.</li>
+          <li class="dropdown-menu__item">Hic.</li>
+          <li class="dropdown-menu__item">Suscipit.</li>
+          <li class="dropdown-menu__item">Rem.</li>
+          <li class="dropdown-menu__item">Voluptates.</li>
+          <li class="dropdown-menu__item">Obcaecati.</li>
+          <li class="dropdown-menu__item">Asperiores?</li>
+          <li class="dropdown-menu__item">Repudiandae?</li>
+          <li class="dropdown-menu__item">Ex.</li>
+          <li class="dropdown-menu__item">Provident.</li>
+        </ul>
+        <!-- END OF .dropdown-menu -->
+      </div>
+      <!-- END OF .dropdown -->
+
+      <div class="dropdown dropdown-appareil" data-dropdown>
+        <input type="text" class="form-control form-control-appareil" placeholder="Appareil" aria-label="Rechercher un appareil" data-dropdown-button />
+        <ul class="dropdown-menu dropdown-menu-appareil">
+          <li class="dropdown-menu__item">Lorem.</li>
+          <li class="dropdown-menu__item">Fugit!</li>
+          <li class="dropdown-menu__item">Placeat.</li>
+          <li class="dropdown-menu__item">Ipsum.</li>
+          <li class="dropdown-menu__item">Qui.</li>
+          <li class="dropdown-menu__item">At.</li>
+          <li class="dropdown-menu__item">Similique.</li>
+          <li class="dropdown-menu__item">Officia.</li>
+          <li class="dropdown-menu__item">Obcaecati?</li>
+          <li class="dropdown-menu__item">Aliquam.</li>
+          <li class="dropdown-menu__item">Porro!</li>
+          <li class="dropdown-menu__item">Delectus?</li>
+          <li class="dropdown-menu__item">Architecto.</li>
+          <li class="dropdown-menu__item">Reprehenderit?</li>
+          <li class="dropdown-menu__item">Ullam!</li>
+          <li class="dropdown-menu__item">Vel.</li>
+          <li class="dropdown-menu__item">Possimus.</li>
+          <li class="dropdown-menu__item">Impedit.</li>
+          <li class="dropdown-menu__item">Placeat!</li>
+          <li class="dropdown-menu__item">Iure?</li>
+          <li class="dropdown-menu__item">Consequatur.</li>
+          <li class="dropdown-menu__item">Hic.</li>
+          <li class="dropdown-menu__item">Suscipit.</li>
+          <li class="dropdown-menu__item">Rem.</li>
+          <li class="dropdown-menu__item">Voluptates.</li>
+          <li class="dropdown-menu__item">Obcaecati.</li>
+          <li class="dropdown-menu__item">Asperiores?</li>
+          <li class="dropdown-menu__item">Repudiandae?</li>
+          <li class="dropdown-menu__item">Ex.</li>
+          <li class="dropdown-menu__item">Provident.</li>
+        </ul>
+        <!-- END OF .dropdown-menu -->
+      </div>
+      <!-- END OF .dropdown -->
+
+      <div class="dropdown dropdown-ustensiles" data-dropdown>
+        <input type="text" class="form-control form-control-ustensiles" placeholder="Ustensiles" aria-label="Rechercher un ustensile" data-dropdown-button />
+      </div>
+      <!-- END OF .dropdown -->
+    </nav>
+    <!-- END OF .nav-secondary -->
+
+    <main class="container">
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos animi explicabo iste sed harum beatae mollitia possimus minima labore, aliquid quasi repudiandae recusandae quas totam dolorum
+        tenetur atque maiores voluptas veritatis molestias, eius eaque tempore culpa. Animi asperiores amet quibusdam voluptate assumenda rerum eligendi magnam. Consectetur voluptatem atque assumenda,
+        repellat quae doloremque? Deserunt ratione commodi autem porro vero. Distinctio sed quidem sequi magnam asperiores quam, iste in velit! Labore eligendi ipsam maxime, adipisci nisi quidem quod
+        porro, in, rerum quis assumenda soluta deserunt ducimus fugiat deleniti fuga omnis nobis consequatur veniam quae modi enim dolorum. Esse eaque quo consectetur commodi!
+      </p>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+{
+  "name": "les_petits_plats",
+  "version": "1.0.0",
+  "description": "Formation openclassroom Développeur Front-End projet 07 Développez un algorithme de recherche en JavaScript",
+  "main": "public/index.html",
+  "author": "joska",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joskapotin/joskapotin_07_01102021"
+  },
+  "bugs": {
+    "url": "https://github.com/joskapotin/joskapotin_07_01102021/issues"
+  },
+  "scripts": {
+    "scss": "sass src/assets/sass:public/assets/css",
+    "css": "postcss public/assets/css/*.css -u autoprefixer cssnano -r -m",
+    "copy:html": "copyfiles -u 1 ./src/*.html ./src/**/*.html public",
+    "copy:img": "copyfiles -u 1 ./src/assets/images/**/* public",
+    "copy:js": "copyfiles -u 1 ./src/assets/js/**/*.js ./src/assets/js/**/*.json public",
+    "watch:html": "onchange src/*.html src/**/*.html -- npm run copy:html",
+    "watch:img": "onchange src//assets/images/**/* -- npm run copy:img",
+    "watch:sass": "sass --watch src/assets/sass:public/assets/css",
+    "watch:js": "onchange src/assets/js/**/*.js ./src/assets/js/**/*.json -- npm run copy:js",
+    "watch": "npm-run-all --parallel watch:*",
+    "serve": "browser-sync start --server public --files public --port 1337",
+    "start": "npm-run-all copy:* scss --parallel watch serve",
+    "build": "npm-run-all copy:* scss css",
+    "lint": "stylelint src/assets/sass/**/*.scss src/assets/sass/**/**/*.scss src/assets/sass/**/**/**/*.scss -f verbose --color  || echo 'lint failed for some file(s).'",
+    "lint:fix": "stylelint src/assets/sass/**/*.scss src/assets/sass/**/**/*.scss src/assets/sass/**/**/**/*.scss --fix -f verbose --color || echo 'lint failed for some file(s).'",
+    "stylelint-check": "stylelint-config-prettier-check",
+    "test": "standard && node 'src/js/**/*.js' -f verbose --color  || echo 'standard failed for some file(s).'",
+    "test:fix": "standard --fix && node 'src/js/**/*.js' -f verbose --color  || echo 'standard failed for some file(s).'"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.3.6",
+    "browser-sync": "^2.27.5",
+    "copyfiles": "^2.4.1",
+    "cssnano": "^5.0.8",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "npm-run-all": "^4.1.5",
+    "onchange": "^7.1.0",
+    "postcss": "^8.3.8",
+    "postcss-cli": "^9.0.0",
+    "sass": "^1.42.1",
+    "stylelint": "^13.13.1",
+    "stylelint-config-idiomatic-order": "^8.1.0",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-sass-guidelines": "^8.0.0"
+  }
+}

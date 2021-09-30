@@ -116,6 +116,7 @@ body {
   font-weight: 700;
 }
 .dropdown .form-control::placeholder {
+  color: var(--cl-white);
   opacity: 100%;
 }
 .dropdown.active {

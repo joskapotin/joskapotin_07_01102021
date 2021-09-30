@@ -9,7 +9,6 @@ const uiDropdownMenu = elements => {
     uiDropdownList.appendChild(uiDropdownItem)
   })
 
-  console.log(elements)
   return uiDropdownList
 }
 

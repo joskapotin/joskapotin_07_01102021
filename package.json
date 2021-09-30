@@ -32,6 +32,9 @@
     "test": "standard && node 'src/js/**/*.js' -f verbose --color  || echo 'standard failed for some file(s).'",
     "test:fix": "standard --fix && node 'src/js/**/*.js' -f verbose --color  || echo 'standard failed for some file(s).'"
   },
+  "browserslist": [
+    "last 4 versions"
+  ],
   "devDependencies": {
     "autoprefixer": "^10.3.6",
     "browser-sync": "^2.27.5",

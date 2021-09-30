@@ -1,4 +1,4 @@
-import recipes from "./data/recipes.js"
+import AllRecipes from "./data/recipes.js"
 import dropdownModule from "./modules/dropdown.module.js"
 import uiDropdownMenu from "./components/dropdown-menu.component.js"
 import uiRecipe from "./components/recipe.component.js"
@@ -17,7 +17,7 @@ const getAllIngredients = recipes => {
 }
 
 const uiIngredientsMenu = document.querySelector(".dropdown-ingredients")
-uiIngredientsMenu.appendChild(uiDropdownMenu(getAllIngredients(recipes)))
+uiIngredientsMenu.appendChild(uiDropdownMenu(getAllIngredients(AllRecipes)))
 
 // build default appliance menu
 const getAllappliances = recipes => {
@@ -29,7 +29,7 @@ const getAllappliances = recipes => {
 }
 
 const uiAppliancesMenu = document.querySelector(".dropdown-appliance")
-uiAppliancesMenu.appendChild(uiDropdownMenu(getAllappliances(recipes)))
+uiAppliancesMenu.appendChild(uiDropdownMenu(getAllappliances(AllRecipes)))
 
 // build default ustensils menu
 const getAllUstensils = recipes => {
@@ -43,10 +43,48 @@ const getAllUstensils = recipes => {
 }
 
 const uiUstensilsMenu = document.querySelector(".dropdown-ustensils")
-uiUstensilsMenu.appendChild(uiDropdownMenu(getAllUstensils(recipes)))
+uiUstensilsMenu.appendChild(uiDropdownMenu(getAllUstensils(AllRecipes)))
 
-// build default recipe
-const uiRecipesList = document.getElementById("recipes-list")
-recipes.forEach(recipe => {
-  uiRecipesList.appendChild(uiRecipe(recipe))
+// populate recipes list
+const populateRecipesList = recipes => {
+  const uiRecipesList = document.getElementById("recipes-list")
+  uiRecipesList.innerHTML = ""
+  recipes.forEach(recipe => {
+    uiRecipesList.appendChild(uiRecipe(recipe))
+  })
+}
+
+populateRecipesList(AllRecipes)
+
+// SEARCH
+
+const searchPrimary = searchString => {
+  // const regex = /\s|,\s|'/gm
+  const matchRecipes = []
+  searchString = searchString.toLowerCase()
+
+  AllRecipes.forEach(recipe => {
+    const isName = recipe.name.toLowerCase().includes(searchString)
+
+    const isIngredient = recipe.ingredients.some(ingredients => ingredients.ingredient.toLowerCase().includes(searchString))
+
+    const isDescription = recipe.description.toLowerCase().includes(searchString)
+
+    if (isName || isIngredient || isDescription) {
+      matchRecipes.push(recipe)
+    }
+  })
+
+  populateRecipesList(matchRecipes)
+}
+
+// Trigger search
+const uiSearchPrimary = document.querySelector(".form-control-primary")
+uiSearchPrimary.addEventListener("input", e => {
+  if (e.target.value.length === 0) {
+    populateRecipesList(AllRecipes)
+  }
+  if (e.target.value.length >= 3) {
+    searchPrimary(e.target.value)
+  }
 })

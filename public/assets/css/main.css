@@ -121,6 +121,9 @@ body {
 .dropdown.active {
   flex-basis: 100%;
 }
+.dropdown.active .form-control::placeholder {
+  opacity: 50%;
+}
 
 .dropdown-ingredients,
 .dropdown-ingredients .dropdown-menu {

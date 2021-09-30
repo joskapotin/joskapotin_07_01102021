@@ -5,45 +5,45 @@ import uiRecipe from "./components/recipe.component.js"
 
 dropdownModule()
 
-// build default ingredients menu
-const getAllIngredients = recipes => {
-  const allIngredientsDup = recipes.flatMap(recipe => {
+// DOM elements
+const uiIngredientsMenu = document.querySelector(".dropdown-ingredients")
+const uiAppliancesMenu = document.querySelector(".dropdown-appliance")
+const uiUstensilsMenu = document.querySelector(".dropdown-ustensils")
+
+// get filters elements to populate secondary search menu
+const getIngredients = recipes => {
+  const ingredientsDup = recipes.flatMap(recipe => {
     return recipe.ingredients.map(ingredients => {
       return ingredients.ingredient.toLowerCase()
     })
   })
 
-  return [...new Set(allIngredientsDup.sort())]
+  return [...new Set(ingredientsDup.sort())]
 }
 
-const uiIngredientsMenu = document.querySelector(".dropdown-ingredients")
-uiIngredientsMenu.appendChild(uiDropdownMenu(getAllIngredients(AllRecipes)))
-
-// build default appliance menu
-const getAllappliances = recipes => {
-  const allappliancesDup = recipes.map(recipe => {
+const getAppliances = recipes => {
+  const appliancesDup = recipes.map(recipe => {
     return recipe.appliance.toLowerCase()
   })
 
-  return [...new Set(allappliancesDup.sort())]
+  return [...new Set(appliancesDup.sort())]
 }
 
-const uiAppliancesMenu = document.querySelector(".dropdown-appliance")
-uiAppliancesMenu.appendChild(uiDropdownMenu(getAllappliances(AllRecipes)))
-
-// build default ustensils menu
-const getAllUstensils = recipes => {
-  const allUstensilsDup = recipes.flatMap(recipe => {
+const getUstensils = recipes => {
+  const ustensilsDup = recipes.flatMap(recipe => {
     return recipe.ustensils.map(ustensil => {
       return ustensil.toLowerCase()
     })
   })
 
-  return [...new Set(allUstensilsDup.sort())]
+  return [...new Set(ustensilsDup.sort())]
 }
 
-const uiUstensilsMenu = document.querySelector(".dropdown-ustensils")
-uiUstensilsMenu.appendChild(uiDropdownMenu(getAllUstensils(AllRecipes)))
+// populate secondary search menus
+const populateSecondaryMenu = (uiMenu, elements) => {
+  uiMenu.querySelector(".dropdown-menu")?.remove()
+  uiMenu.appendChild(uiDropdownMenu(elements))
+}
 
 // populate recipes list
 const populateRecipesList = recipes => {
@@ -54,6 +54,10 @@ const populateRecipesList = recipes => {
   })
 }
 
+// init search menus
+populateSecondaryMenu(uiIngredientsMenu, getIngredients(AllRecipes))
+populateSecondaryMenu(uiAppliancesMenu, getAppliances(AllRecipes))
+populateSecondaryMenu(uiUstensilsMenu, getUstensils(AllRecipes))
 populateRecipesList(AllRecipes)
 
 // SEARCH
@@ -79,6 +83,9 @@ const searchPrimary = (searchString, recipes) => {
     }
   })
 
+  populateSecondaryMenu(uiIngredientsMenu, getIngredients(matchRecipes))
+  populateSecondaryMenu(uiAppliancesMenu, getAppliances(matchRecipes))
+  populateSecondaryMenu(uiUstensilsMenu, getUstensils(matchRecipes))
   populateRecipesList(matchRecipes)
 }
 
@@ -86,6 +93,9 @@ const searchPrimary = (searchString, recipes) => {
 const uiSearchPrimary = document.querySelector(".form-control-primary")
 uiSearchPrimary.addEventListener("input", e => {
   if (e.target.value.length === 0) {
+    populateSecondaryMenu(uiIngredientsMenu, getIngredients(AllRecipes))
+    populateSecondaryMenu(uiAppliancesMenu, getAppliances(AllRecipes))
+    populateSecondaryMenu(uiUstensilsMenu, getUstensils(AllRecipes))
     populateRecipesList(AllRecipes)
   }
   if (e.target.value.length >= 3) {

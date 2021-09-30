@@ -57,20 +57,24 @@ const populateRecipesList = recipes => {
 populateRecipesList(AllRecipes)
 
 // SEARCH
+const isName = (searchString, recipe) => {
+  return recipe.name.toLowerCase().includes(searchString.toLowerCase())
+}
 
-const searchPrimary = searchString => {
+const isIngredient = (searchString, recipe) => {
+  return recipe.ingredients.some(ingredients => ingredients.ingredient.toLowerCase().includes(searchString.toLowerCase()))
+}
+
+const isDescription = (searchString, recipe) => {
+  return recipe.description.toLowerCase().includes(searchString.toLowerCase())
+}
+
+const searchPrimary = (searchString, recipes) => {
   // const regex = /\s|,\s|'/gm
   const matchRecipes = []
-  searchString = searchString.toLowerCase()
 
-  AllRecipes.forEach(recipe => {
-    const isName = recipe.name.toLowerCase().includes(searchString)
-
-    const isIngredient = recipe.ingredients.some(ingredients => ingredients.ingredient.toLowerCase().includes(searchString))
-
-    const isDescription = recipe.description.toLowerCase().includes(searchString)
-
-    if (isName || isIngredient || isDescription) {
+  recipes.forEach(recipe => {
+    if (isName(searchString, recipe) || isIngredient(searchString, recipe) || isDescription(searchString, recipe)) {
       matchRecipes.push(recipe)
     }
   })
@@ -85,6 +89,6 @@ uiSearchPrimary.addEventListener("input", e => {
     populateRecipesList(AllRecipes)
   }
   if (e.target.value.length >= 3) {
-    searchPrimary(e.target.value)
+    searchPrimary(e.target.value, AllRecipes)
   }
 })

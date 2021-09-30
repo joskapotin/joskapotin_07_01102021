@@ -1,4 +1,4 @@
-const AllRecipes = [
+const recipes = [
   {
     id: 1,
     name: "Limonade de Coco",
@@ -1763,4 +1763,4 @@ const AllRecipes = [
   },
 ]
 
-export default AllRecipes
+export default recipes

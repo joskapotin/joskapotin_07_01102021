@@ -1,4 +1,4 @@
-const uiDropdownMenu = elements => {
+const uiDropdownMenu = (elements, elementsType) => {
   const uiDropdownList = document.createElement("ul")
   uiDropdownList.classList.add("dropdown-menu")
 
@@ -6,6 +6,7 @@ const uiDropdownMenu = elements => {
     const uiDropdownItem = document.createElement("li")
     uiDropdownItem.classList.add("dropdown-menu__item")
     uiDropdownItem.textContent = element
+    uiDropdownItem.dataset.type = elementsType
     uiDropdownList.appendChild(uiDropdownItem)
   })
 

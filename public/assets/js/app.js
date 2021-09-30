@@ -1,14 +1,22 @@
-import AllRecipes from "./data/recipes.js"
+import recipes from "./data/recipes.js"
 import dropdownModule from "./modules/dropdown.module.js"
 import uiDropdownMenu from "./components/dropdown-menu.component.js"
+import uiFiltersList from "./components/filters-list.component.js"
 import uiRecipe from "./components/recipe.component.js"
 
 dropdownModule()
 
 // DOM elements
+const uiSearchPrimary = document.querySelector(".form-control-primary")
+const uiNavSecondary = document.querySelector(".nav-secondary")
 const uiIngredientsMenu = document.querySelector(".dropdown-ingredients")
-const uiAppliancesMenu = document.querySelector(".dropdown-appliance")
+const uiAppliancesMenu = document.querySelector(".dropdown-appliances")
 const uiUstensilsMenu = document.querySelector(".dropdown-ustensils")
+
+// VARIABLES
+
+const refRecipes = recipes
+const filters = []
 
 // get filters elements to populate secondary search menu
 const getIngredients = recipes => {
@@ -40,9 +48,15 @@ const getUstensils = recipes => {
 }
 
 // populate secondary search menus
-const populateSecondaryMenu = (uiMenu, elements) => {
+const populateSecondaryMenu = (uiMenu, elements, elementsType) => {
   uiMenu.querySelector(".dropdown-menu")?.remove()
-  uiMenu.appendChild(uiDropdownMenu(elements))
+  uiMenu.appendChild(uiDropdownMenu(elements, elementsType))
+}
+
+// populate filters list
+const populateFiltersList = () => {
+  document.querySelector(".filters-list")?.remove()
+  uiNavSecondary.parentNode.insertBefore(uiFiltersList(filters), uiNavSecondary)
 }
 
 // populate recipes list
@@ -55,10 +69,10 @@ const populateRecipesList = recipes => {
 }
 
 // init search menus
-populateSecondaryMenu(uiIngredientsMenu, getIngredients(AllRecipes))
-populateSecondaryMenu(uiAppliancesMenu, getAppliances(AllRecipes))
-populateSecondaryMenu(uiUstensilsMenu, getUstensils(AllRecipes))
-populateRecipesList(AllRecipes)
+populateSecondaryMenu(uiIngredientsMenu, getIngredients(refRecipes), "ingredient")
+populateSecondaryMenu(uiAppliancesMenu, getAppliances(refRecipes), "appliance")
+populateSecondaryMenu(uiUstensilsMenu, getUstensils(refRecipes), "ustensil")
+populateRecipesList(refRecipes)
 
 // SEARCH
 const isName = (searchString, recipe) => {
@@ -73,6 +87,10 @@ const isDescription = (searchString, recipe) => {
   return recipe.description.toLowerCase().includes(searchString.toLowerCase())
 }
 
+const isFilter = searchString => {
+  return filters.some(filter => filter.name === searchString)
+}
+
 const searchPrimary = (searchString, recipes) => {
   // const regex = /\s|,\s|'/gm
   const matchRecipes = []
@@ -83,22 +101,37 @@ const searchPrimary = (searchString, recipes) => {
     }
   })
 
-  populateSecondaryMenu(uiIngredientsMenu, getIngredients(matchRecipes))
-  populateSecondaryMenu(uiAppliancesMenu, getAppliances(matchRecipes))
-  populateSecondaryMenu(uiUstensilsMenu, getUstensils(matchRecipes))
+  populateSecondaryMenu(uiIngredientsMenu, getIngredients(matchRecipes), "ingredient")
+  populateSecondaryMenu(uiAppliancesMenu, getAppliances(matchRecipes), "appliance")
+  populateSecondaryMenu(uiUstensilsMenu, getUstensils(matchRecipes), "ustensil")
   populateRecipesList(matchRecipes)
 }
 
-// Trigger search
-const uiSearchPrimary = document.querySelector(".form-control-primary")
+// Trigger primary search
 uiSearchPrimary.addEventListener("input", e => {
   if (e.target.value.length === 0) {
-    populateSecondaryMenu(uiIngredientsMenu, getIngredients(AllRecipes))
-    populateSecondaryMenu(uiAppliancesMenu, getAppliances(AllRecipes))
-    populateSecondaryMenu(uiUstensilsMenu, getUstensils(AllRecipes))
-    populateRecipesList(AllRecipes)
+    populateSecondaryMenu(uiIngredientsMenu, getIngredients(refRecipes), "ingredient")
+    populateSecondaryMenu(uiAppliancesMenu, getAppliances(refRecipes), "appliance")
+    populateSecondaryMenu(uiUstensilsMenu, getUstensils(refRecipes), "ustensil")
+    populateRecipesList(refRecipes)
   }
   if (e.target.value.length >= 3) {
-    searchPrimary(e.target.value, AllRecipes)
+    searchPrimary(e.target.value, refRecipes)
+  }
+})
+
+// handle filters list
+document.addEventListener("click", e => {
+  const iSenuItem = e.target.matches(".dropdown-menu__item")
+  const isFilterItem = e.target.matches(".filter-list__item")
+
+  if (iSenuItem && !isFilter(e.target.textContent)) {
+    const filter = { name: e.target.textContent, type: e.target.dataset.type }
+    filters.push(filter)
+    populateFiltersList()
+  } else if (isFilterItem) {
+    const filterIndex = e.target.dataset.filterIndex
+    filters.splice(filterIndex, 1)
+    populateFiltersList()
   }
 })

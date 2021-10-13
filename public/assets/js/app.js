@@ -14,9 +14,8 @@ const uiAppliancesMenu = document.querySelector(".dropdown-appliances")
 const uiUstensilsMenu = document.querySelector(".dropdown-ustensils")
 
 // VARIABLES
-
-const refRecipes = recipes
-const filters = []
+const filters = { ingredient: [], appliance: [], ustensil: [] }
+let recipesList = [...recipes]
 
 // get filters elements to populate secondary search menu
 const getIngredients = recipes => {
@@ -68,70 +67,137 @@ const populateRecipesList = recipes => {
   })
 }
 
-// init search menus
-populateSecondaryMenu(uiIngredientsMenu, getIngredients(refRecipes), "ingredient")
-populateSecondaryMenu(uiAppliancesMenu, getAppliances(refRecipes), "appliance")
-populateSecondaryMenu(uiUstensilsMenu, getUstensils(refRecipes), "ustensil")
-populateRecipesList(refRecipes)
+// RENDER HTML
+const render = (recipesToRender = recipesList) => {
+  recipesToRender = recipesToRender.sort((a, b) => a.name.localeCompare(b.name))
+  populateSecondaryMenu(uiIngredientsMenu, getIngredients(recipesToRender), "ingredient")
+  populateSecondaryMenu(uiAppliancesMenu, getAppliances(recipesToRender), "appliance")
+  populateSecondaryMenu(uiUstensilsMenu, getUstensils(recipesToRender), "ustensil")
+  populateRecipesList(recipesToRender)
+}
+
+render()
+
+// TEST
+const isName = (term, recipe) => {
+  return recipe.name.toLowerCase().includes(term.toLowerCase())
+}
+
+const isIngredient = (term, recipe) => {
+  return recipe.ingredients.some(ingredients => ingredients.ingredient.toLowerCase().includes(term.toLowerCase()))
+}
+
+const isAppliance = (term, recipe) => {
+  return recipe.appliance.toLowerCase().includes(term.toLowerCase())
+}
+
+const isUstensil = (term, recipe) => {
+  return recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(term.toLowerCase()))
+}
+
+const isDescription = (term, recipe) => {
+  return recipe.description.toLowerCase().includes(term.toLowerCase())
+}
+
+const isFilter = (term, type) => {
+  return filters[type].some(elem => elem === term)
+}
 
 // SEARCH
-const isName = (searchString, recipe) => {
-  return recipe.name.toLowerCase().includes(searchString.toLowerCase())
-}
-
-const isIngredient = (searchString, recipe) => {
-  return recipe.ingredients.some(ingredients => ingredients.ingredient.toLowerCase().includes(searchString.toLowerCase()))
-}
-
-const isDescription = (searchString, recipe) => {
-  return recipe.description.toLowerCase().includes(searchString.toLowerCase())
-}
-
-const isFilter = searchString => {
-  return filters.some(filter => filter.name === searchString)
-}
-
-const searchPrimary = (searchString, recipes) => {
+const searchPrimary = term => {
   // const regex = /\s|,\s|'/gm
+
   const matchRecipes = []
 
-  recipes.forEach(recipe => {
-    if (isName(searchString, recipe) || isIngredient(searchString, recipe) || isDescription(searchString, recipe)) {
+  recipesList.forEach(recipe => {
+    if (isName(term, recipe) || isIngredient(term, recipe) || isDescription(term, recipe) || isAppliance(term, recipe) || isUstensil(term, recipe)) {
       matchRecipes.push(recipe)
     }
   })
 
-  populateSecondaryMenu(uiIngredientsMenu, getIngredients(matchRecipes), "ingredient")
-  populateSecondaryMenu(uiAppliancesMenu, getAppliances(matchRecipes), "appliance")
-  populateSecondaryMenu(uiUstensilsMenu, getUstensils(matchRecipes), "ustensil")
-  populateRecipesList(matchRecipes)
+  render(matchRecipes)
 }
 
 // Trigger primary search
 uiSearchPrimary.addEventListener("input", e => {
-  if (e.target.value.length === 0) {
-    populateSecondaryMenu(uiIngredientsMenu, getIngredients(refRecipes), "ingredient")
-    populateSecondaryMenu(uiAppliancesMenu, getAppliances(refRecipes), "appliance")
-    populateSecondaryMenu(uiUstensilsMenu, getUstensils(refRecipes), "ustensil")
-    populateRecipesList(refRecipes)
+  if (e.target.value.length < 3) {
+    render()
   }
   if (e.target.value.length >= 3) {
-    searchPrimary(e.target.value, refRecipes)
+    searchPrimary(e.target.value, recipes)
   }
 })
 
-// handle filters list
+// UPDATE RECIPES LIST
+const updateRecipesList = () => {
+  const ingredients = Object.values(filters.ingredient)
+  const appliances = Object.values(filters.appliance)
+  const ustensils = Object.values(filters.ustensil)
+
+  // if there is no filter fill the list with all the recipes
+  if (ingredients.length === 0 && appliances.length === 0 && ustensils.length === 0) recipesList = [...recipes]
+
+  // create à list of ids to remove from the list of recipes
+  const recipesIdsDup = []
+
+  ingredients.forEach(element => {
+    recipesList.forEach(recipe => {
+      if (!isIngredient(element, recipe)) {
+        recipesIdsDup.push(recipe.id)
+      }
+    })
+  })
+
+  appliances.forEach(element => {
+    recipesList.forEach(recipe => {
+      if (!isAppliance(element, recipe)) {
+        recipesIdsDup.push(recipe.id)
+      }
+    })
+  })
+
+  ustensils.forEach(element => {
+    recipesList.forEach(recipe => {
+      if (!isUstensil(element, recipe)) {
+        recipesIdsDup.push(recipe.id)
+      }
+    })
+  })
+
+  const recipesIds = [...new Set(recipesIdsDup)]
+
+  console.log(recipesIds)
+
+  recipesIds.forEach(id => {
+    const index = recipesList.findIndex(recipe => recipe.id === id)
+    recipesList.splice(index, 1)
+  })
+
+  render(recipesList)
+}
+
+// FILTERS
+
+// handle filters menu
 document.addEventListener("click", e => {
   const iSenuItem = e.target.matches(".dropdown-menu__item")
   const isFilterItem = e.target.matches(".filter-list__item")
 
-  if (iSenuItem && !isFilter(e.target.textContent)) {
-    const filter = { name: e.target.textContent, type: e.target.dataset.type }
-    filters.push(filter)
-    populateFiltersList()
-  } else if (isFilterItem) {
-    const filterIndex = e.target.dataset.filterIndex
-    filters.splice(filterIndex, 1)
-    populateFiltersList()
+  if (!iSenuItem && !isFilterItem) return
+
+  const term = e.target.textContent
+  const type = e.target.dataset.type
+
+  // update filters object
+  if (isFilterItem) {
+    filters[type].pop(term)
+  } else if (!isFilter(term, type)) {
+    filters[type].push(term)
   }
+
+  // update filters ui
+  populateFiltersList()
+
+  // update recipes list
+  updateRecipesList()
 })

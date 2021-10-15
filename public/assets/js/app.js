@@ -4,8 +4,6 @@ import uiDropdownMenu from "./components/dropdown-menu.component.js"
 import uiFiltersList from "./components/filters-list.component.js"
 import uiRecipe from "./components/recipe.component.js"
 
-dropdownModule()
-
 // DOM elements
 const uiSearchPrimary = document.querySelector(".form-control-primary")
 const uiNavSecondary = document.querySelector(".nav-secondary")
@@ -14,7 +12,7 @@ const uiAppliancesMenu = document.querySelector(".dropdown-appliances")
 const uiUstensilsMenu = document.querySelector(".dropdown-ustensils")
 
 // VARIABLES
-const filters = { main: "", ingredient: [], appliance: [], ustensil: [] }
+const filters = { main: [], ingredients: [], appliances: [], ustensils: [] }
 
 // get filters elements to populate secondary search menu
 const getIngredients = recipes => {
@@ -69,15 +67,13 @@ const populateRecipesList = recipes => {
 // RENDER HTML
 const render = (matchRecipes = recipes) => {
   matchRecipes = matchRecipes.sort((a, b) => a.name.localeCompare(b.name))
-  populateSecondaryMenu(uiIngredientsMenu, getIngredients(matchRecipes), "ingredient")
-  populateSecondaryMenu(uiAppliancesMenu, getAppliances(matchRecipes), "appliance")
-  populateSecondaryMenu(uiUstensilsMenu, getUstensils(matchRecipes), "ustensil")
+  populateSecondaryMenu(uiIngredientsMenu, getIngredients(matchRecipes), "ingredients")
+  populateSecondaryMenu(uiAppliancesMenu, getAppliances(matchRecipes), "appliances")
+  populateSecondaryMenu(uiUstensilsMenu, getUstensils(matchRecipes), "ustensils")
   populateRecipesList(matchRecipes)
 }
 
-render()
-
-// TEST
+// TESTS
 const isName = (term, recipe) => {
   return recipe.name.toLowerCase().includes(term.toLowerCase())
 }
@@ -102,67 +98,56 @@ const isFilter = (term, type) => {
   return filters[type].some(elem => elem === term)
 }
 
+// SEARCH
+const searchRecipes = (matchRecipes, tagType) => {
+  const tags = Object.values(filters[tagType])
+  let ids = []
+
+  tags.forEach(tag => {
+    if (localStorage.getItem(`${tagType}-${tag}`)) {
+      ids = [...JSON.parse(localStorage.getItem(`${tagType}-${tag}`))]
+    } else {
+      matchRecipes.forEach(recipe => {
+        if (tagType === "main" && !isName(tag, recipe) && !isIngredient(tag, recipe) && !isDescription(tag, recipe)) ids.push(recipe.id)
+        else if (tagType === "ingredients" && !isIngredient(tag, recipe)) ids.push(recipe.id)
+        else if (tagType === "appliances" && !isAppliance(tag, recipe)) ids.push(recipe.id)
+        else if (tagType === "ustensils" && !isUstensil(tag, recipe)) ids.push(recipe.id)
+      })
+
+      localStorage.setItem(`${tagType}-${tag}`, JSON.stringify(ids))
+    }
+  })
+
+  return ids
+}
+
 // UPDATE RECIPES LIST
 const updateRecipesList = () => {
-  const main = filters.main
-  const ingredients = Object.values(filters.ingredient)
-  const appliances = Object.values(filters.appliance)
-  const ustensils = Object.values(filters.ustensil)
-
+  // first reset recipes list
   const matchRecipes = [...recipes]
 
   // create à list of ids to remove from the list of recipes
-  const recipesIdsDup = []
-
-  // test main search in name, ingredient, description
-  if (main.length >= 3) {
-    console.log(main)
-
-    matchRecipes.forEach(recipe => {
-      // search in name
-      if (!isName(main, recipe) || !isIngredient(main, recipe) || !isDescription(main, recipe)) recipesIdsDup.push(recipe.id)
-    })
-
-    ingredients.forEach(tag => {
-      matchRecipes.forEach(recipe => {
-        if (!isIngredient(tag, recipe)) {
-          recipesIdsDup.push(recipe.id)
-        }
-      })
-    })
-  }
-
-  appliances.forEach(tag => {
-    matchRecipes.forEach(recipe => {
-      if (!isAppliance(tag, recipe)) {
-        recipesIdsDup.push(recipe.id)
-      }
-    })
-  })
-
-  ustensils.forEach(tag => {
-    matchRecipes.forEach(recipe => {
-      if (!isUstensil(tag, recipe)) {
-        recipesIdsDup.push(recipe.id)
-      }
-    })
-  })
+  const recipesIdsDup = Object.keys(filters)
+    .filter(tagType => tagType.length > 0)
+    .flatMap(tagType => searchRecipes(recipes, tagType))
 
   const recipesIds = [...new Set(recipesIdsDup)]
 
+  // remove recipes by id
   recipesIds.forEach(id => {
     const index = matchRecipes.findIndex(recipe => recipe.id === id)
     matchRecipes.splice(index, 1)
   })
 
+  // render view
   render(matchRecipes)
 }
 
 // handle primary search
 uiSearchPrimary.addEventListener("input", e => {
-  filters.main = ""
+  filters.main.length = 0
   if (e.target.value.length >= 3) {
-    filters.main = e.target.value
+    filters.main[0] = e.target.value
   }
   updateRecipesList()
 })
@@ -184,9 +169,10 @@ document.addEventListener("click", e => {
     filters[type].push(term)
   }
 
-  // update filters ui
   populateFiltersList()
-
-  // update recipes list
   updateRecipesList()
 })
+
+// INIT
+dropdownModule()
+render()

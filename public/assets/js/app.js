@@ -94,32 +94,58 @@ const isDescription = (term, recipe) => {
   return recipe.description.toLowerCase().includes(term.toLowerCase())
 }
 
-const isFilter = (term, type) => {
-  return filters[type].some(elem => elem === term)
-}
-
 // SEARCH
-const searchRecipes = (matchRecipes, tagType) => {
-  const tags = Object.values(filters[tagType])
-  let ids = []
 
-  tags.forEach(tag => {
-    if (localStorage.getItem(`${tagType}-${tag}`)) {
-      ids = [...JSON.parse(localStorage.getItem(`${tagType}-${tag}`))]
-    } else {
-      matchRecipes.forEach(recipe => {
-        if (tagType === "main" && !isName(tag, recipe) && !isIngredient(tag, recipe) && !isDescription(tag, recipe)) ids.push(recipe.id)
-        else if (tagType === "ingredients" && !isIngredient(tag, recipe)) ids.push(recipe.id)
-        else if (tagType === "appliances" && !isAppliance(tag, recipe)) ids.push(recipe.id)
-        else if (tagType === "ustensils" && !isUstensil(tag, recipe)) ids.push(recipe.id)
-      })
+/* V1 */
+// const searchRecipes = tagType => {
+//   const tags = Object.values(filters[tagType])
+//   let ids = []
 
-      localStorage.setItem(`${tagType}-${tag}`, JSON.stringify(ids))
+//   tags.forEach(tag => {
+//     if (localStorage.getItem(`${tagType}-${tag}`)) {
+//       ids = [...JSON.parse(localStorage.getItem(`${tagType}-${tag}`))]
+//     } else {
+//       recipes.forEach(recipe => {
+//         if (tagType === "main" && !isName(tag, recipe) && !isIngredient(tag, recipe) && !isDescription(tag, recipe)) ids.push(recipe.id)
+//         else if (tagType === "ingredients" && !isIngredient(tag, recipe)) ids.push(recipe.id)
+//         else if (tagType === "appliances" && !isAppliance(tag, recipe)) ids.push(recipe.id)
+//         else if (tagType === "ustensils" && !isUstensil(tag, recipe)) ids.push(recipe.id)
+//       })
+
+//       localStorage.setItem(`${tagType}-${tag}`, JSON.stringify(ids))
+//     }
+//   })
+
+//   return ids
+// }
+/* END OF V1 */
+
+/* V2 */
+const search = () => {
+  const activeFilters = {}
+  for (const [tagType, terms] of Object.entries(filters)) {
+    if (filters[tagType].length > 0) activeFilters[tagType] = terms
+  }
+
+  const ids = []
+
+  // is element verify test
+  const isNotInRecipe = (terms, recipe, test) => {
+    return terms.every(term => !test(term, recipe))
+  }
+
+  recipes.forEach(recipe => {
+    for (const [tagType, terms] of Object.entries(activeFilters)) {
+      if (tagType === "main" && isNotInRecipe(terms, recipe, isName) && isNotInRecipe(terms, recipe, isIngredient) && isNotInRecipe(terms, recipe, isDescription)) ids.push(recipe.id)
+      else if (tagType === "ingredients" && isNotInRecipe(terms, recipe, isIngredient)) ids.push(recipe.id)
+      else if (tagType === "appliances" && isNotInRecipe(terms, recipe, isAppliance)) ids.push(recipe.id)
+      else if (tagType === "ustensils" && isNotInRecipe(terms, recipe, isUstensil)) ids.push(recipe.id)
     }
   })
 
   return ids
 }
+/* END OF V2 */
 
 // UPDATE RECIPES LIST
 const updateRecipesList = () => {
@@ -127,9 +153,16 @@ const updateRecipesList = () => {
   const matchRecipes = [...recipes]
 
   // create à list of ids to remove from the list of recipes
-  const recipesIdsDup = Object.keys(filters)
-    .filter(tagType => tagType.length > 0)
-    .flatMap(tagType => searchRecipes(recipes, tagType))
+
+  /* V1 */
+  // const recipesIdsDup = Object.keys(filters)
+  //   .filter(tagType => tagType.length > 0)
+  //   .flatMap(tagType => searchRecipes(tagType))
+  /* END OF V1 */
+
+  /* V2 */
+  const recipesIdsDup = search()
+  /* END OF V2 */
 
   const recipesIds = [...new Set(recipesIdsDup)]
 
@@ -165,7 +198,7 @@ document.addEventListener("click", e => {
   // update filters object
   if (isFilterItem) {
     filters[type].pop(term)
-  } else if (!isFilter(term, type)) {
+  } else if (!filters[type].some(elem => elem === term)) {
     filters[type].push(term)
   }
 

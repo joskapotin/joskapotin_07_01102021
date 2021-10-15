@@ -14,8 +14,7 @@ const uiAppliancesMenu = document.querySelector(".dropdown-appliances")
 const uiUstensilsMenu = document.querySelector(".dropdown-ustensils")
 
 // VARIABLES
-const filters = { ingredient: [], appliance: [], ustensil: [] }
-let recipesList = [...recipes]
+const filters = { main: "", ingredient: [], appliance: [], ustensil: [] }
 
 // get filters elements to populate secondary search menu
 const getIngredients = recipes => {
@@ -68,12 +67,12 @@ const populateRecipesList = recipes => {
 }
 
 // RENDER HTML
-const render = (recipesToRender = recipesList) => {
-  recipesToRender = recipesToRender.sort((a, b) => a.name.localeCompare(b.name))
-  populateSecondaryMenu(uiIngredientsMenu, getIngredients(recipesToRender), "ingredient")
-  populateSecondaryMenu(uiAppliancesMenu, getAppliances(recipesToRender), "appliance")
-  populateSecondaryMenu(uiUstensilsMenu, getUstensils(recipesToRender), "ustensil")
-  populateRecipesList(recipesToRender)
+const render = (matchRecipes = recipes) => {
+  matchRecipes = matchRecipes.sort((a, b) => a.name.localeCompare(b.name))
+  populateSecondaryMenu(uiIngredientsMenu, getIngredients(matchRecipes), "ingredient")
+  populateSecondaryMenu(uiAppliancesMenu, getAppliances(matchRecipes), "appliance")
+  populateSecondaryMenu(uiUstensilsMenu, getUstensils(matchRecipes), "ustensil")
+  populateRecipesList(matchRecipes)
 }
 
 render()
@@ -103,62 +102,47 @@ const isFilter = (term, type) => {
   return filters[type].some(elem => elem === term)
 }
 
-// SEARCH
-const searchPrimary = term => {
-  // const regex = /\s|,\s|'/gm
-
-  const matchRecipes = []
-
-  recipesList.forEach(recipe => {
-    if (isName(term, recipe) || isIngredient(term, recipe) || isDescription(term, recipe) || isAppliance(term, recipe) || isUstensil(term, recipe)) {
-      matchRecipes.push(recipe)
-    }
-  })
-
-  render(matchRecipes)
-}
-
-// Trigger primary search
-uiSearchPrimary.addEventListener("input", e => {
-  if (e.target.value.length < 3) {
-    render()
-  }
-  if (e.target.value.length >= 3) {
-    searchPrimary(e.target.value, recipes)
-  }
-})
-
 // UPDATE RECIPES LIST
 const updateRecipesList = () => {
+  const main = filters.main
   const ingredients = Object.values(filters.ingredient)
   const appliances = Object.values(filters.appliance)
   const ustensils = Object.values(filters.ustensil)
 
-  // if there is no filter fill the list with all the recipes
-  if (ingredients.length === 0 && appliances.length === 0 && ustensils.length === 0) recipesList = [...recipes]
+  const matchRecipes = [...recipes]
 
   // create à list of ids to remove from the list of recipes
   const recipesIdsDup = []
 
-  ingredients.forEach(element => {
-    recipesList.forEach(recipe => {
-      if (!isIngredient(element, recipe)) {
+  // test main search in name, ingredient, description
+  if (main.length >= 3) {
+    console.log(main)
+
+    matchRecipes.forEach(recipe => {
+      // search in name
+      if (!isName(main, recipe) || !isIngredient(main, recipe) || !isDescription(main, recipe)) recipesIdsDup.push(recipe.id)
+    })
+
+    ingredients.forEach(tag => {
+      matchRecipes.forEach(recipe => {
+        if (!isIngredient(tag, recipe)) {
+          recipesIdsDup.push(recipe.id)
+        }
+      })
+    })
+  }
+
+  appliances.forEach(tag => {
+    matchRecipes.forEach(recipe => {
+      if (!isAppliance(tag, recipe)) {
         recipesIdsDup.push(recipe.id)
       }
     })
   })
 
-  appliances.forEach(element => {
-    recipesList.forEach(recipe => {
-      if (!isAppliance(element, recipe)) {
-        recipesIdsDup.push(recipe.id)
-      }
-    })
-  })
-
-  ustensils.forEach(element => {
-    recipesList.forEach(recipe => {
-      if (!isUstensil(element, recipe)) {
+  ustensils.forEach(tag => {
+    matchRecipes.forEach(recipe => {
+      if (!isUstensil(tag, recipe)) {
         recipesIdsDup.push(recipe.id)
       }
     })
@@ -166,19 +150,24 @@ const updateRecipesList = () => {
 
   const recipesIds = [...new Set(recipesIdsDup)]
 
-  console.log(recipesIds)
-
   recipesIds.forEach(id => {
-    const index = recipesList.findIndex(recipe => recipe.id === id)
-    recipesList.splice(index, 1)
+    const index = matchRecipes.findIndex(recipe => recipe.id === id)
+    matchRecipes.splice(index, 1)
   })
 
-  render(recipesList)
+  render(matchRecipes)
 }
 
-// FILTERS
+// handle primary search
+uiSearchPrimary.addEventListener("input", e => {
+  filters.main = ""
+  if (e.target.value.length >= 3) {
+    filters.main = e.target.value
+  }
+  updateRecipesList()
+})
 
-// handle filters menu
+// handle tags search
 document.addEventListener("click", e => {
   const iSenuItem = e.target.matches(".dropdown-menu__item")
   const isFilterItem = e.target.matches(".filter-list__item")

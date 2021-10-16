@@ -1,12 +1,17 @@
-const uiDropdownMenu = (elements, elementsType) => {
+/**
+ * Create dropdown menus
+ * @param {{filterTerms: string[], filterCat: string}}
+ * @returns {HTMLElement} dropdown menu
+ */
+const uiDropdownMenu = ({ filterTerms, filterCat }) => {
   const uiDropdownList = document.createElement("ul")
   uiDropdownList.classList.add("dropdown-menu")
 
-  elements.forEach(element => {
+  filterTerms.forEach(filterTerm => {
     const uiDropdownItem = document.createElement("li")
     uiDropdownItem.classList.add("dropdown-menu__item")
-    uiDropdownItem.textContent = element
-    uiDropdownItem.dataset.type = elementsType
+    uiDropdownItem.textContent = filterTerm
+    uiDropdownItem.dataset.type = filterCat
     uiDropdownList.appendChild(uiDropdownItem)
   })
 

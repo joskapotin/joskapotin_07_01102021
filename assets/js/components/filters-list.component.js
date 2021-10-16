@@ -8,15 +8,13 @@ const uiFiltersList = filters => {
   uiFiltersList.classList.add("container", "filters-list")
 
   for (const [key, values] of Object.entries(filters)) {
-    if (key !== "main") {
-      values.forEach(value => {
-        const uiListItem = document.createElement("li")
-        uiListItem.classList.add("filter-list__item", `filter-list__item-${key}`)
-        uiListItem.textContent = value
-        uiListItem.dataset.type = key
-        uiFiltersList.appendChild(uiListItem)
-      })
-    }
+    values.forEach(value => {
+      const uiListItem = document.createElement("li")
+      uiListItem.classList.add("filter-list__item", `filter-list__item-${key}`)
+      uiListItem.textContent = value
+      uiListItem.dataset.type = key
+      uiFiltersList.appendChild(uiListItem)
+    })
   }
 
   return uiFiltersList

@@ -1,68 +1,31 @@
-const recipesArr = [
-  {
+const recipes = {
+  1: {
     id: 1,
     name: "Limonade de Coco",
     servings: 1,
     ingredients: [
-      {
-        ingredient: "Lait de coco",
-        quantity: 400,
-        unit: "ml",
-      },
-      {
-        ingredient: "Jus de citron",
-        quantity: 2,
-      },
-      {
-        ingredient: "Crème de coco",
-        quantity: 2,
-        unit: "cuillères à soupe",
-      },
-      {
-        ingredient: "Sucre",
-        quantity: 30,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Glaçons",
-      },
+      { ingredient: "Lait de coco", quantity: 400, unit: "ml" },
+      { ingredient: "Jus de citron", quantity: 2 },
+      { ingredient: "Crème de coco", quantity: 2, unit: "cuillères à soupe" },
+      { ingredient: "Sucre", quantity: 30, unit: "grammes" },
+      { ingredient: "Glaçons" },
     ],
     time: 10,
     description: "Mettre les glaçons à votre goût dans le blender, ajouter le lait, la crème de coco, le jus de 2 citrons et le sucre. Mixer jusqu'à avoir la consistence désirée",
     appliance: "Blender",
     ustensils: ["cuillère à Soupe", "verres", "presse citron"],
   },
-  {
+  2: {
     id: 2,
     name: "Poisson Cru à la tahitienne",
     servings: 2,
     ingredients: [
-      {
-        ingredient: "Thon Rouge (ou blanc)",
-        quantity: 200,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Concombre",
-        quantity: 1,
-      },
-      {
-        ingredient: "Tomate",
-        quantity: 2,
-      },
-      {
-        ingredient: "Carotte",
-        quantity: 1,
-      },
-      {
-        ingredient: "Citron Vert",
-        quantity: 5,
-      },
-      {
-        ingredient: "Lait de Coco",
-        quantity: 100,
-        unit: "ml",
-      },
+      { ingredient: "Thon Rouge (ou blanc)", quantity: 200, unit: "grammes" },
+      { ingredient: "Concombre", quantity: 1 },
+      { ingredient: "Tomate", quantity: 2 },
+      { ingredient: "Carotte", quantity: 1 },
+      { ingredient: "Citron Vert", quantity: 5 },
+      { ingredient: "Lait de Coco", quantity: 100, unit: "ml" },
     ],
     time: 60,
     description:
@@ -70,36 +33,17 @@ const recipesArr = [
     appliance: "Saladier",
     ustensils: ["presse citron"],
   },
-  {
+  3: {
     id: 3,
     name: "Poulet coco réunionnais",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Poulet",
-        quantity: 1,
-      },
-      {
-        ingredient: "Lait de coco",
-        quantity: 400,
-        unit: "ml",
-      },
-      {
-        ingredient: "Coulis de tomate",
-        quantity: 25,
-        unit: "cl",
-      },
-      {
-        ingredient: "Oignon",
-        quantity: 1,
-      },
-      {
-        ingredient: "Poivron rouge",
-        quantity: 1,
-      },
-      {
-        ingredient: "Huile d'olive",
-      },
+      { ingredient: "Poulet", quantity: 1 },
+      { ingredient: "Lait de coco", quantity: 400, unit: "ml" },
+      { ingredient: "Coulis de tomate", quantity: 25, unit: "cl" },
+      { ingredient: "Oignon", quantity: 1 },
+      { ingredient: "Poivron rouge", quantity: 1 },
+      { ingredient: "Huile d'olive" },
     ],
     time: 80,
     description:
@@ -107,39 +51,17 @@ const recipesArr = [
     appliance: "Cocotte",
     ustensils: ["couteau"],
   },
-  {
+  4: {
     id: 4,
     name: "Salade de riz",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Riz blanc",
-        quantity: 500,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Thon en miettes",
-        quantity: 200,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Tomate",
-        quantity: 2,
-      },
-      {
-        ingredient: "Oeuf dur",
-        quantity: 2,
-      },
-      {
-        ingredient: "Maïs",
-        quantity: 300,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Vinaigrette",
-        quantity: 5,
-        unit: "cl",
-      },
+      { ingredient: "Riz blanc", quantity: 500, unit: "grammes" },
+      { ingredient: "Thon en miettes", quantity: 200, unit: "grammes" },
+      { ingredient: "Tomate", quantity: 2 },
+      { ingredient: "Oeuf dur", quantity: 2 },
+      { ingredient: "Maïs", quantity: 300, unit: "grammes" },
+      { ingredient: "Vinaigrette", quantity: 5, unit: "cl" },
     ],
     time: 50,
     description:
@@ -147,39 +69,17 @@ const recipesArr = [
     appliance: "Cuiseur de riz",
     ustensils: ["saladier", "passoire"],
   },
-  {
+  5: {
     id: 5,
     name: "Tarte au thon",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Pâte feuilletée",
-        quantity: 1,
-      },
-      {
-        ingredient: "Thon en miettes",
-        quantity: 130,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Tomate",
-        quantity: 2,
-      },
-      {
-        ingredient: "Crème fraiche",
-        quantity: 2,
-        unit: "cuillères à soupe",
-      },
-      {
-        ingredient: "gruyère râpé",
-        quantity: 100,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Moutarde de Dijon",
-        quantity: 1,
-        unite: "cuillères à soupe",
-      },
+      { ingredient: "Pâte feuilletée", quantity: 1 },
+      { ingredient: "Thon en miettes", quantity: 130, unit: "grammes" },
+      { ingredient: "Tomate", quantity: 2 },
+      { ingredient: "Crème fraiche", quantity: 2, unit: "cuillères à soupe" },
+      { ingredient: "gruyère râpé", quantity: 100, unit: "grammes" },
+      { ingredient: "Moutarde de Dijon", quantity: 1, unite: "cuillères à soupe" },
     ],
     time: 45,
     description:
@@ -187,38 +87,17 @@ const recipesArr = [
     appliance: "Four",
     ustensils: ["moule à tarte", "râpe à fromage", "couteau"],
   },
-  {
+  6: {
     id: 6,
     name: "Tarte aux pommes",
     servings: 6,
     ingredients: [
-      {
-        ingredient: "Pâte brisée",
-        quantity: 1,
-      },
-      {
-        ingredient: "Pomme",
-        quantity: 3,
-      },
-      {
-        ingredient: "Oeuf",
-        quantity: "2",
-      },
-      {
-        ingredient: "Crème fraiche",
-        quantity: 25,
-        unit: "cl",
-      },
-      {
-        ingredient: "Sucre en Poudre",
-        quantity: 100,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Sucre vanillé",
-        quantity: 1,
-        unit: "sachets",
-      },
+      { ingredient: "Pâte brisée", quantity: 1 },
+      { ingredient: "Pomme", quantity: 3 },
+      { ingredient: "Oeuf", quantity: "2" },
+      { ingredient: "Crème fraiche", quantity: 25, unit: "cl" },
+      { ingredient: "Sucre en Poudre", quantity: 100, unit: "grammes" },
+      { ingredient: "Sucre vanillé", quantity: 1, unit: "sachets" },
     ],
     time: 50,
     description:
@@ -226,34 +105,16 @@ const recipesArr = [
     appliance: "Four",
     ustensils: ["moule à tarte", "saladier", "fourchette"],
   },
-  {
+  7: {
     id: 7,
     name: "Tartelettes au chocolat et aux fraises",
     servings: 6,
     ingredients: [
-      {
-        ingredient: "Pâte sablée",
-        quantity: 1,
-      },
-      {
-        ingredient: "Chocolat au lait",
-        quantity: 300,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Crème liquide",
-        quantity: 80,
-        unit: "cl",
-      },
-      {
-        ingredient: "Beurre",
-        quantity: "30",
-        unit: "grammes",
-      },
-      {
-        ingredient: "Fraise",
-        quantity: 6,
-      },
+      { ingredient: "Pâte sablée", quantity: 1 },
+      { ingredient: "Chocolat au lait", quantity: 300, unit: "grammes" },
+      { ingredient: "Crème liquide", quantity: 80, unit: "cl" },
+      { ingredient: "Beurre", quantity: "30", unit: "grammes" },
+      { ingredient: "Fraise", quantity: 6 },
     ],
     time: 50,
     description:
@@ -261,40 +122,17 @@ const recipesArr = [
     appliance: "Four",
     ustensils: ["moule à tartelettes (6)", "casserolle"],
   },
-  {
+  8: {
     id: 8,
     name: "Brownie",
     servings: 10,
     ingredients: [
-      {
-        ingredient: "Noix",
-        quantity: "180",
-        unit: "grammes",
-      },
-      {
-        ingredient: "Chocolat noir",
-        quantity: 150,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Beurre",
-        quantity: 120,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Oeuf",
-        quantity: 2,
-      },
-      {
-        ingredient: "Sucre en Poudre",
-        quantity: "110",
-        unit: "grammes",
-      },
-      {
-        ingredient: "farine",
-        quantity: 90,
-        unit: "grammes",
-      },
+      { ingredient: "Noix", quantity: "180", unit: "grammes" },
+      { ingredient: "Chocolat noir", quantity: 150, unit: "grammes" },
+      { ingredient: "Beurre", quantity: 120, unit: "grammes" },
+      { ingredient: "Oeuf", quantity: 2 },
+      { ingredient: "Sucre en Poudre", quantity: "110", unit: "grammes" },
+      { ingredient: "farine", quantity: 90, unit: "grammes" },
     ],
     time: 60,
     description:
@@ -302,32 +140,17 @@ const recipesArr = [
     appliance: "Four",
     ustensils: ["moule à gateaux", "casserolle"],
   },
-  {
+  9: {
     id: 9,
     name: "Salade Méditerannéene fraiche au chèvre",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Concombre",
-        quantity: 1,
-      },
-      {
-        ingredient: "Olives",
-      },
-      {
-        ingredient: "Fromage de chèvre",
-        quantity: 150,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Vinaigre Balsamic",
-      },
-      {
-        ingredient: "Huile d'olive",
-      },
-      {
-        ingredient: "Basilic",
-      },
+      { ingredient: "Concombre", quantity: 1 },
+      { ingredient: "Olives" },
+      { ingredient: "Fromage de chèvre", quantity: 150, unit: "grammes" },
+      { ingredient: "Vinaigre Balsamic" },
+      { ingredient: "Huile d'olive" },
+      { ingredient: "Basilic" },
     ],
     time: 15,
     description:
@@ -335,35 +158,16 @@ const recipesArr = [
     appliance: "Saladier",
     ustensils: ["cuillère en bois", "couteau"],
   },
-  {
+  10: {
     id: 10,
     name: "Tartiflette",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Roblochon",
-        quantity: "1",
-      },
-      {
-        ingredient: "Pommes de terre",
-        quantity: 4.5,
-        unit: "kg",
-      },
-      {
-        ingredient: "Jambon fumé",
-        quantity: 2,
-        unit: "tranches",
-      },
-      {
-        ingredient: "Oignon",
-        quantity: 300,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Vin blanc sec",
-        quantity: 30,
-        unit: "cl",
-      },
+      { ingredient: "Roblochon", quantity: "1" },
+      { ingredient: "Pommes de terre", quantity: 4.5, unit: "kg" },
+      { ingredient: "Jambon fumé", quantity: 2, unit: "tranches" },
+      { ingredient: "Oignon", quantity: 300, unit: "grammes" },
+      { ingredient: "Vin blanc sec", quantity: 30, unit: "cl" },
     ],
     time: 60,
     description:
@@ -371,39 +175,17 @@ const recipesArr = [
     appliance: "Four",
     ustensils: ["plat à gratin", "couteau", "Économe"],
   },
-  {
+  11: {
     id: 11,
     name: "Salade tomate, mozzarella et pommes",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Tomates cerises",
-        quantity: 250,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Mozzarella",
-        quantity: 150,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Jambon de parme",
-        quantity: 4,
-        unit: "tranches",
-      },
-      {
-        ingredient: "Pommes",
-        quantity: 1,
-      },
-      {
-        ingredient: "Salade Verte",
-        quantity: 1,
-      },
-      {
-        ingredient: "Vinaigrette",
-        quantity: 5,
-        unit: "cl",
-      },
+      { ingredient: "Tomates cerises", quantity: 250, unit: "grammes" },
+      { ingredient: "Mozzarella", quantity: 150, unit: "grammes" },
+      { ingredient: "Jambon de parme", quantity: 4, unit: "tranches" },
+      { ingredient: "Pommes", quantity: 1 },
+      { ingredient: "Salade Verte", quantity: 1 },
+      { ingredient: "Vinaigrette", quantity: 5, unit: "cl" },
     ],
     time: 10,
     description:
@@ -411,65 +193,31 @@ const recipesArr = [
     appliance: "Saladier",
     ustensils: ["couteau", "cuillère à melon"],
   },
-  {
+  12: {
     id: 12,
     name: "Compote pomme rhubarbe",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Rhubarbe",
-        quantity: 160,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Pommes",
-        quantity: 8,
-      },
-      {
-        ingredient: "Sucre vanillé",
-        quantity: 6,
-        unit: "sachets",
-      },
-      {
-        ingredient: "Eau",
-        quantity: "0.5",
-        unit: "tasses",
-      },
+      { ingredient: "Rhubarbe", quantity: 160, unit: "grammes" },
+      { ingredient: "Pommes", quantity: 8 },
+      { ingredient: "Sucre vanillé", quantity: 6, unit: "sachets" },
+      { ingredient: "Eau", quantity: "0.5", unit: "tasses" },
     ],
     time: 40,
     description: "Éplucher les fruits et les couper en morceaux, les mettre dans une casserolle en ajoutant l'eau et le sucre vanillé. Laisser cuire 15 minutes en remuant régulièrement.",
     appliance: "Casserole",
     ustensils: ["couteau", "économe"],
   },
-  {
+  13: {
     id: 13,
     name: "Salade mâchée de patates",
     servings: 2,
     ingredients: [
-      {
-        ingredient: "Mâche",
-        quantity: 60,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Pommes de terre",
-        quantity: 200,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Échalote",
-        quantity: 2,
-      },
-      {
-        ingredient: "Vinaigre de cidre",
-        quantity: 1,
-        unit: "cuillère à soupe",
-      },
-      {
-        ingredient: "huile d'olive",
-        quantity: 2,
-        unit: "cuillère à soupe",
-      },
+      { ingredient: "Mâche", quantity: 60, unit: "grammes" },
+      { ingredient: "Pommes de terre", quantity: 200, unit: "grammes" },
+      { ingredient: "Échalote", quantity: 2 },
+      { ingredient: "Vinaigre de cidre", quantity: 1, unit: "cuillère à soupe" },
+      { ingredient: "huile d'olive", quantity: 2, unit: "cuillère à soupe" },
     ],
     time: 40,
     description:
@@ -477,38 +225,17 @@ const recipesArr = [
     appliance: "Casserole",
     ustensils: ["couteau", "saladier", "cuillère en bois"],
   },
-  {
+  14: {
     id: 14,
     name: "Galette Bretonne Saucisse et Fromage à raclette",
     servings: 2,
     ingredients: [
-      {
-        ingredient: "Saucisse bretonne ou de toulouse",
-        quantity: 2,
-      },
-      {
-        ingredient: "Farine de blé noir",
-        quantity: 130,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Oeuf",
-        quantity: 1,
-      },
-      {
-        ingredient: "Fromage à raclette",
-        quantity: 300,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Oignon",
-        quantity: 1,
-      },
-      {
-        ingredient: "Beurre",
-        quantity: 75,
-        unit: "grammes",
-      },
+      { ingredient: "Saucisse bretonne ou de toulouse", quantity: 2 },
+      { ingredient: "Farine de blé noir", quantity: 130, unit: "grammes" },
+      { ingredient: "Oeuf", quantity: 1 },
+      { ingredient: "Fromage à raclette", quantity: 300, unit: "grammes" },
+      { ingredient: "Oignon", quantity: 1 },
+      { ingredient: "Beurre", quantity: 75, unit: "grammes" },
     ],
     time: 100,
     description:
@@ -516,39 +243,17 @@ const recipesArr = [
     appliance: "Four",
     ustensils: ["poelle à frire", "couteau"],
   },
-  {
+  15: {
     id: 15,
     name: "Crêpes Chocolat Banane",
     servings: 10,
     ingredients: [
-      {
-        ingredient: "Oeuf",
-        quantity: 3,
-      },
-      {
-        ingredient: "Farine",
-        quantity: 250,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Lait",
-        quantity: 600,
-        unit: "ml",
-      },
-      {
-        ingredient: "Beurre salé",
-        quantity: 30,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Chocolat au lait",
-        quantity: 100,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Banane",
-        quantity: 4,
-      },
+      { ingredient: "Oeuf", quantity: 3 },
+      { ingredient: "Farine", quantity: 250, unit: "grammes" },
+      { ingredient: "Lait", quantity: 600, unit: "ml" },
+      { ingredient: "Beurre salé", quantity: 30, unit: "grammes" },
+      { ingredient: "Chocolat au lait", quantity: 100, unit: "grammes" },
+      { ingredient: "Banane", quantity: 4 },
     ],
     time: 60,
     description:
@@ -556,36 +261,16 @@ const recipesArr = [
     appliance: "Poële à crêpe",
     ustensils: ["saladier", "louche", "cuillère en bois"],
   },
-  {
+  16: {
     id: 16,
     name: "Gratin de pâtes à la tomate",
     servings: 2,
     ingredients: [
-      {
-        ingredient: "Tomate",
-        quantity: 500,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Mozzarella",
-        quantity: 250,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Pennes",
-        quantity: 500,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Basilic",
-        quantity: 1,
-        unit: "tiges",
-      },
-      {
-        ingredient: "huile d'olives",
-        quantity: 2,
-        unit: "cuillère à soupe",
-      },
+      { ingredient: "Tomate", quantity: 500, unit: "grammes" },
+      { ingredient: "Mozzarella", quantity: 250, unit: "grammes" },
+      { ingredient: "Pennes", quantity: 500, unit: "grammes" },
+      { ingredient: "Basilic", quantity: 1, unit: "tiges" },
+      { ingredient: "huile d'olives", quantity: 2, unit: "cuillère à soupe" },
     ],
     time: 45,
     description:
@@ -593,32 +278,16 @@ const recipesArr = [
     appliance: "Four",
     ustensils: ["plat à gratin", "couteau", "râpe à fromage"],
   },
-  {
+  17: {
     id: 17,
     name: "Smoothie à la fraise",
     servings: 6,
     ingredients: [
-      {
-        ingredient: "Fraise",
-        quantity: 500,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Pastèque",
-        quantity: 0.5,
-      },
-      {
-        ingredient: "Jus de citron",
-        quantity: 1,
-        unit: "cuillères à soupe",
-      },
-      {
-        ingredient: "Glaçons",
-        quantity: 8,
-      },
-      {
-        ingredient: "Menthe",
-      },
+      { ingredient: "Fraise", quantity: 500, unit: "grammes" },
+      { ingredient: "Pastèque", quantity: 0.5 },
+      { ingredient: "Jus de citron", quantity: 1, unit: "cuillères à soupe" },
+      { ingredient: "Glaçons", quantity: 8 },
+      { ingredient: "Menthe" },
     ],
     time: 15,
     description:
@@ -626,25 +295,14 @@ const recipesArr = [
     appliance: "Blender",
     ustensils: ["verres", "couteau", "presse citron"],
   },
-  {
+  18: {
     id: 18,
     name: "Smoothie ananas et vanille",
     servings: 5,
     ingredients: [
-      {
-        ingredient: "Ananas",
-        quantity: 1,
-      },
-      {
-        ingredient: "Glace à la vanille",
-        quantity: 500,
-        unit: "ml",
-      },
-      {
-        ingredient: "Lait",
-        quantity: 50,
-        unit: "cl",
-      },
+      { ingredient: "Ananas", quantity: 1 },
+      { ingredient: "Glace à la vanille", quantity: 500, unit: "ml" },
+      { ingredient: "Lait", quantity: 50, unit: "cl" },
     ],
     time: 10,
     description:
@@ -652,69 +310,32 @@ const recipesArr = [
     appliance: "Blender",
     ustensils: ["verres", "couteau"],
   },
-  {
+  19: {
     id: 19,
     name: "Shake Banane Kiwi",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Kiwi",
-        quantity: 4,
-      },
-      {
-        ingredient: "Citron",
-        quantity: 1,
-      },
-      {
-        ingredient: "Lait",
-        quantity: 1,
-        unit: "litres",
-      },
-      {
-        ingredient: "Sucre glace",
-        quantity: 30,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Banane",
-        quantity: 1,
-      },
+      { ingredient: "Kiwi", quantity: 4 },
+      { ingredient: "Citron", quantity: 1 },
+      { ingredient: "Lait", quantity: 1, unit: "litres" },
+      { ingredient: "Sucre glace", quantity: 30, unit: "grammes" },
+      { ingredient: "Banane", quantity: 1 },
     ],
     time: 0,
     description: "Coupez les fruits en morceaux, ajouter le jus de citron et le lait ainsi que le sucre glace. Mixez. Ajoutez des glaçons si le lait n'a pas été mis au frais.",
     appliance: "Blender",
     ustensils: ["couteau", "verres", "presse citron"],
   },
-  {
+  20: {
     id: 20,
     name: "Pates Carbonara",
     servings: 5,
     ingredients: [
-      {
-        ingredient: "Tagliatelles",
-        quantity: 500,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Lardons",
-        quantity: 150,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Crème fraiche",
-        quantity: 200,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Parmesan",
-        quantity: 100,
-        unit: "grammes",
-      },
-      {
-        ingredient: "huile d'olive",
-        quantity: 1,
-        unit: "cuillères à soupe",
-      },
+      { ingredient: "Tagliatelles", quantity: 500, unit: "grammes" },
+      { ingredient: "Lardons", quantity: 150, unit: "grammes" },
+      { ingredient: "Crème fraiche", quantity: 200, unit: "grammes" },
+      { ingredient: "Parmesan", quantity: 100, unit: "grammes" },
+      { ingredient: "huile d'olive", quantity: 1, unit: "cuillères à soupe" },
     ],
     time: 30,
     description:
@@ -722,40 +343,17 @@ const recipesArr = [
     appliance: "Sauteuse",
     ustensils: ["râpe à fromage", "cuillère en bois"],
   },
-  {
+  21: {
     id: 21,
     name: "Spaghettis à la bolognaise",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Spaghettis",
-        quantity: 400,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Oignon",
-        quantity: 2,
-      },
-      {
-        ingredient: "Coulis de tomate",
-        quantity: 300,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Viande hachée 1% de matière grasse",
-        quantity: 400,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Vin rouge",
-        quantity: 20,
-        unit: "cl",
-      },
-      {
-        ingredient: "Crème Fraiche",
-        quantity: 1,
-        unit: "cuillères à soupe",
-      },
+      { ingredient: "Spaghettis", quantity: 400, unit: "grammes" },
+      { ingredient: "Oignon", quantity: 2 },
+      { ingredient: "Coulis de tomate", quantity: 300, unit: "grammes" },
+      { ingredient: "Viande hachée 1% de matière grasse", quantity: 400, unit: "grammes" },
+      { ingredient: "Vin rouge", quantity: 20, unit: "cl" },
+      { ingredient: "Crème Fraiche", quantity: 1, unit: "cuillères à soupe" },
     ],
     time: 30,
     description:
@@ -763,35 +361,16 @@ const recipesArr = [
     appliance: "Casserolle.",
     ustensils: ["Cuillère en bois", "louche", "couteau"],
   },
-  {
+  22: {
     id: 22,
     name: "Fondant au chocolat",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Beurre",
-        quantity: 160,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Chocolat noir",
-        quantity: 200,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Farine",
-        quantity: 50,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Oeuf",
-        quantity: 4,
-      },
-      {
-        ingredient: "Sucre",
-        quantity: 150,
-        unit: "grammes",
-      },
+      { ingredient: "Beurre", quantity: 160, unit: "grammes" },
+      { ingredient: "Chocolat noir", quantity: 200, unit: "grammes" },
+      { ingredient: "Farine", quantity: 50, unit: "grammes" },
+      { ingredient: "Oeuf", quantity: 4 },
+      { ingredient: "Sucre", quantity: 150, unit: "grammes" },
     ],
     time: 30,
     description:
@@ -799,40 +378,17 @@ const recipesArr = [
     appliance: "Four",
     ustensils: ["moule à gateaux", "fouet", "casserolle"],
   },
-  {
+  23: {
     id: 23,
     name: "Quiche lorraine",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Pâte brisée",
-        quantity: 200,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Lardons",
-        quantity: 200,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Beurre",
-        quantity: 30,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Oeuf",
-        quantity: 3,
-      },
-      {
-        ingredient: "Crème Fraîche",
-        quantity: 20,
-        unit: "cl",
-      },
-      {
-        ingredient: "Lait",
-        quantity: 20,
-        unit: "cl",
-      },
+      { ingredient: "Pâte brisée", quantity: 200, unit: "grammes" },
+      { ingredient: "Lardons", quantity: 200, unit: "grammes" },
+      { ingredient: "Beurre", quantity: 30, unit: "grammes" },
+      { ingredient: "Oeuf", quantity: 3 },
+      { ingredient: "Crème Fraîche", quantity: 20, unit: "cl" },
+      { ingredient: "Lait", quantity: 20, unit: "cl" },
     ],
     time: 60,
     description:
@@ -840,39 +396,17 @@ const recipesArr = [
     appliance: "Four",
     ustensils: ["moule à gateaux", "rouleau à patisserie", "fouet"],
   },
-  {
+  24: {
     id: 24,
     name: "Salade de pâtes",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Thon en miettes",
-        quantity: 160,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Maïs",
-        quantity: 60,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Tomate",
-        quantity: 1,
-      },
-      {
-        ingredient: "Concombre",
-        quantity: 0.5,
-      },
-      {
-        ingredient: "Macaronis",
-        quantity: 300,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Mayonnaise",
-        quantity: 2,
-        unit: "cuillères à soupe",
-      },
+      { ingredient: "Thon en miettes", quantity: 160, unit: "grammes" },
+      { ingredient: "Maïs", quantity: 60, unit: "grammes" },
+      { ingredient: "Tomate", quantity: 1 },
+      { ingredient: "Concombre", quantity: 0.5 },
+      { ingredient: "Macaronis", quantity: 300, unit: "grammes" },
+      { ingredient: "Mayonnaise", quantity: 2, unit: "cuillères à soupe" },
     ],
     time: 40,
     description:
@@ -880,35 +414,16 @@ const recipesArr = [
     appliance: "Saladier",
     ustensils: ["couteau", "cuillère en bois"],
   },
-  {
+  25: {
     id: 25,
     name: "Cookies",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Sucre",
-        quantity: 100,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Beurre",
-        quantity: 100,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Farine",
-        quantity: 100,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Chocolat noir en pepites",
-        quantity: 100,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Oeuf",
-        quantity: 1,
-      },
+      { ingredient: "Sucre", quantity: 100, unit: "grammes" },
+      { ingredient: "Beurre", quantity: 100, unit: "grammes" },
+      { ingredient: "Farine", quantity: 100, unit: "grammes" },
+      { ingredient: "Chocolat noir en pepites", quantity: 100, unit: "grammes" },
+      { ingredient: "Oeuf", quantity: 1 },
     ],
     time: 30,
     description:
@@ -916,65 +431,32 @@ const recipesArr = [
     appliance: "Four",
     ustensils: ["fouet", "saladier", "plaque de cuisson"],
   },
-  {
+  26: {
     id: 26,
     name: "Soupe de tomates",
     servings: 2,
     ingredients: [
-      {
-        ingredient: "Tomate",
-        quantity: 6,
-      },
-      {
-        ingredient: "Pommes de terre",
-        quantity: 1,
-      },
-      {
-        ingredient: "Huile d'olives",
-      },
-      {
-        ingredient: "Oignon",
-        quantity: 1,
-      },
-      {
-        ingredient: "Ail",
-        quantity: 1,
-        unit: "gousses",
-      },
+      { ingredient: "Tomate", quantity: 6 },
+      { ingredient: "Pommes de terre", quantity: 1 },
+      { ingredient: "Huile d'olives" },
+      { ingredient: "Oignon", quantity: 1 },
+      { ingredient: "Ail", quantity: 1, unit: "gousses" },
     ],
     time: 25,
     description: "Verser de l'huile dans une cocotte minute couper les légumes et les verser dans l'huile chaude. Laisser cuire et remuer pendant 10 minutes. Passer aux mixer. Servir.",
     appliance: "Mixer",
     ustensils: ["cocotte minute", "couteau"],
   },
-  {
+  27: {
     id: 27,
     name: "Soupe à l'oseille",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Oseille",
-        quantity: 2,
-      },
-      {
-        ingredient: "Oeuf",
-        quantity: 1,
-      },
-      {
-        ingredient: "Crème fraîche",
-        quantity: 4,
-        unit: "cuillère à soupe",
-      },
-      {
-        ingredient: "Vermicelles",
-        quantity: 1,
-        unit: "verres",
-      },
-      {
-        ingredient: "Beurre salé",
-        quantity: 50,
-        unit: "grammes",
-      },
+      { ingredient: "Oseille", quantity: 2 },
+      { ingredient: "Oeuf", quantity: 1 },
+      { ingredient: "Crème fraîche", quantity: 4, unit: "cuillère à soupe" },
+      { ingredient: "Vermicelles", quantity: 1, unit: "verres" },
+      { ingredient: "Beurre salé", quantity: 50, unit: "grammes" },
     ],
     time: 15,
     description:
@@ -982,35 +464,16 @@ const recipesArr = [
     appliance: "Casserolle",
     ustensils: ["couteau", "cuillère en bois"],
   },
-  {
+  28: {
     id: 28,
     name: "Soupe de poireaux",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Poireau",
-        quantity: 3,
-      },
-      {
-        ingredient: "Pommes de terre",
-        quantity: 400,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Oseille",
-        quantity: 75,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Beurre",
-        quantity: 50,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Crême fraîche",
-        quantity: 10,
-        unit: "cl",
-      },
+      { ingredient: "Poireau", quantity: 3 },
+      { ingredient: "Pommes de terre", quantity: 400, unit: "grammes" },
+      { ingredient: "Oseille", quantity: 75, unit: "grammes" },
+      { ingredient: "Beurre", quantity: 50, unit: "grammes" },
+      { ingredient: "Crême fraîche", quantity: 10, unit: "cl" },
     ],
     time: 80,
     description:
@@ -1018,90 +481,46 @@ const recipesArr = [
     appliance: "Mixer",
     ustensils: ["casserolle", "couteau"],
   },
-  {
+  29: {
     id: 29,
     name: "Houmous Express",
     servings: 2,
     ingredients: [
-      {
-        ingredient: "Pois chiches",
-        quantity: 1,
-        unit: "boites",
-      },
-      {
-        ingredient: "Ail",
-        quantity: 1,
-        unit: "gousses",
-      },
-      {
-        ingredient: "Citron",
-        quantity: 2,
-      },
-      {
-        ingredient: "Huile d'olive",
-      },
-      {
-        ingredient: "Paprika",
-      },
+      { ingredient: "Pois chiches", quantity: 1, unit: "boites" },
+      { ingredient: "Ail", quantity: 1, unit: "gousses" },
+      { ingredient: "Citron", quantity: 2 },
+      { ingredient: "Huile d'olive" },
+      { ingredient: "Paprika" },
     ],
     time: 30,
     description: "Prendre les pois chiches, les mettre dans le mixer avec de l'huile d'olive, ajouter le jus des 2 citrons et du paprika selon le gout.",
     appliance: "Mixer",
     ustensils: ["cuillère en bois", "presse citron"],
   },
-  {
+  30: {
     id: 30,
     name: "Purée de pois cassés",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Pois Cassé",
-        quantity: 500,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Oignon",
-        quantity: 1,
-      },
-      {
-        ingredient: "Ail",
-        quantity: 2,
-        unit: "gousses",
-      },
+      { ingredient: "Pois Cassé", quantity: 500, unit: "grammes" },
+      { ingredient: "Oignon", quantity: 1 },
+      { ingredient: "Ail", quantity: 2, unit: "gousses" },
     ],
     time: 60,
     description: "Mettre tous les ingrédients dans une cocotte. ajouter de l'eau pour recouvrir l'ensemble et laisser cuirre à petit feur pour 1 heure. Passer au mixer. Salez, poivrez. C'est prêt",
     appliance: "Mixer",
     ustensils: ["casserolle", "cuillère en bois"],
   },
-  {
+  31: {
     id: 31,
     name: "Jardinière de légumes",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Carotte",
-        quantity: 2,
-      },
-      {
-        ingredient: "Pommes de terre",
-        quantity: 2,
-      },
-      {
-        ingredient: "Haricots verts",
-        quantity: 150,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Petits poids",
-        quantity: 100,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Lardons",
-        quantity: 150,
-        unit: "grammes",
-      },
+      { ingredient: "Carotte", quantity: 2 },
+      { ingredient: "Pommes de terre", quantity: 2 },
+      { ingredient: "Haricots verts", quantity: 150, unit: "grammes" },
+      { ingredient: "Petits poids", quantity: 100, unit: "grammes" },
+      { ingredient: "Lardons", quantity: 150, unit: "grammes" },
     ],
     time: 60,
     description:
@@ -1109,41 +528,17 @@ const recipesArr = [
     appliance: "Poële",
     ustensils: ["Couteau", "économe"],
   },
-  {
+  32: {
     id: 32,
     name: "Croque Monsieur à la dinde",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Pain de mie",
-        quantity: 8,
-        unit: "tranches",
-      },
-      {
-        ingredient: "Blanc de dinde",
-        quantity: 4,
-        unit: "tranches",
-      },
-      {
-        ingredient: "Emmental",
-        quantity: 8,
-        unit: "tranches",
-      },
-      {
-        ingredient: "Gruyère",
-        quantity: 100,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Lait",
-        quantity: 5,
-        unit: "cl",
-      },
-      {
-        ingredient: "Noix de muscade",
-        quantity: 1,
-        unit: "pincées",
-      },
+      { ingredient: "Pain de mie", quantity: 8, unit: "tranches" },
+      { ingredient: "Blanc de dinde", quantity: 4, unit: "tranches" },
+      { ingredient: "Emmental", quantity: 8, unit: "tranches" },
+      { ingredient: "Gruyère", quantity: 100, unit: "grammes" },
+      { ingredient: "Lait", quantity: 5, unit: "cl" },
+      { ingredient: "Noix de muscade", quantity: 1, unit: "pincées" },
     ],
     time: 20,
     description:
@@ -1151,35 +546,16 @@ const recipesArr = [
     appliance: "Four",
     ustensils: ["râpe à fromage", "cuillère à Soupe", "couteau"],
   },
-  {
+  33: {
     id: 33,
     name: "Sandwich au saumon fumé",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Pain de mie",
-        quantity: 8,
-        unit: "tranches",
-      },
-      {
-        ingredient: "Saumon Fumé",
-        quantity: 4,
-        unit: "tranches",
-      },
-      {
-        ingredient: "Feuilles de laitue",
-        quantity: 4,
-      },
-      {
-        ingredient: "Fromage blanc",
-        quantity: 4,
-        unit: "cuillères à soupe",
-      },
-      {
-        ingredient: "Jus de citron",
-        quantity: 1,
-        unit: "cuillères à soupe",
-      },
+      { ingredient: "Pain de mie", quantity: 8, unit: "tranches" },
+      { ingredient: "Saumon Fumé", quantity: 4, unit: "tranches" },
+      { ingredient: "Feuilles de laitue", quantity: 4 },
+      { ingredient: "Fromage blanc", quantity: 4, unit: "cuillères à soupe" },
+      { ingredient: "Jus de citron", quantity: 1, unit: "cuillères à soupe" },
     ],
     time: 5,
     description:
@@ -1187,28 +563,15 @@ const recipesArr = [
     appliance: "Four",
     ustensils: ["couteau", "cuillère en bois"],
   },
-  {
+  34: {
     id: 34,
     name: "Purée de patate douce",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Patate douce",
-        quantity: 800,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Crème fraîche",
-        quantity: 20,
-        unit: "cl",
-      },
-      {
-        ingredient: "Huile d'olive",
-      },
-      {
-        ingredient: "Orange",
-        quantity: 1,
-      },
+      { ingredient: "Patate douce", quantity: 800, unit: "grammes" },
+      { ingredient: "Crème fraîche", quantity: 20, unit: "cl" },
+      { ingredient: "Huile d'olive" },
+      { ingredient: "Orange", quantity: 1 },
     ],
     time: 25,
     description:
@@ -1216,39 +579,17 @@ const recipesArr = [
     appliance: "Mixer",
     ustensils: ["couteau", "économe", "cuillère en bois"],
   },
-  {
+  35: {
     id: 35,
     name: "Purée de carottes",
     servings: 2,
     ingredients: [
-      {
-        ingredient: "Carotte",
-        quantity: 6,
-      },
-      {
-        ingredient: "Pommes de terre",
-        quantity: 1,
-      },
-      {
-        ingredient: "Beurre",
-        quantity: 20,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Crème fraîche",
-        quantity: 2,
-        unit: "cuillères à soupe",
-      },
-      {
-        ingredient: "Cumin",
-        quantity: 1,
-        unit: "cuillères à café",
-      },
-      {
-        ingredient: "Noix de muscade",
-        quantity: 1,
-        unit: "pincées",
-      },
+      { ingredient: "Carotte", quantity: 6 },
+      { ingredient: "Pommes de terre", quantity: 1 },
+      { ingredient: "Beurre", quantity: 20, unit: "grammes" },
+      { ingredient: "Crème fraîche", quantity: 2, unit: "cuillères à soupe" },
+      { ingredient: "Cumin", quantity: 1, unit: "cuillères à café" },
+      { ingredient: "Noix de muscade", quantity: 1, unit: "pincées" },
     ],
     time: 25,
     description:
@@ -1256,39 +597,17 @@ const recipesArr = [
     appliance: "Mixer",
     ustensils: ["cocotte minute", "couteau", "cuillère en bois"],
   },
-  {
+  36: {
     id: 36,
     name: "Lasagne Courgettes et Chèvre",
     servings: 2,
     ingredients: [
-      {
-        ingredient: "Courgette",
-        quantity: 2,
-      },
-      {
-        ingredient: "Fromage de chèvre",
-        quantity: 4,
-      },
-      {
-        ingredient: "Lait",
-        quantity: 25,
-        unit: "cl",
-      },
-      {
-        ingredient: "Lasagnes",
-        quantity: 5,
-        unit: "feuilles",
-      },
-      {
-        ingredient: "Gruyère",
-        quantity: 40,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Maïzena",
-        quantity: 1,
-        unit: "cuillères à soupe",
-      },
+      { ingredient: "Courgette", quantity: 2 },
+      { ingredient: "Fromage de chèvre", quantity: 4 },
+      { ingredient: "Lait", quantity: 25, unit: "cl" },
+      { ingredient: "Lasagnes", quantity: 5, unit: "feuilles" },
+      { ingredient: "Gruyère", quantity: 40, unit: "grammes" },
+      { ingredient: "Maïzena", quantity: 1, unit: "cuillères à soupe" },
     ],
     time: 35,
     description:
@@ -1296,39 +615,17 @@ const recipesArr = [
     appliance: "Four",
     ustensils: ["plat à gratin", "râpe à fromage", "fouet"],
   },
-  {
+  37: {
     id: 37,
     name: "Courgettes farcies au boeuf",
     servings: 2,
     ingredients: [
-      {
-        ingredient: "Courgette",
-        quantity: 2,
-      },
-      {
-        ingredient: "Viande hachée",
-        quantity: 600,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Huile d'olives",
-        quantity: 25,
-        unit: "cl",
-      },
-      {
-        ingredient: "Oignon",
-        quantity: 1,
-      },
-      {
-        ingredient: "Coulis de tomates",
-        quantity: 20,
-        unit: "cl",
-      },
-      {
-        ingredient: "Gruyère",
-        quantity: 50,
-        unit: "grammes",
-      },
+      { ingredient: "Courgette", quantity: 2 },
+      { ingredient: "Viande hachée", quantity: 600, unit: "grammes" },
+      { ingredient: "Huile d'olives", quantity: 25, unit: "cl" },
+      { ingredient: "Oignon", quantity: 1 },
+      { ingredient: "Coulis de tomates", quantity: 20, unit: "cl" },
+      { ingredient: "Gruyère", quantity: 50, unit: "grammes" },
     ],
     time: 60,
     description:
@@ -1336,60 +633,30 @@ const recipesArr = [
     appliance: "Four",
     ustensils: ["couteau", "cuillère en bois", "Poelle à frire"],
   },
-  {
+  38: {
     id: 38,
     name: "Pain Perdu",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Pain",
-        quantity: 6,
-        unit: "tranches",
-      },
-      {
-        ingredient: "Lait",
-        quantity: 25,
-        unit: "cl",
-      },
-      {
-        ingredient: "Oeuf",
-        quantity: 3,
-      },
-      {
-        ingredient: "Sucre roux",
-        quantity: 75,
-        unit: "grammes",
-      },
+      { ingredient: "Pain", quantity: 6, unit: "tranches" },
+      { ingredient: "Lait", quantity: 25, unit: "cl" },
+      { ingredient: "Oeuf", quantity: 3 },
+      { ingredient: "Sucre roux", quantity: 75, unit: "grammes" },
     ],
     time: 20,
     description: "Fouettez les oeufs, le sucre et le lait. tremper les tranches de pain. Le cuire au four pendant environ 10 minutes à 180°. Servir",
     appliance: "Four",
     ustensils: ["fouet", "bol", "Cuillère à Soupe"],
   },
-  {
+  39: {
     id: 39,
     name: "Crumble aux pommes",
     servings: 40,
     ingredients: [
-      {
-        ingredient: "Pomme",
-        quantity: 2,
-      },
-      {
-        ingredient: "Farine",
-        quantity: 100,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Beurre",
-        quantity: 50,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Sucre roux",
-        quantity: 80,
-        unit: "grammes",
-      },
+      { ingredient: "Pomme", quantity: 2 },
+      { ingredient: "Farine", quantity: 100, unit: "grammes" },
+      { ingredient: "Beurre", quantity: 50, unit: "grammes" },
+      { ingredient: "Sucre roux", quantity: 80, unit: "grammes" },
     ],
     time: 40,
     description:
@@ -1397,55 +664,29 @@ const recipesArr = [
     appliance: "Four",
     ustensils: ["saladier", "couteau", "fouet"],
   },
-  {
+  40: {
     id: 40,
     name: "Limonade",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Eau",
-        quantity: 1,
-        unit: "Litres",
-      },
-      {
-        ingredient: "Citron Vert",
-        quantity: 3,
-      },
-      {
-        ingredient: "Sucre en poudre",
-        quantity: 4,
-        unit: "cuillères à café",
-      },
-      {
-        ingredient: "Bicarbonate",
-        quantity: 1,
-        unit: "cuillères à café",
-      },
+      { ingredient: "Eau", quantity: 1, unit: "Litres" },
+      { ingredient: "Citron Vert", quantity: 3 },
+      { ingredient: "Sucre en poudre", quantity: 4, unit: "cuillères à café" },
+      { ingredient: "Bicarbonate", quantity: 1, unit: "cuillères à café" },
     ],
     time: 10,
     description: "Dans un saladier mettre l'eau, le jus des cirtons et le sucre. Bien mélanger. Ajouter le bicarbonate. Servir. Ajouter des glaçon et une feuille de menthe pour la déco.",
     appliance: "Saladier",
     ustensils: ["cuillère en bois"],
   },
-  {
+  41: {
     id: 41,
     name: "Mousse au chocolat",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Oeuf",
-        quantity: 3,
-      },
-      {
-        ingredient: "Chocolat noir",
-        quantity: 100,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Sucre vanillé",
-        quantity: 1,
-        unit: "sachets",
-      },
+      { ingredient: "Oeuf", quantity: 3 },
+      { ingredient: "Chocolat noir", quantity: 100, unit: "grammes" },
+      { ingredient: "Sucre vanillé", quantity: 1, unit: "sachets" },
     ],
     time: 20,
     description:
@@ -1453,29 +694,15 @@ const recipesArr = [
     appliance: "Casserolle",
     ustensils: ["fouet", "spatule", "verres"],
   },
-  {
+  42: {
     id: 42,
     name: "Charlotte au poires",
     servings: 3,
     ingredients: [
-      {
-        ingredient: "Chocolat",
-        quantity: 200,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Oeuf",
-        quantity: 3,
-      },
-      {
-        ingredient: "Poires au jus",
-        quantity: 0.5,
-        unit: "boites",
-      },
-      {
-        ingredient: "Boudoirs",
-        quantity: 15,
-      },
+      { ingredient: "Chocolat", quantity: 200, unit: "grammes" },
+      { ingredient: "Oeuf", quantity: 3 },
+      { ingredient: "Poires au jus", quantity: 0.5, unit: "boites" },
+      { ingredient: "Boudoirs", quantity: 15 },
     ],
     time: 60,
     description:
@@ -1483,33 +710,16 @@ const recipesArr = [
     appliance: "Moule à charlotte",
     ustensils: ["saladier", "couteau", "fouet"],
   },
-  {
+  43: {
     id: 43,
     name: "Tarte au citron",
     servings: 6,
     ingredients: [
-      {
-        ingredient: "Pâte brisée",
-        quantity: 200,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Sucre",
-        quantity: 150,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Beurre fondu",
-        quantity: 100,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Oeuf",
-        quantity: 3,
-      },
-      {
-        ingredient: "Citron",
-      },
+      { ingredient: "Pâte brisée", quantity: 200, unit: "grammes" },
+      { ingredient: "Sucre", quantity: 150, unit: "grammes" },
+      { ingredient: "Beurre fondu", quantity: 100, unit: "grammes" },
+      { ingredient: "Oeuf", quantity: 3 },
+      { ingredient: "Citron" },
     ],
     time: 50,
     description:
@@ -1517,36 +727,16 @@ const recipesArr = [
     appliance: "Four",
     ustensils: ["rouleau à patisserie", "moule à tarte", "presse citron"],
   },
-  {
+  44: {
     id: 44,
     name: "Crème déssert au chocolat",
     servings: 6,
     ingredients: [
-      {
-        ingredient: "Lait",
-        quantity: 1,
-        unit: "litres",
-      },
-      {
-        ingredient: "Chocolat",
-        quantity: 200,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Sucre",
-        quantity: 100,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Beurre",
-        quantity: 50,
-        unit: "grammes",
-      },
-      {
-        ingredient: "farine",
-        quantity: 40,
-        unit: "grammes",
-      },
+      { ingredient: "Lait", quantity: 1, unit: "litres" },
+      { ingredient: "Chocolat", quantity: 200, unit: "grammes" },
+      { ingredient: "Sucre", quantity: 100, unit: "grammes" },
+      { ingredient: "Beurre", quantity: 50, unit: "grammes" },
+      { ingredient: "farine", quantity: 40, unit: "grammes" },
     ],
     time: 15,
     description:
@@ -1554,30 +744,15 @@ const recipesArr = [
     appliance: "Casserolle",
     ustensils: ["cuillère en bois"],
   },
-  {
+  45: {
     id: 45,
     name: "Crème patissière",
     servings: 8,
     ingredients: [
-      {
-        ingredient: "Lait",
-        quantity: 50,
-        unit: "cl",
-      },
-      {
-        ingredient: "Oeuf",
-        quantity: 2,
-      },
-      {
-        ingredient: "Farine",
-        quantity: 30,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Sucre",
-        quantity: 80,
-        unit: "grammes",
-      },
+      { ingredient: "Lait", quantity: 50, unit: "cl" },
+      { ingredient: "Oeuf", quantity: 2 },
+      { ingredient: "Farine", quantity: 30, unit: "grammes" },
+      { ingredient: "Sucre", quantity: 80, unit: "grammes" },
     ],
     time: 30,
     description:
@@ -1585,40 +760,17 @@ const recipesArr = [
     appliance: "Casserolle",
     ustensils: ["fouet", "saladier"],
   },
-  {
+  46: {
     id: 46,
     name: "Far breton",
     servings: 6,
     ingredients: [
-      {
-        ingredient: "Farine",
-        quantity: 250,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Sucre",
-        quantity: 150,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Sucre vanillé",
-        quantity: 1,
-        unit: "sachets",
-      },
-      {
-        ingredient: "Oeuf",
-        quantity: 4,
-      },
-      {
-        ingredient: "Lait",
-        quantity: 1,
-        unit: "litre",
-      },
-      {
-        ingredient: "Pruneaux",
-        quantity: 100,
-        unit: "grammes",
-      },
+      { ingredient: "Farine", quantity: 250, unit: "grammes" },
+      { ingredient: "Sucre", quantity: 150, unit: "grammes" },
+      { ingredient: "Sucre vanillé", quantity: 1, unit: "sachets" },
+      { ingredient: "Oeuf", quantity: 4 },
+      { ingredient: "Lait", quantity: 1, unit: "litre" },
+      { ingredient: "Pruneaux", quantity: 100, unit: "grammes" },
     ],
     time: 60,
     description:
@@ -1626,134 +778,63 @@ const recipesArr = [
     appliance: "Four",
     ustensils: ["fouet", "moule", "verres"],
   },
-  {
+  47: {
     id: 47,
     name: "Mousse au citron",
     servings: 6,
     ingredients: [
-      {
-        ingredient: "Jus de citron",
-        quantity: 100,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Mascarpone",
-        quantity: 250,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Sucre",
-        quantity: 100,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Crème Fraîche",
-        quantity: 20,
-        unit: "cl",
-      },
+      { ingredient: "Jus de citron", quantity: 100, unit: "grammes" },
+      { ingredient: "Mascarpone", quantity: 250, unit: "grammes" },
+      { ingredient: "Sucre", quantity: 100, unit: "grammes" },
+      { ingredient: "Crème Fraîche", quantity: 20, unit: "cl" },
     ],
     time: 5,
     description: "Mélanger le jus de citron avec le sucre et la mascarpone. Ajouter la crème fraiche. Mélanger le tout et mettre au congélateur pendant 1 heure. Servir",
     appliance: "Saladier",
     ustensils: ["fouet", "verres", "cuillère en bois"],
   },
-  {
+  48: {
     id: 48,
     name: "Pizza",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Pâte à pizza",
-        quantity: 1,
-      },
-      {
-        ingredient: "Tomates pelées",
-        quantity: 1,
-        unit: "boites",
-      },
-      {
-        ingredient: "Lardons",
-        quantity: 1,
-        unit: "barquettes",
-      },
-      {
-        ingredient: "Champignons de paris",
-        quantity: 1,
-        unit: "boites",
-      },
-      {
-        ingredient: "Gruyère",
-        quantity: 200,
-        unit: "grammes",
-      },
+      { ingredient: "Pâte à pizza", quantity: 1 },
+      { ingredient: "Tomates pelées", quantity: 1, unit: "boites" },
+      { ingredient: "Lardons", quantity: 1, unit: "barquettes" },
+      { ingredient: "Champignons de paris", quantity: 1, unit: "boites" },
+      { ingredient: "Gruyère", quantity: 200, unit: "grammes" },
     ],
     time: 40,
     description: "Étaler la pate a pizza. Ecraser les tomates pelées, les étaler sur la pâte, ajouter les lardons et les champignons. Ajouter le gruyère eet passer au four à 220° durant 20 minutes",
     appliance: "Four",
     ustensils: ["rouleau à patisserie", "râpe à fromage", "couteau"],
   },
-  {
+  49: {
     id: 49,
     name: "Smoothie tropical",
     servings: 4,
     ingredients: [
-      {
-        ingredient: "Bananes",
-        quantity: 2,
-      },
-      {
-        ingredient: "Kiwis",
-        quantity: 3,
-      },
-      {
-        ingredient: "Mangue",
-        quantity: 1,
-      },
-      {
-        ingredient: "Ananas",
-        quantity: 4,
-        unit: "tranches",
-      },
-      {
-        ingredient: "Miel",
-        quantity: 2,
-        unit: "cuillères à soupe",
-      },
+      { ingredient: "Bananes", quantity: 2 },
+      { ingredient: "Kiwis", quantity: 3 },
+      { ingredient: "Mangue", quantity: 1 },
+      { ingredient: "Ananas", quantity: 4, unit: "tranches" },
+      { ingredient: "Miel", quantity: 2, unit: "cuillères à soupe" },
     ],
     time: 0,
     description: "Découper les fruits. Le passer au blender jusqu'à obtenir une texture liquide. Mettre au frais. Servir",
     appliance: "Blender",
     ustensils: ["couteau", "verres"],
   },
-  {
+  50: {
     id: 50,
     name: "Frangipane",
     servings: 2,
     ingredients: [
-      {
-        ingredient: "Pâte feuilletée",
-        quantity: 400,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Oeuf",
-        quantity: 6,
-      },
-      {
-        ingredient: "Poudre d'amendes",
-        quantity: 500,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Beurre",
-        quantity: 500,
-        unit: "grammes",
-      },
-      {
-        ingredient: "Sucre glace",
-        quantity: 500,
-        unit: "grammes",
-      },
+      { ingredient: "Pâte feuilletée", quantity: 400, unit: "grammes" },
+      { ingredient: "Oeuf", quantity: 6 },
+      { ingredient: "Poudre d'amendes", quantity: 500, unit: "grammes" },
+      { ingredient: "Beurre", quantity: 500, unit: "grammes" },
+      { ingredient: "Sucre glace", quantity: 500, unit: "grammes" },
     ],
     time: 60,
     description:
@@ -1761,67 +842,6 @@ const recipesArr = [
     appliance: "Four",
     ustensils: ["rouleau à patisserie", "fouet"],
   },
-]
-
-// REFORMAT DATA STRUCTURE
-
-const formatRecipes = (recipes, key) => {
-  return recipes.reduce((obj, item) => {
-    obj[item[key]] = item
-    return obj
-  }, {})
 }
 
-// CREATE INDEX
-const createRecipesIndex = recipes => {
-  const recipesIndex = { names: {}, ingredients: {}, appliance: {}, ustensils: {} }
-  const { names, ingredients, appliance, ustensils } = recipesIndex
-  for (let i = 1; i < Object.keys(recipes).length; i++) {
-    // fill corresponding index
-    const pushIndex = (wordArr, property) => {
-      wordArr.forEach(word => {
-        if (word.length < 3) return
-        if (property[word]) {
-          property[word].push(recipes[i].id)
-          return
-        }
-        property[word] = [recipes[i].id]
-      })
-    }
-
-    // loop through names
-    const namesArr = recipes[i].name
-      .toLowerCase()
-      .split(" ")
-      .filter(word => word.length > 2)
-
-    pushIndex(namesArr, names)
-
-    // loop through ingredients
-    const ingredientsArr = recipes[i].ingredients.flatMap(element => {
-      return element.ingredient.toLowerCase()
-    })
-
-    pushIndex(ingredientsArr, ingredients)
-
-    // loop through appliances
-    const appliancesArr = [recipes[i].appliance.toLowerCase()]
-
-    pushIndex(appliancesArr, appliance)
-
-    // loop through ustensils
-    const ustensilsArr = recipes[i].ustensils.flatMap(ustensil => {
-      return ustensil.toLowerCase()
-    })
-
-    pushIndex(ustensilsArr, ustensils)
-  }
-
-  return recipesIndex
-}
-
-const recipes = formatRecipes(recipesArr, "id")
-const recipesIds = Object.keys(recipes)
-const recipesIndex = createRecipesIndex(recipes)
-
-export { recipes, recipesIds, recipesIndex }
+export default recipes

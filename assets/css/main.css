@@ -115,15 +115,15 @@ body {
   line-height: 1.05rem;
 }
 
-.filter-list__item-ingredients {
+.filter-list__item-ingredient {
   background-color: var(--cl-ingredient);
 }
 
-.filter-list__item-appliances {
+.filter-list__item-appliance {
   background-color: var(--cl-appliance);
 }
 
-.filter-list__item-ustensils {
+.filter-list__item-ustensil {
   background-color: var(--cl-ustensil);
 }
 

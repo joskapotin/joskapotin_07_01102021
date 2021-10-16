@@ -1,3 +1,5 @@
+const fs = require("fs")
+
 const recipesArr = [
   {
     id: 1,
@@ -1772,7 +1774,6 @@ const formatRecipes = (recipes, key) => {
   }, {})
 }
 
-// CREATE INDEX
 const createRecipesIndex = recipes => {
   const recipesIndex = { names: {}, ingredients: {}, appliance: {}, ustensils: {} }
   const { names, ingredients, appliance, ustensils } = recipesIndex
@@ -1820,8 +1821,23 @@ const createRecipesIndex = recipes => {
   return recipesIndex
 }
 
-const recipes = formatRecipes(recipesArr, "id")
-const recipesIds = Object.keys(recipes)
-const recipesIndex = createRecipesIndex(recipes)
+const recipes = JSON.stringify(formatRecipes(recipesArr, "id"))
 
-export { recipes, recipesIds, recipesIndex }
+fs.writeFile("recipesObj.js", recipes, error => {
+  if (error) throw error
+  console.log("fichier créé")
+})
+
+const recipesIds = JSON.stringify(Object.keys(formatRecipes(recipesArr, "id")))
+
+fs.writeFile("recipesIds.js", recipesIds, error => {
+  if (error) throw error
+  console.log("fichier créé")
+})
+
+const recipesIndex = JSON.stringify(createRecipesIndex(formatRecipes(recipesArr, "id")))
+
+fs.writeFile("recipesIndex.js", recipesIndex, error => {
+  if (error) throw error
+  console.log("fichier créé")
+})

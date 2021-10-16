@@ -1,4 +1,4 @@
-const recipesArr = [
+const recipes = [
   {
     id: 1,
     name: "Limonade de Coco",
@@ -1763,65 +1763,4 @@ const recipesArr = [
   },
 ]
 
-// REFORMAT DATA STRUCTURE
-
-const formatRecipes = (recipes, key) => {
-  return recipes.reduce((obj, item) => {
-    obj[item[key]] = item
-    return obj
-  }, {})
-}
-
-// CREATE INDEX
-const createRecipesIndex = recipes => {
-  const recipesIndex = { names: {}, ingredients: {}, appliance: {}, ustensils: {} }
-  const { names, ingredients, appliance, ustensils } = recipesIndex
-  for (let i = 1; i < Object.keys(recipes).length; i++) {
-    // fill corresponding index
-    const pushIndex = (wordArr, property) => {
-      wordArr.forEach(word => {
-        if (word.length < 3) return
-        if (property[word]) {
-          property[word].push(recipes[i].id)
-          return
-        }
-        property[word] = [recipes[i].id]
-      })
-    }
-
-    // loop through names
-    const namesArr = recipes[i].name
-      .toLowerCase()
-      .split(" ")
-      .filter(word => word.length > 2)
-
-    pushIndex(namesArr, names)
-
-    // loop through ingredients
-    const ingredientsArr = recipes[i].ingredients.flatMap(element => {
-      return element.ingredient.toLowerCase()
-    })
-
-    pushIndex(ingredientsArr, ingredients)
-
-    // loop through appliances
-    const appliancesArr = [recipes[i].appliance.toLowerCase()]
-
-    pushIndex(appliancesArr, appliance)
-
-    // loop through ustensils
-    const ustensilsArr = recipes[i].ustensils.flatMap(ustensil => {
-      return ustensil.toLowerCase()
-    })
-
-    pushIndex(ustensilsArr, ustensils)
-  }
-
-  return recipesIndex
-}
-
-const recipes = formatRecipes(recipesArr, "id")
-const recipesIds = Object.keys(recipes)
-const recipesIndex = createRecipesIndex(recipes)
-
-export { recipes, recipesIds, recipesIndex }
+export default recipes

@@ -1,17 +1,17 @@
 /**
  * Create dropdown menus
- * @param {{tags: string[], tagType: string}}
+ * @param {{filterTerms: string[], filterCat: string}}
  * @returns {HTMLElement} dropdown menu
  */
-const uiDropdownMenu = ({ tags, tagType }) => {
+const uiDropdownMenu = ({ filterTerms, filterCat }) => {
   const uiDropdownList = document.createElement("ul")
   uiDropdownList.classList.add("dropdown-menu")
 
-  tags.forEach(tag => {
+  filterTerms.forEach(filterTerm => {
     const uiDropdownItem = document.createElement("li")
     uiDropdownItem.classList.add("dropdown-menu__item")
-    uiDropdownItem.textContent = tag
-    uiDropdownItem.dataset.type = tagType
+    uiDropdownItem.textContent = filterTerm
+    uiDropdownItem.dataset.type = filterCat
     uiDropdownList.appendChild(uiDropdownItem)
   })
 

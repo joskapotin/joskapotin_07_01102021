@@ -44,9 +44,9 @@ const getUstensils = recipes => {
 }
 
 // populate secondary search menus
-const populateSecondaryMenu = ({ uiMenu, tags, tagType }) => {
+const populateSecondaryMenu = ({ uiMenu, filterTerms, filterCat }) => {
   uiMenu.querySelector(".dropdown-menu")?.remove()
-  uiMenu.appendChild(uiDropdownMenu({ tags: tags, tagType: tagType }))
+  uiMenu.appendChild(uiDropdownMenu({ filterTerms, filterCat }))
 }
 
 // populate filters list
@@ -67,48 +67,53 @@ const populateRecipesList = recipes => {
 // RENDER HTML
 const render = (matchRecipes = recipes) => {
   matchRecipes = matchRecipes.sort((a, b) => a.name.localeCompare(b.name))
-  populateSecondaryMenu({ uiMenu: uiIngredientsMenu, tags: getIngredients(matchRecipes), tagType: "ingredients" })
-  populateSecondaryMenu({ uiMenu: uiAppliancesMenu, tags: getAppliances(matchRecipes), tagType: "appliances" })
-  populateSecondaryMenu({ uiMenu: uiUstensilsMenu, tags: getUstensils(matchRecipes), tagType: "ustensils" })
+  populateSecondaryMenu({ uiMenu: uiIngredientsMenu, filterTerms: getIngredients(matchRecipes), filterCat: "ingredients" })
+  populateSecondaryMenu({ uiMenu: uiAppliancesMenu, filterTerms: getAppliances(matchRecipes), filterCat: "appliances" })
+  populateSecondaryMenu({ uiMenu: uiUstensilsMenu, filterTerms: getUstensils(matchRecipes), filterCat: "ustensils" })
   populateRecipesList(matchRecipes)
 }
 
 // TESTS
-const isName = ({ tag, recipe }) => recipe.name.toLowerCase().includes(tag.toLowerCase())
+const isName = ({ filterTerm, recipe }) => recipe.name.toLowerCase().includes(filterTerm.toLowerCase())
 
-const isIngredient = ({ tag, recipe }) => recipe.ingredients.some(ingredients => ingredients.ingredient.toLowerCase().includes(tag.toLowerCase()))
+const isIngredient = ({ filterTerm, recipe }) => recipe.ingredients.some(ingredients => ingredients.ingredient.toLowerCase().includes(filterTerm.toLowerCase()))
 
-const isAppliance = ({ tag, recipe }) => recipe.appliance.toLowerCase().includes(tag.toLowerCase())
+const isAppliance = ({ filterTerm, recipe }) => recipe.appliance.toLowerCase().includes(filterTerm.toLowerCase())
 
-const isUstensil = ({ tag, recipe }) => recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(tag.toLowerCase()))
+const isUstensil = ({ filterTerm, recipe }) => recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(filterTerm.toLowerCase()))
 
-const isDescription = ({ tag, recipe }) => recipe.description.toLowerCase().includes(tag.toLowerCase())
+const isDescription = ({ filterTerm, recipe }) => recipe.description.toLowerCase().includes(filterTerm.toLowerCase())
 
 // SEARCH
 
 /**
  * Search recipes
- * @param {string} tagType
+ * @param {string} filterCat
  * @returns {string[]} ids of recipe to remove from the list
  */
-const searchRecipes = tagType => {
-  const tags = Object.values(filters[tagType])
+const searchRecipes = filterCat => {
+  const filterTerms = Object.values(filters[filterCat])
 
-  const discardedRecipesIds = tags.reduce((ids, tag) => {
-    if (localStorage.getItem(`${tagType}-${tag}`)) {
-      ids = [...JSON.parse(localStorage.getItem(`${tagType}-${tag}`))]
+  const discardedRecipesIds = filterTerms.reduce((ids, filterTerm) => {
+    if (localStorage.getItem(`${filterCat}-${filterTerm}`)) {
+      ids = [...ids, ...JSON.parse(localStorage.getItem(`${filterCat}-${filterTerm}`))]
     } else {
-      ids = recipes.reduce((ids, recipe) => {
-        if (tagType === "main" && !isName({ tag: tag, recipe: recipe }) && !isIngredient({ tag: tag, recipe: recipe }) && !isDescription({ tag: tag, recipe: recipe })) ids.push(recipe.id)
-        if (tagType === "ingredients" && !isIngredient({ tag: tag, recipe: recipe })) ids.push(recipe.id)
-        if (tagType === "appliances" && !isAppliance({ tag: tag, recipe: recipe })) ids.push(recipe.id)
-        if (tagType === "ustensils" && !isUstensil({ tag: tag, recipe: recipe })) ids.push(recipe.id)
-        return ids
+      const idsFounded = recipes.reduce((idsByfilterCat, recipe) => {
+        if (filterCat === "main" && !isName({ filterTerm, recipe }) && !isIngredient({ filterTerm, recipe }) && !isDescription({ filterTerm, recipe })) idsByfilterCat.push(recipe.id)
+        if (filterCat === "ingredients" && !isIngredient({ filterTerm, recipe })) idsByfilterCat.push(recipe.id)
+        if (filterCat === "appliances" && !isAppliance({ filterTerm, recipe })) idsByfilterCat.push(recipe.id)
+        if (filterCat === "ustensils" && !isUstensil({ filterTerm, recipe })) idsByfilterCat.push(recipe.id)
+        return idsByfilterCat
       }, [])
-      localStorage.setItem(`${tagType}-${tag}`, JSON.stringify(ids))
+
+      ids = [...new Set([...ids, ...idsFounded])]
+      localStorage.setItem(`${filterCat}-${filterTerm}`, JSON.stringify(ids))
     }
     return ids
   }, [])
+
+  // console.log("discardedRecipesIds", discardedRecipesIds)
+  // console.log("New set discardedRecipesIds", [...new Set(discardedRecipesIds)])
 
   return [...new Set(discardedRecipesIds)]
 }
@@ -119,7 +124,9 @@ const updateRecipesList = () => {
   if (filters.main.length === 0 && filters.ingredients.length === 0 && filters.appliances.length === 0 && filters.ustensils.length === 0) return render()
 
   // create an array of match recipes
-  const discardedRecipesIds = Object.keys(filters).flatMap(tagType => searchRecipes(tagType))
+  const discardedRecipesIds = Object.keys(filters)
+    .filter(filterCat => filters[filterCat].length > 0)
+    .flatMap(filterCat => searchRecipes(filterCat))
 
   /**
    * Create list of match recipes
@@ -142,22 +149,22 @@ uiSearchPrimary.addEventListener("input", e => {
   updateRecipesList()
 })
 
-// handle tags search
+// handle filterTerms search
 document.addEventListener("click", e => {
   const iSenuItem = e.target.matches(".dropdown-menu__item")
   const isFilterItem = e.target.matches(".filter-list__item")
 
   if (!iSenuItem && !isFilterItem) return
 
-  const tag = e.target.textContent
+  const filterTerm = e.target.textContent
   const type = e.target.dataset.type
 
   // update filters object
   if (isFilterItem) {
-    const tagIndex = filters[type].indexOf(tag)
-    filters[type].splice(tagIndex, 1)
-  } else if (!filters[type].some(elem => elem === tag)) {
-    filters[type].push(tag)
+    const filterTermIndex = filters[type].indexOf(filterTerm)
+    filters[type].splice(filterTermIndex, 1)
+  } else if (!filters[type].some(elem => elem === filterTerm)) {
+    filters[type].push(filterTerm)
   }
 
   populateFiltersList()

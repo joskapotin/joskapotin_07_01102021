@@ -1,3 +1,8 @@
+/**
+ *  Create recipe card
+ * @param {string|Object[]|string|string} recipe info
+ * @returns {HTMLElement}
+ */
 const uiRecipe = ({ name, ingredients, time, description }) => {
   const uiRecipe = document.createElement("article")
   uiRecipe.classList.add("card")

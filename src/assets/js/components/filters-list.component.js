@@ -1,19 +1,19 @@
 /**
- *
- * @param {Object} filters
- * @returns {HTMLElement}
+ *  Create the filter / tag bar
+ * @param {{main: string[], ingredients: string[], appliances: string[], ustensils: string[]}} filters
+ * @returns {HTMLElement} tag bar
  */
 const uiFiltersList = filters => {
   const uiFiltersList = document.createElement("ul")
   uiFiltersList.classList.add("container", "filters-list")
 
-  for (const [key, values] of Object.entries(filters)) {
-    if (key !== "main") {
-      values.forEach(value => {
+  for (const [tagType, tags] of Object.entries(filters)) {
+    if (tagType !== "main") {
+      tags.forEach(tag => {
         const uiListItem = document.createElement("li")
-        uiListItem.classList.add("filter-list__item", `filter-list__item-${key}`)
-        uiListItem.textContent = value
-        uiListItem.dataset.type = key
+        uiListItem.classList.add("filter-list__item", `filter-list__item-${tagType}`)
+        uiListItem.textContent = tag
+        uiListItem.dataset.type = tagType
         uiFiltersList.appendChild(uiListItem)
       })
     }

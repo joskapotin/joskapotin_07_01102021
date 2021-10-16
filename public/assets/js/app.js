@@ -44,9 +44,9 @@ const getUstensils = recipes => {
 }
 
 // populate secondary search menus
-const populateSecondaryMenu = ({ uiMenu, elements, elementsType }) => {
+const populateSecondaryMenu = ({ uiMenu, tags, tagType }) => {
   uiMenu.querySelector(".dropdown-menu")?.remove()
-  uiMenu.appendChild(uiDropdownMenu(elements, elementsType))
+  uiMenu.appendChild(uiDropdownMenu({ tags: tags, tagType: tagType }))
 }
 
 // populate filters list
@@ -67,9 +67,9 @@ const populateRecipesList = recipes => {
 // RENDER HTML
 const render = (matchRecipes = recipes) => {
   matchRecipes = matchRecipes.sort((a, b) => a.name.localeCompare(b.name))
-  populateSecondaryMenu({ uiMenu: uiIngredientsMenu, elements: getIngredients(matchRecipes), elementsType: "ingredients" })
-  populateSecondaryMenu({ uiMenu: uiAppliancesMenu, elements: getAppliances(matchRecipes), elementsType: "appliances" })
-  populateSecondaryMenu({ uiMenu: uiUstensilsMenu, elements: getUstensils(matchRecipes), elementsType: "ustensils" })
+  populateSecondaryMenu({ uiMenu: uiIngredientsMenu, tags: getIngredients(matchRecipes), tagType: "ingredients" })
+  populateSecondaryMenu({ uiMenu: uiAppliancesMenu, tags: getAppliances(matchRecipes), tagType: "appliances" })
+  populateSecondaryMenu({ uiMenu: uiUstensilsMenu, tags: getUstensils(matchRecipes), tagType: "ustensils" })
   populateRecipesList(matchRecipes)
 }
 
@@ -86,6 +86,11 @@ const isDescription = ({ tag, recipe }) => recipe.description.toLowerCase().incl
 
 // SEARCH
 
+/**
+ * Search recipes
+ * @param {string} tagType
+ * @returns {string[]} ids of recipe to remove from the list
+ */
 const searchRecipes = tagType => {
   const tags = Object.values(filters[tagType])
 

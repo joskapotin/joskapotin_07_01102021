@@ -88,42 +88,41 @@ const isDescription = ({ tag, recipe }) => recipe.description.toLowerCase().incl
 
 const searchRecipes = tagType => {
   const tags = Object.values(filters[tagType])
-  let ids = []
 
-  tags.forEach(tag => {
+  const discardedRecipesIds = tags.reduce((ids, tag) => {
     if (localStorage.getItem(`${tagType}-${tag}`)) {
       ids = [...JSON.parse(localStorage.getItem(`${tagType}-${tag}`))]
     } else {
-      recipes.forEach(recipe => {
+      ids = recipes.reduce((ids, recipe) => {
         if (tagType === "main" && !isName({ tag: tag, recipe: recipe }) && !isIngredient({ tag: tag, recipe: recipe }) && !isDescription({ tag: tag, recipe: recipe })) ids.push(recipe.id)
-        else if (tagType === "ingredients" && !isIngredient({ tag: tag, recipe: recipe })) ids.push(recipe.id)
-        else if (tagType === "appliances" && !isAppliance({ tag: tag, recipe: recipe })) ids.push(recipe.id)
-        else if (tagType === "ustensils" && !isUstensil({ tag: tag, recipe: recipe })) ids.push(recipe.id)
-      })
-
+        if (tagType === "ingredients" && !isIngredient({ tag: tag, recipe: recipe })) ids.push(recipe.id)
+        if (tagType === "appliances" && !isAppliance({ tag: tag, recipe: recipe })) ids.push(recipe.id)
+        if (tagType === "ustensils" && !isUstensil({ tag: tag, recipe: recipe })) ids.push(recipe.id)
+        return ids
+      }, [])
       localStorage.setItem(`${tagType}-${tag}`, JSON.stringify(ids))
     }
-  })
+    return ids
+  }, [])
 
-  return [...new Set(ids)]
+  return [...new Set(discardedRecipesIds)]
 }
 
 // UPDATE RECIPES LIST
 const updateRecipesList = () => {
-  // first reset recipes list
-  const matchRecipes = [...recipes]
+  // If theres is no search or filter render default view
+  if (filters.main.length === 0 && filters.ingredients.length === 0 && filters.appliances.length === 0 && filters.ustensils.length === 0) return render()
 
-  // create à list of ids to remove from the list of recipes
+  // create an array of match recipes
+  const discardedRecipesIds = Object.keys(filters).flatMap(tagType => searchRecipes(tagType))
 
-  const recipesIds = Object.keys(filters).flatMap(tagType => searchRecipes(tagType))
-
-  console.log(recipesIds)
-
-  // remove recipes by id
-  recipesIds.forEach(id => {
-    const index = matchRecipes.findIndex(recipe => recipe.id === id)
-    matchRecipes.splice(index, 1)
-  })
+  /**
+   * Create list of match recipes
+   */
+  const matchRecipes = recipes.reduce((recipes, recipe) => {
+    if (!discardedRecipesIds.includes(recipe.id)) recipes.push(recipe)
+    return recipes
+  }, [])
 
   // render view
   render(matchRecipes)

@@ -88,7 +88,6 @@ const isDescription = ({ tag, recipe }) => recipe.description.toLowerCase().incl
 
 const searchRecipes = tagType => {
   const tags = Object.values(filters[tagType])
-  if (tags.length === 0) return
   let ids = []
 
   tags.forEach(tag => {
@@ -117,6 +116,8 @@ const updateRecipesList = () => {
   // create à list of ids to remove from the list of recipes
 
   const recipesIds = Object.keys(filters).flatMap(tagType => searchRecipes(tagType))
+
+  console.log(recipesIds)
 
   // remove recipes by id
   recipesIds.forEach(id => {

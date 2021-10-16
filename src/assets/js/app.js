@@ -44,7 +44,7 @@ const getUstensils = recipes => {
 }
 
 // populate secondary search menus
-const populateSecondaryMenu = (uiMenu, elements, elementsType) => {
+const populateSecondaryMenu = ({ uiMenu, elements, elementsType }) => {
   uiMenu.querySelector(".dropdown-menu")?.remove()
   uiMenu.appendChild(uiDropdownMenu(elements, elementsType))
 }
@@ -67,85 +67,47 @@ const populateRecipesList = recipes => {
 // RENDER HTML
 const render = (matchRecipes = recipes) => {
   matchRecipes = matchRecipes.sort((a, b) => a.name.localeCompare(b.name))
-  populateSecondaryMenu(uiIngredientsMenu, getIngredients(matchRecipes), "ingredients")
-  populateSecondaryMenu(uiAppliancesMenu, getAppliances(matchRecipes), "appliances")
-  populateSecondaryMenu(uiUstensilsMenu, getUstensils(matchRecipes), "ustensils")
+  populateSecondaryMenu({ uiMenu: uiIngredientsMenu, elements: getIngredients(matchRecipes), elementsType: "ingredients" })
+  populateSecondaryMenu({ uiMenu: uiAppliancesMenu, elements: getAppliances(matchRecipes), elementsType: "appliances" })
+  populateSecondaryMenu({ uiMenu: uiUstensilsMenu, elements: getUstensils(matchRecipes), elementsType: "ustensils" })
   populateRecipesList(matchRecipes)
 }
 
 // TESTS
-const isName = (term, recipe) => {
-  return recipe.name.toLowerCase().includes(term.toLowerCase())
-}
+const isName = ({ tag, recipe }) => recipe.name.toLowerCase().includes(tag.toLowerCase())
 
-const isIngredient = (term, recipe) => {
-  return recipe.ingredients.some(ingredients => ingredients.ingredient.toLowerCase().includes(term.toLowerCase()))
-}
+const isIngredient = ({ tag, recipe }) => recipe.ingredients.some(ingredients => ingredients.ingredient.toLowerCase().includes(tag.toLowerCase()))
 
-const isAppliance = (term, recipe) => {
-  return recipe.appliance.toLowerCase().includes(term.toLowerCase())
-}
+const isAppliance = ({ tag, recipe }) => recipe.appliance.toLowerCase().includes(tag.toLowerCase())
 
-const isUstensil = (term, recipe) => {
-  return recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(term.toLowerCase()))
-}
+const isUstensil = ({ tag, recipe }) => recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(tag.toLowerCase()))
 
-const isDescription = (term, recipe) => {
-  return recipe.description.toLowerCase().includes(term.toLowerCase())
-}
+const isDescription = ({ tag, recipe }) => recipe.description.toLowerCase().includes(tag.toLowerCase())
 
 // SEARCH
 
-/* V1 */
-// const searchRecipes = tagType => {
-//   const tags = Object.values(filters[tagType])
-//   let ids = []
+const searchRecipes = tagType => {
+  const tags = Object.values(filters[tagType])
+  if (tags.length === 0) return
+  let ids = []
 
-//   tags.forEach(tag => {
-//     if (localStorage.getItem(`${tagType}-${tag}`)) {
-//       ids = [...JSON.parse(localStorage.getItem(`${tagType}-${tag}`))]
-//     } else {
-//       recipes.forEach(recipe => {
-//         if (tagType === "main" && !isName(tag, recipe) && !isIngredient(tag, recipe) && !isDescription(tag, recipe)) ids.push(recipe.id)
-//         else if (tagType === "ingredients" && !isIngredient(tag, recipe)) ids.push(recipe.id)
-//         else if (tagType === "appliances" && !isAppliance(tag, recipe)) ids.push(recipe.id)
-//         else if (tagType === "ustensils" && !isUstensil(tag, recipe)) ids.push(recipe.id)
-//       })
+  tags.forEach(tag => {
+    if (localStorage.getItem(`${tagType}-${tag}`)) {
+      ids = [...JSON.parse(localStorage.getItem(`${tagType}-${tag}`))]
+    } else {
+      recipes.forEach(recipe => {
+        if (tagType === "main" && !isName({ tag: tag, recipe: recipe }) && !isIngredient({ tag: tag, recipe: recipe }) && !isDescription({ tag: tag, recipe: recipe })) ids.push(recipe.id)
+        else if (tagType === "ingredients" && !isIngredient({ tag: tag, recipe: recipe })) ids.push(recipe.id)
+        else if (tagType === "appliances" && !isAppliance({ tag: tag, recipe: recipe })) ids.push(recipe.id)
+        else if (tagType === "ustensils" && !isUstensil({ tag: tag, recipe: recipe })) ids.push(recipe.id)
+      })
 
-//       localStorage.setItem(`${tagType}-${tag}`, JSON.stringify(ids))
-//     }
-//   })
-
-//   return ids
-// }
-/* END OF V1 */
-
-/* V2 */
-const search = () => {
-  const activeFilters = {}
-  for (const [tagType, terms] of Object.entries(filters)) {
-    if (filters[tagType].length > 0) activeFilters[tagType] = terms
-  }
-
-  const ids = []
-
-  // is element verify test
-  const isNotInRecipe = (terms, recipe, test) => {
-    return terms.every(term => !test(term, recipe))
-  }
-
-  recipes.forEach(recipe => {
-    for (const [tagType, terms] of Object.entries(activeFilters)) {
-      if (tagType === "main" && isNotInRecipe(terms, recipe, isName) && isNotInRecipe(terms, recipe, isIngredient) && isNotInRecipe(terms, recipe, isDescription)) ids.push(recipe.id)
-      else if (tagType === "ingredients" && isNotInRecipe(terms, recipe, isIngredient)) ids.push(recipe.id)
-      else if (tagType === "appliances" && isNotInRecipe(terms, recipe, isAppliance)) ids.push(recipe.id)
-      else if (tagType === "ustensils" && isNotInRecipe(terms, recipe, isUstensil)) ids.push(recipe.id)
+      localStorage.setItem(`${tagType}-${tag}`, JSON.stringify(ids))
     }
   })
 
-  return ids
+  return [...new Set(ids)]
 }
-/* END OF V2 */
 
 // UPDATE RECIPES LIST
 const updateRecipesList = () => {
@@ -154,17 +116,7 @@ const updateRecipesList = () => {
 
   // create à list of ids to remove from the list of recipes
 
-  /* V1 */
-  // const recipesIdsDup = Object.keys(filters)
-  //   .filter(tagType => tagType.length > 0)
-  //   .flatMap(tagType => searchRecipes(tagType))
-  /* END OF V1 */
-
-  /* V2 */
-  const recipesIdsDup = search()
-  /* END OF V2 */
-
-  const recipesIds = [...new Set(recipesIdsDup)]
+  const recipesIds = Object.keys(filters).flatMap(tagType => searchRecipes(tagType))
 
   // remove recipes by id
   recipesIds.forEach(id => {
@@ -192,14 +144,15 @@ document.addEventListener("click", e => {
 
   if (!iSenuItem && !isFilterItem) return
 
-  const term = e.target.textContent
+  const tag = e.target.textContent
   const type = e.target.dataset.type
 
   // update filters object
   if (isFilterItem) {
-    filters[type].pop(term)
-  } else if (!filters[type].some(elem => elem === term)) {
-    filters[type].push(term)
+    const tagIndex = filters[type].indexOf(tag)
+    filters[type].splice(tagIndex, 1)
+  } else if (!filters[type].some(elem => elem === tag)) {
+    filters[type].push(tag)
   }
 
   populateFiltersList()

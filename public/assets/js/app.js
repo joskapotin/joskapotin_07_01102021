@@ -38,15 +38,16 @@ const renderRecipesList = matchRecipes => {
 }
 
 // render HTML
-const render = ({ matchRecipes, secondaryMenuItems } = { matchRecipes: recipes, secondaryMenuItems: getSecondaryMenuItems(recipes) }) => {
-  const ingredients = Object.keys(secondaryMenuItems.ingredients).sort()
-  const appliances = Object.keys(secondaryMenuItems.appliances).sort()
-  const ustensils = Object.keys(secondaryMenuItems.ustensils).sort()
+const render = () => {
+  const { matchRecipes, ingredients, appliances, ustensils } = getMatchRecipes()
+  const ingredientsArr = Object.keys(ingredients).sort()
+  const appliancesArr = Object.keys(appliances).sort()
+  const ustensilsArr = Object.keys(ustensils).sort()
 
   renderFiltersList()
-  renderSecondaryMenu({ uiMenu: uiIngredientsMenu, filterTerms: ingredients, filterCat: "ingredients" })
-  renderSecondaryMenu({ uiMenu: uiAppliancesMenu, filterTerms: appliances, filterCat: "appliances" })
-  renderSecondaryMenu({ uiMenu: uiUstensilsMenu, filterTerms: ustensils, filterCat: "ustensils" })
+  renderSecondaryMenu({ uiMenu: uiIngredientsMenu, filterTerms: ingredientsArr, filterCat: "ingredients" })
+  renderSecondaryMenu({ uiMenu: uiAppliancesMenu, filterTerms: appliancesArr, filterCat: "appliances" })
+  renderSecondaryMenu({ uiMenu: uiUstensilsMenu, filterTerms: ustensilsArr, filterCat: "ustensils" })
   renderRecipesList(matchRecipes)
 }
 
@@ -90,109 +91,63 @@ const isDescription = ({ filterTerm, recipe }) => recipe.description.toLowerCase
 // SECTION SEARCH
 
 const getIngredients = recipe => {
-  return recipe.ingredients.map(ingredients => {
-    return ingredients.ingredient.toLowerCase()
-  })
+  return recipe.ingredients.reduce((ingredients, element) => {
+    ingredients[element.ingredient.toLowerCase()] = true
+    return ingredients
+  }, {})
 }
 
 const getAppliances = recipe => {
-  return [recipe.appliance.toLowerCase()]
+  return Object.fromEntries([[recipe.appliance.toLowerCase(), "true"]])
 }
 
 const getUstensils = recipe => {
-  return recipe.ustensils.map(ustensil => {
-    return ustensil.toLowerCase()
-  })
+  recipe.ustensils.reduce((ustensils, element) => {
+    ustensils[element.toLowerCase()] = true
+    return ustensils
+  }, {})
 }
 
 /**
- * retreive the items form an array of recipes or from a single recipe
- * use only when there is no filters
- * @param {Object[]|Object} recipes Array of recipes or a single recipe
- * @returns {Object[]} return an object with item as attributs. Prevent dup
+ * filter recipes and gather ingredients, appliances and ustensils
+ * @returns {( matchRecipes:Array, ingredients:Object, appliances:Object, ustensils:Object )} data to render
  */
-const getSecondaryMenuItems = recipes => {
-  const secondaryMenuItems = {
-    ingredients: {},
-    appliances: {},
-    ustensils: {},
-  }
-
-  const getItems = recipe => {
-    getIngredients(recipe).forEach(ingredient => {
-      secondaryMenuItems.ingredients[ingredient] = true
-    })
-    getAppliances(recipe).forEach(appliance => {
-      secondaryMenuItems.appliances[appliance] = true
-    })
-    getUstensils(recipe).forEach(ustensil => {
-      secondaryMenuItems.ustensils[ustensil] = true
-    })
-  }
-
-  if (Array.isArray(recipes)) {
-    recipes.forEach(recipe => {
-      getItems(recipe)
-    })
-  } else {
-    getItems(recipes)
-  }
-
-  return secondaryMenuItems
-}
-
-/**
- * Filter recipes
- * @returns {recipes[]} recipes that match the filters
- */
-const createMatchRecipes = () => {
-  // if no filters return all recipes
-  if (filters.main.length === 0 && filters.ingredients.length === 0 && filters.appliances.length === 0 && filters.ustensils.length === 0) {
-    render()
-    return
-  }
-
-  // create an array with only the active filters
+const getMatchRecipes = () => {
   const activeFilterCats = Object.keys(filters).filter(filterCat => filters[filterCat].length > 0)
+  const matchRecipes = []
+  let ingredients = {}
+  let appliances = {}
+  let ustensils = {}
 
-  // we want to store ingredients, appliances and ustensils of valid recipe has we loop through each recipes to update the secondary menu
-  // storing those items has objects prevent the duplication
-  let secondaryMenuItems = {}
+  for (const recipe of recipes) {
+    let isMatch = true
 
-  // recipe tester
-  const isValidRecipe = recipe => {
-    let isValid = true
-
-    activeFilterCats.forEach(filterCat => {
-      filters[filterCat].forEach(filterTerm => {
+    for (const filterCat of activeFilterCats) {
+      for (const filterTerm of filters[filterCat]) {
         if (filterCat === "main" && !isName({ filterTerm, recipe }) && !isIngredient({ filterTerm, recipe }) && !isDescription({ filterTerm, recipe })) {
-          isValid = false
+          isMatch = false
         }
         if (filterCat === "ingredients" && !isIngredient({ filterTerm, recipe })) {
-          isValid = false
+          isMatch = false
         }
         if (filterCat === "appliances" && !isAppliance({ filterTerm, recipe })) {
-          isValid = false
+          isMatch = false
         }
         if (filterCat === "ustensils" && !isUstensil({ filterTerm, recipe })) {
-          isValid = false
+          isMatch = false
         }
-      })
-    })
-
-    if (isValid) {
-      secondaryMenuItems = { ...secondaryMenuItems, ...getSecondaryMenuItems(recipe) }
+      }
     }
 
-    return isValid
+    if (isMatch) {
+      matchRecipes.push(recipe)
+      ingredients = { ...ingredients, ...getIngredients(recipe) }
+      appliances = { ...appliances, ...getAppliances(recipe) }
+      ustensils = { ...ustensils, ...getUstensils(recipe) }
+    }
   }
 
-  // test each recipes
-  const matchRecipes = recipes.filter(recipe => {
-    return isValidRecipe(recipe)
-  })
-
-  render({ matchRecipes, secondaryMenuItems })
+  return { matchRecipes, ingredients, appliances, ustensils }
 }
 
 // SECTION UI
@@ -204,7 +159,7 @@ uiSearchPrimary.addEventListener("input", e => {
     filters.main[0] = e.target.value
   }
 
-  createMatchRecipes()
+  render()
 })
 
 // handle filterTerms search
@@ -225,9 +180,9 @@ document.addEventListener("click", e => {
     filters[type].push(filterTerm)
   }
 
-  createMatchRecipes()
+  render()
 })
 
 // SECTION INIT
 dropdownModule()
-createMatchRecipes()
+render()

@@ -1763,4 +1763,4 @@ const recipes = [
   },
 ]
 
-export default recipes
+export default recipes.sort((a, b) => a.name.localeCompare(b.name))

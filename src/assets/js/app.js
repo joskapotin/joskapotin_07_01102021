@@ -38,7 +38,11 @@ const renderRecipesList = matchRecipes => {
 }
 
 // render HTML
-const render = ({ matchRecipes, ingredients, appliances, ustensils }) => {
+const render = ({ matchRecipes, secondaryMenuItems } = { matchRecipes: recipes, secondaryMenuItems: getSecondaryMenuItems(recipes) }) => {
+  const ingredients = Object.keys(secondaryMenuItems.ingredients).sort()
+  const appliances = Object.keys(secondaryMenuItems.appliances).sort()
+  const ustensils = Object.keys(secondaryMenuItems.ustensils).sort()
+
   renderFiltersList()
   renderSecondaryMenu({ uiMenu: uiIngredientsMenu, filterTerms: ingredients, filterCat: "ingredients" })
   renderSecondaryMenu({ uiMenu: uiAppliancesMenu, filterTerms: appliances, filterCat: "appliances" })
@@ -102,25 +106,37 @@ const getUstensils = recipe => {
 }
 
 /**
- * loop the recipes to get the items and return them without dups
+ * retreive the items form an array of recipes or from a single recipe
  * use only when there is no filters
- * @param {recipes[]} recipes
- * @returns {{ingredients:string[],appliances:string[],ustensils:string[]}}
+ * @param {Object[]|Object} recipes Array of recipes or a single recipe
+ * @returns {Object[]} return an object with item as attributs. Prevent dup
  */
 const getSecondaryMenuItems = recipes => {
-  let ingredientsDup = []
-  let appliancesDup = []
-  let ustensilsDup = []
+  const secondaryMenuItems = {
+    ingredients: {},
+    appliances: {},
+    ustensils: {},
+  }
 
-  recipes.forEach(recipe => {
-    ingredientsDup = [...ingredientsDup, ...getIngredients(recipe)]
-    appliancesDup = [...appliancesDup, ...getAppliances(recipe)]
-    ustensilsDup = [...ustensilsDup, ...getUstensils(recipe)]
-  })
+  const getItems = recipe => {
+    getIngredients(recipe).forEach(ingredient => {
+      secondaryMenuItems.ingredients[ingredient] = true
+    })
+    getAppliances(recipe).forEach(appliance => {
+      secondaryMenuItems.appliances[appliance] = true
+    })
+    getUstensils(recipe).forEach(ustensil => {
+      secondaryMenuItems.ustensils[ustensil] = true
+    })
+  }
 
-  console.log(appliancesDup)
-
-  const secondaryMenuItems = { ingredients: [...new Set(ingredientsDup.sort())], appliances: [...new Set(appliancesDup.sort())], ustensils: [...new Set(ustensilsDup.sort())] }
+  if (Array.isArray(recipes)) {
+    recipes.forEach(recipe => {
+      getItems(recipe)
+    })
+  } else {
+    getItems(recipes)
+  }
 
   return secondaryMenuItems
 }
@@ -132,40 +148,18 @@ const getSecondaryMenuItems = recipes => {
 const createMatchRecipes = () => {
   // if no filters return all recipes
   if (filters.main.length === 0 && filters.ingredients.length === 0 && filters.appliances.length === 0 && filters.ustensils.length === 0) {
-    const matchRecipes = recipes.sort((a, b) => a.name.localeCompare(b.name))
-    const { ingredients, appliances, ustensils } = getSecondaryMenuItems(matchRecipes)
-    render({ matchRecipes, ingredients, appliances, ustensils })
+    render()
     return
   }
 
   // create an array with only the active filters
   const activeFilterCats = Object.keys(filters).filter(filterCat => filters[filterCat].length > 0)
 
-  // // create results storage object
-  // const resultStorage = {
-  //   filters: {
-  //     main: [],
-  //     ingredients: [],
-  //     appliances: [],
-  //     ustensils: [],
-  //   },
-  //   recipeId: {},
-  // }
+  // we want to store ingredients, appliances and ustensils of valid recipe has we loop through each recipes to update the secondary menu
+  // storing those items has objects prevent the duplication
+  let secondaryMenuItems = {}
 
-  // // store result
-  // const storeResult = ({ filterCat, filterTerm, recipe, ingredients = [], appliances = [], ustensils = [] }) => {
-  //   // store recipes by filter category and by term
-  //   if (resultStorage.filters[filterCat][filterTerm]) resultStorage.filters[filterCat][filterTerm].push(recipe)
-  //   else resultStorage.filters[filterCat][filterTerm] = [recipe]
-
-  //   // store items by recipe id and type
-  //   if (!resultStorage.recipeId[recipe.id]) {
-  //     resultStorage.recipeId[recipe.id] = { ingredients: [...ingredients], appliances: [...appliances], ustensils: [...ustensils] }
-  //   }
-  // }
-
-  // console.log(resultStorage)
-
+  // recipe tester
   const isValidRecipe = recipe => {
     let isValid = true
 
@@ -173,38 +167,35 @@ const createMatchRecipes = () => {
       filters[filterCat].forEach(filterTerm => {
         if (filterCat === "main" && !isName({ filterTerm, recipe }) && !isIngredient({ filterTerm, recipe }) && !isDescription({ filterTerm, recipe })) {
           isValid = false
-          // storeResult({ filterCat, filterTerm, recipe })
         }
         if (filterCat === "ingredients" && !isIngredient({ filterTerm, recipe })) {
           isValid = false
-          // storeResult({ filterCat, filterTerm, recipe, ingredients: getIngredients(recipe) })
         }
         if (filterCat === "appliances" && !isAppliance({ filterTerm, recipe })) {
           isValid = false
-          // storeResult({ filterCat, filterTerm, recipe, appliances: getAppliances(recipe) })
         }
         if (filterCat === "ustensils" && !isUstensil({ filterTerm, recipe })) {
           isValid = false
-          // storeResult({ filterCat, filterTerm, recipe, ustensils: getUstensils(recipe) })
         }
       })
     })
 
+    if (isValid) {
+      secondaryMenuItems = { ...secondaryMenuItems, ...getSecondaryMenuItems(recipe) }
+    }
+
     return isValid
   }
 
-  const matchRecipes = recipes
-    .filter(recipe => {
-      return isValidRecipe(recipe)
-    })
-    .sort((a, b) => a.name.localeCompare(b.name))
+  // test each recipes
+  const matchRecipes = recipes.filter(recipe => {
+    return isValidRecipe(recipe)
+  })
 
-  const { ingredients, appliances, ustensils } = getSecondaryMenuItems(matchRecipes)
-
-  render({ matchRecipes, ingredients, appliances, ustensils })
+  render({ matchRecipes, secondaryMenuItems })
 }
 
-// SECTION ACTION
+// SECTION UI
 
 // handle primary search
 uiSearchPrimary.addEventListener("input", e => {

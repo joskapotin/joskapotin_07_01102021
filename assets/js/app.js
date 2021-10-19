@@ -14,6 +14,15 @@ const uiUstensilsMenu = document.querySelector(".dropdown-ustensils")
 // VARIABLES
 const filters = { main: [], ingredients: [], appliances: [], ustensils: [] }
 
+// UTILS
+/**
+ * source: https://www.codegrepper.com/code-examples/javascript/regex+sanitize+input+javascript
+ */
+const sanitize = string => {
+  const regex = /[.*+?^${}()|[\]\\]/g
+  return string.replace(regex, "\\$&").toLowerCase()
+}
+
 // SECTION RENDER
 
 /**
@@ -131,7 +140,7 @@ const isDescription = ({ filterTerm, recipe }) => recipe.description.toLowerCase
  */
 const getIngredients = recipe => {
   return recipe.ingredients.reduce((ingredients, element) => {
-    ingredients[element.ingredient.toLowerCase()] = true
+    ingredients[sanitize(element.ingredient)] = true
     return ingredients
   }, {})
 }
@@ -177,6 +186,14 @@ const getMatchDatas = () => {
   let appliances = {}
   let ustensils = {}
 
+  const storedResults = {}
+  const storeResult = ({ filterCat, filterTerm, recipe }) => {
+    const storageKey = `${filterCat}-${filterTerm}`.toLocaleLowerCase()
+    if (storedResults[storageKey]) storedResults[storageKey].push(recipe)
+    else storedResults[storageKey] = [recipe]
+  }
+  console.log(storedResults)
+
   for (const recipe of recipes) {
     let isMatch = true
 
@@ -184,16 +201,13 @@ const getMatchDatas = () => {
       for (const filterTerm of filters[filterCat]) {
         if (filterCat === "main" && !isName({ filterTerm, recipe }) && !isIngredient({ filterTerm, recipe }) && !isDescription({ filterTerm, recipe })) {
           isMatch = false
-        }
-        if (filterCat === "ingredients" && !isIngredient({ filterTerm, recipe })) {
+        } else if (filterCat === "ingredients" && !isIngredient({ filterTerm, recipe })) {
           isMatch = false
-        }
-        if (filterCat === "appliances" && !isAppliance({ filterTerm, recipe })) {
+        } else if (filterCat === "appliances" && !isAppliance({ filterTerm, recipe })) {
           isMatch = false
-        }
-        if (filterCat === "ustensils" && !isUstensil({ filterTerm, recipe })) {
+        } else if (filterCat === "ustensils" && !isUstensil({ filterTerm, recipe })) {
           isMatch = false
-        }
+        } else storeResult({ filterCat, filterTerm, recipe })
       }
     }
 
@@ -203,6 +217,11 @@ const getMatchDatas = () => {
       appliances = { ...appliances, ...getAppliances(recipe) }
       ustensils = { ...ustensils, ...getUstensils(recipe) }
     }
+  }
+
+  for (const [key, values] of Object.entries(storedResults)) {
+    console.log(key, values)
+    localStorage.setItem(key, JSON.stringify(values))
   }
 
   return { matchRecipes, ingredients, appliances, ustensils }

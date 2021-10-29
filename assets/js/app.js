@@ -13,9 +13,15 @@ const uiAppliancesMenu = document.querySelector(".dropdown-appliances")
 const uiUstensilsMenu = document.querySelector(".dropdown-ustensils")
 
 // VARIABLES
+
+/**
+ * Search filters
+ * @type {{main:string[], ingredients:string[], appliances:string[], ustensils:string[]}}
+ */
 const filters = { main: [], ingredients: [], appliances: [], ustensils: [] }
 
 // UTILS
+
 /**
  * Sanitize a string
  * @param {string} string - raw string
@@ -31,24 +37,31 @@ const sanitize = string => {
 /**
  * render secondary search menus
  *
- * @param {object} param0 - an object that contain the target DOMelement, an array of filter terms and the category of filter
- * @param {HTMLElement} param0.uiMenu - the target DOMelement
- * @param {string[]} param0.filterTerms - an array of filter terms
- * @param {string} param0.filterCat - the category of filter
+ * @param {object} obj - an object that contain the target DOMelement, an array of filter terms and the category of filter
+ * @param {HTMLElement} obj.uiMenu - the target DOMelement
+ * @param {string[]} obj.filterTerms - an array of filter terms
+ * @param {string} obj.filterCat - the category of filter
  */
 const renderSecondaryMenu = ({ uiMenu, filterTerms, filterCat }) => {
   uiMenu.querySelector(".dropdown-menu")?.remove()
   uiMenu.appendChild(uiDropdownMenu({ filterTerms, filterCat }))
 }
 
-// filter scondary menu
+/**
+ * filter secondary menu item
+ * @param {HTMLElement} uiMenu - menu to filter
+ */
 const filterSecondaryMenuItems = uiMenu => {
-  const term = uiMenu.value.toLowerCase()
-  const menuItems = uiMenu.parentNode.querySelectorAll(".dropdown-menu__item")
+  const term = sanitize(uiMenu.value)
+  const regex = new RegExp(`^${term}`)
+  const menuItems = uiMenu.parentElement.querySelectorAll(".dropdown-menu__item")
+
   menuItems.forEach(item => {
-    item.classList.add("display-none")
-    const itemTerm = item.textContent.toLowerCase()
-    if (term.includes(itemTerm) || term.length === 0) item.classList.remove("display-none")
+    const itemTerm = sanitize(item.textContent)
+
+    if (regex.test(itemTerm)) {
+      item.classList.remove("display-none")
+    } else item.classList.add("display-none")
   })
 }
 
@@ -58,9 +71,9 @@ const filterSecondaryMenuItems = uiMenu => {
  * Test if a term is include in the name of the recipe
  * Time complexity O(n)
  *
- * @param {object} param0 - an object that contain the term to search and the recipe to search in
- * @param {string} param0.filterTerm - term to search
- * @param {object} param0.recipe - object to search in
+ * @param {object} obj - an object that contain the term to search and the recipe to search in
+ * @param {string} obj.filterTerm - term to search
+ * @param {object} obj.recipe - object to search in
  * @returns {boolean} whether or not the term is include in the name of the recipe
  */
 const isName = ({ filterTerm, recipe }) => recipe.name.toLowerCase().includes(filterTerm.toLowerCase())
@@ -69,9 +82,9 @@ const isName = ({ filterTerm, recipe }) => recipe.name.toLowerCase().includes(fi
  * Test if a term is include in the ingredients of the recipe
  * Time complexity O(n) * O(1) = O(n)
  *
- * @param {object} param0 - an object that contain the term to search and the recipe to search in
- * @param {string} param0.filterTerm - term to search
- * @param {object} param0.recipe - object to search in
+ * @param {object} obj - an object that contain the term to search and the recipe to search in
+ * @param {string} obj.filterTerm - term to search
+ * @param {object} obj.recipe - object to search in
  * @returns {boolean} whether or not the term is include in the ingredients of the recipe
  */
 const isIngredient = ({ filterTerm, recipe }) => recipe.ingredients.some(ingredients => ingredients.ingredient.toLowerCase().includes(filterTerm.toLowerCase()))
@@ -80,9 +93,9 @@ const isIngredient = ({ filterTerm, recipe }) => recipe.ingredients.some(ingredi
  * Test if a term is include in the appliances of the recipe
  * Time complexity O(n)
  *
- * @param {object} param0 - an object that contain the term to search and the recipe to search in
- * @param {string} param0.filterTerm - term to search
- * @param {object} param0.recipe - object to search in
+ * @param {object} obj - an object that contain the term to search and the recipe to search in
+ * @param {string} obj.filterTerm - term to search
+ * @param {object} obj.recipe - object to search in
  * @returns {boolean} whether or not the term is include in the appliances of the recipe
  */
 const isAppliance = ({ filterTerm, recipe }) => recipe.appliance.toLowerCase().includes(filterTerm.toLowerCase())
@@ -91,9 +104,9 @@ const isAppliance = ({ filterTerm, recipe }) => recipe.appliance.toLowerCase().i
  * Test if a term is include in the ustensils of the recipe
  * Time complexity O(n) * O(1) = O(n)
  *
- * @param {object} param0 - an object that contain the term to search and the recipe to search in
- * @param {string} param0.filterTerm - term to search
- * @param {object} param0.recipe - object to search in
+ * @param {object} obj - an object that contain the term to search and the recipe to search in
+ * @param {string} obj.filterTerm - term to search
+ * @param {object} obj.recipe - object to search in
  * @returns {boolean} whether or not the term is include in the ustensils of the recipe
  */
 const isUstensil = ({ filterTerm, recipe }) => recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(filterTerm.toLowerCase()))
@@ -102,9 +115,9 @@ const isUstensil = ({ filterTerm, recipe }) => recipe.ustensils.some(ustensil =>
  * Test if a term is include in the description of the recipe
  * Time complexity O(n)
  *
- * @param {object} param0 - an object that contain the term to search and the recipe to search in
- * @param {string} param0.filterTerm - term to search
- * @param {object} param0.recipe - object to search in
+ * @param {object} obj - an object that contain the term to search and the recipe to search in
+ * @param {string} obj.filterTerm - term to search
+ * @param {object} obj.recipe - object to search in
  * @returns {boolean} whether or not the term is include in the description of the recipe
  */
 const isDescription = ({ filterTerm, recipe }) => recipe.description.toLowerCase().includes(filterTerm.toLowerCase())
@@ -149,6 +162,13 @@ const getUstensils = recipe =>
     return ustensils
   }, {})
 
+/**
+ * Test if the term in main search is part of a recipe
+ * @param {object} obj - the term to test an the recipe
+ * @param {string} obj.filterTerm - the term to test
+ * @param {object} obj.recipe - the recipe to search in
+ * @returns {boolean} wether or not the term is contain in the recipe
+ */
 const mainSearchTest = ({ filterTerm, recipe }) => {
   if (!isName({ filterTerm, recipe }) && !isIngredient({ filterTerm, recipe }) && !isDescription({ filterTerm, recipe })) return false
   return true

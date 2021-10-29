@@ -3,7 +3,7 @@
  * @param {string|Object[]|string|string} recipe info
  * @returns {HTMLElement}
  */
-const uiRecipe = ({ name, ingredients, time, description }) => {
+const CreateUiRecipe = ({ name, ingredients, time, description }) => {
   const uiRecipe = document.createElement("article")
   uiRecipe.classList.add("card")
 
@@ -56,4 +56,4 @@ const uiRecipe = ({ name, ingredients, time, description }) => {
   return uiRecipe
 }
 
-export default uiRecipe
+export default CreateUiRecipe

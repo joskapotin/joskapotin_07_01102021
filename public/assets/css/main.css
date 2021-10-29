@@ -41,6 +41,10 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--min)), 1fr));
 }
 
+.display-none {
+  display: none;
+}
+
 /* FORM */
 .form-control {
   border: 0;

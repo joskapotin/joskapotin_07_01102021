@@ -1,4 +1,4 @@
-const recipes = [
+const AllRecipes = [
   {
     id: 1,
     name: "Limonade de Coco",
@@ -1763,4 +1763,4 @@ const recipes = [
   },
 ]
 
-export default recipes.sort((a, b) => a.name.localeCompare(b.name))
+export default AllRecipes.sort((a, b) => a.name.localeCompare(b.name))

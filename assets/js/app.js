@@ -154,18 +154,6 @@ const getUstensils = recipe =>
   }, {})
 
 /**
- * Test if the term in main search is part of a recipe
- * @param {object} obj - the term to test an the recipe
- * @param {string} obj.filterTerm - the term to test
- * @param {object} obj.recipe - the recipe to search in
- * @returns {boolean} wether or not the term is contain in the recipe
- */
-const mainSearchTest = ({ filterTerm, recipe }) => {
-  if (!isName({ filterTerm, recipe }) && !isIngredient({ filterTerm, recipe }) && !isDescription({ filterTerm, recipe })) return false
-  return true
-}
-
-/**
  * Main function that loop through every recipes and return the data to render
  * Time complexity O(n) * O(1) * O(1) = O(n)
  *
@@ -189,7 +177,7 @@ const getMatchDatas = () => {
       // Time complexity O(1)
       for (const filterTerm of filters[filterCat]) {
         // Time complexity O(1)
-        if (filterCat === "main") isMatch = mainSearchTest({ filterTerm, recipe })
+        if (filterCat === "main" && !isName({ filterTerm, recipe }) && !isIngredient({ filterTerm, recipe }) && !isDescription({ filterTerm, recipe })) isMatch = false
         else if (filterCat === "ingredients" && !isIngredient({ filterTerm, recipe })) isMatch = false
         else if (filterCat === "appliances" && !isAppliance({ filterTerm, recipe })) isMatch = false
         else if (filterCat === "ustensils" && !isUstensil({ filterTerm, recipe })) isMatch = false

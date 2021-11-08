@@ -1,12 +1,15 @@
-// Dropdown menu
+/**
+ * Change placeholder message of advanced menu when clicked
+ * @param {HTMLElement} dropdown - the current selected menu
+ */
 const changePlaceholder = dropdown => {
   const input = dropdown.querySelector("input")
-  const placeholder = input.placeholder
+  const { placeholder } = input
   input.placeholder = input.dataset.message
   input.dataset.message = placeholder
 }
 
-export default function () {
+export default () => {
   document.addEventListener("click", e => {
     const isDropdownButton = e.target.matches("[data-dropdown-button]")
     if (!isDropdownButton && e.target.closest("[data-dropdown]") != null) return

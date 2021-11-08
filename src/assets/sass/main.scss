@@ -28,6 +28,8 @@ body {
   font-family: var(--ff-text);
   font-size: 16px;
   font-weight: normal;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .container {
@@ -44,6 +46,10 @@ body {
   /* min() with 100% prevents overflow
   in extra narrow spaces */
   grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--min)), 1fr));
+}
+
+.display-none {
+  display: none;
 }
 
 /* FORM */
@@ -121,15 +127,15 @@ body {
   line-height: 1.05rem;
 }
 
-.filter-list__item-ingredient {
+.filter-list__item-ingredients {
   background-color: var(--cl-ingredient);
 }
 
-.filter-list__item-appliance {
+.filter-list__item-appliances {
   background-color: var(--cl-appliance);
 }
 
-.filter-list__item-ustensil {
+.filter-list__item-ustensils {
   background-color: var(--cl-ustensil);
 }
 

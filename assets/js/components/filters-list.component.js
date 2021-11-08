@@ -13,7 +13,7 @@ const createFiltersList = filters => {
         const uiListItem = document.createElement("li")
         uiListItem.classList.add("filter-list__item", `filter-list__item-${filterCat}`)
         uiListItem.textContent = filterTerm
-        uiListItem.dataset.type = filterCat
+        uiListItem.dataset.filterCat = filterCat
         uiFiltersList.appendChild(uiListItem)
       })
     }

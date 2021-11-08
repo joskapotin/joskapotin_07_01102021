@@ -34,8 +34,8 @@ const filters = {
  * @return {string} sanitized string
  */
 const sanitize = string => {
-  const regex = new RegExp(/"/g)
-  return string.toLowerCase().replace(regex, " ")
+  const regex = new RegExp(/[".]/g)
+  return string.toLowerCase().replace(regex, "")
 }
 
 /**
@@ -162,35 +162,35 @@ const getUstensils = recipe =>
 const getMatchDatas = () => {
   const activeFilterCats = Object.keys(filters).filter(filterCat => filters[filterCat].length > 0)
 
-  const matchRecipes = []
-
   let ingredients = {}
   let appliances = {}
   let ustensils = {}
 
-  for (const recipe of AllRecipes) {
-    // Time complexity O(n)
-
+  const isMatchRecipe = recipe => {
     let isMatch = true
 
-    for (const filterCat of activeFilterCats) {
+    activeFilterCats.forEach(filterCat => {
       // Time complexity O(1)
-      for (const filterTerm of filters[filterCat]) {
+      filters[filterCat].forEach(filterTerm => {
         // Time complexity O(1)
         if (filterCat === "main" && !isName({ filterTerm, recipe }) && !isIngredient({ filterTerm, recipe }) && !isDescription({ filterTerm, recipe })) isMatch = false
         else if (filterCat === "ingredients" && !isIngredient({ filterTerm, recipe })) isMatch = false
         else if (filterCat === "appliances" && !isAppliance({ filterTerm, recipe })) isMatch = false
         else if (filterCat === "ustensils" && !isUstensil({ filterTerm, recipe })) isMatch = false
-      }
-    }
+      })
+    })
 
     if (isMatch) {
-      matchRecipes.push(recipe)
       ingredients = { ...ingredients, ...getIngredients(recipe) }
       appliances = { ...appliances, ...getAppliances(recipe) }
       ustensils = { ...ustensils, ...getUstensils(recipe) }
     }
+
+    return isMatch
   }
+
+  // time complexity = O(n)
+  const matchRecipes = AllRecipes.filter(recipe => isMatchRecipe(recipe))
 
   return { matchRecipes, ingredients, appliances, ustensils }
 }

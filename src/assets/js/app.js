@@ -3,6 +3,7 @@ import dropdownModule from "./modules/dropdown.module.js"
 import uiDropdownMenu from "./components/dropdown-menu.component.js"
 import createFiltersList from "./components/filters-list.component.js"
 import CreateUiRecipe from "./components/recipe.component.js"
+import recipes from "./data/recipes.js"
 
 // DOM elements
 const uiSearchPrimary = document.querySelector(".form-control-primary")
@@ -18,7 +19,12 @@ const uiUstensilsMenu = document.querySelector(".dropdown-ustensils")
  * Search filters
  * @type {{main:string[], ingredients:string[], appliances:string[], ustensils:string[]}}
  */
-const filters = { main: [], ingredients: [], appliances: [], ustensils: [] }
+const filters = {
+  main: [],
+  ingredients: [],
+  appliances: [],
+  ustensils: [],
+}
 
 // UTILS
 
@@ -28,23 +34,8 @@ const filters = { main: [], ingredients: [], appliances: [], ustensils: [] }
  * @return {string} sanitized string
  */
 const sanitize = string => {
-  const regex = /"/g
+  const regex = new RegExp(/"/g)
   return string.toLowerCase().replace(regex, " ")
-}
-
-// SECTION RENDER
-
-/**
- * render secondary search menus
- *
- * @param {object} obj - an object that contain the target DOMelement, an array of filter terms and the category of filter
- * @param {HTMLElement} obj.uiMenu - the target DOMelement
- * @param {string[]} obj.filterTerms - an array of filter terms
- * @param {string} obj.filterCat - the category of filter
- */
-const renderSecondaryMenu = ({ uiMenu, filterTerms, filterCat }) => {
-  uiMenu.querySelector(".dropdown-menu")?.remove()
-  uiMenu.appendChild(uiDropdownMenu({ filterTerms, filterCat }))
 }
 
 /**
@@ -176,13 +167,15 @@ const mainSearchTest = ({ filterTerm, recipe }) => {
 
 /**
  * Main function that loop through every recipes and return the data to render
- * Time complexity O(n) * O(1) * O(n) = O(n^2)
+ * Time complexity O(n) * O(1) * O(1) = O(n)
  *
- * @return {{matchRecipes:object[],ingredients:string[],appliances:object,ustensils:string[]}}
+ * @return {{matchRecipes:object[],ingredients:object,appliances:object,ustensils:object}}
  */
 const getMatchDatas = () => {
   const activeFilterCats = Object.keys(filters).filter(filterCat => filters[filterCat].length > 0)
+
   const matchRecipes = []
+
   let ingredients = {}
   let appliances = {}
   let ustensils = {}
@@ -193,9 +186,9 @@ const getMatchDatas = () => {
     let isMatch = true
 
     for (const filterCat of activeFilterCats) {
-      // Time complexity O(1) - only 4 filterCat at most
+      // Time complexity O(1)
       for (const filterTerm of filters[filterCat]) {
-        // Time complexity O(n)
+        // Time complexity O(1)
         if (filterCat === "main") isMatch = mainSearchTest({ filterTerm, recipe })
         else if (filterCat === "ingredients" && !isIngredient({ filterTerm, recipe })) isMatch = false
         else if (filterCat === "appliances" && !isAppliance({ filterTerm, recipe })) isMatch = false
@@ -212,6 +205,21 @@ const getMatchDatas = () => {
   }
 
   return { matchRecipes, ingredients, appliances, ustensils }
+}
+
+// SECTION RENDER
+
+/**
+ * render secondary search menus
+ *
+ * @param {object} obj - an object that contain the target DOMelement, an array of filter terms and the category of filter
+ * @param {HTMLElement} obj.uiMenu - the target DOM element
+ * @param {string[]} obj.filterTerms - an array of filter terms
+ * @param {string} obj.filterCat - the category of filter
+ */
+const renderSecondaryMenu = ({ uiMenu, filterTerms, filterCat }) => {
+  uiMenu.querySelector(".dropdown-menu")?.remove()
+  uiMenu.appendChild(uiDropdownMenu({ filterTerms, filterCat }))
 }
 
 /**
@@ -280,14 +288,14 @@ document.addEventListener("click", e => {
   if (!isMenuItem && !isFilterItem) return
 
   const filterTerm = e.target.textContent
-  const { type } = e.target.dataset
+  const { filterCat } = e.target.dataset
 
   // update filters object
   if (isFilterItem) {
-    const filterTermIndex = filters[type].indexOf(filterTerm)
-    filters[type].splice(filterTermIndex, 1)
-  } else if (!filters[type].some(elem => elem === filterTerm)) {
-    filters[type].push(filterTerm)
+    const filterTermIndex = filters[filterCat].indexOf(filterTerm)
+    filters[filterCat].splice(filterTermIndex, 1)
+  } else if (!filters[filterCat].some(elem => elem === filterTerm)) {
+    filters[filterCat].push(filterTerm)
   }
 
   render()

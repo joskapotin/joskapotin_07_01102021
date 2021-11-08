@@ -30,7 +30,8 @@
     "csslint:fix": "stylelint src/assets/sass/**/*.scss src/assets/sass/**/**/*.scss src/assets/sass/**/**/**/*.scss --fix -f verbose --color || echo 'lint failed for some file(s).'",
     "stylelint-check": "stylelint-config-prettier-check",
     "jslint": "eslint src/assets/js/**/*.js || echo 'eslint failed for some file(s).'",
-    "jslint:fix": "eslint --fix src/assets/js/**/*.js || echo 'eslint failed for some file(s).'"
+    "jslint:fix": "eslint --fix src/assets/js/**/*.js || echo 'eslint failed for some file(s).'",
+    "jslint:conf": "eslint --print-config"
   },
   "browserslist": [
     "last 4 versions"

@@ -11,7 +11,7 @@ const uiDropdownMenu = ({ filterTerms, filterCat }) => {
     const uiDropdownItem = document.createElement("li")
     uiDropdownItem.classList.add("dropdown-menu__item")
     uiDropdownItem.textContent = filterTerm
-    uiDropdownItem.dataset.type = filterCat
+    uiDropdownItem.dataset.filterCat = filterCat
     uiDropdownList.appendChild(uiDropdownItem)
   })
 

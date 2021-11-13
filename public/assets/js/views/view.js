@@ -1,45 +1,39 @@
 import config from "../config/config.js"
-import createDropdownMenu from "../components/dropdown-menu.component.js"
-import createFiltersList from "../components/filters-list.component.js"
-import CreateRecipe from "../components/recipe.component.js"
+import createDropdownMenu from "./components/dropdown-menu.component.js"
+import createFiltersList from "./components/filters-list.component.js"
+import CreateRecipe from "./components/recipe.component.js"
 export default class {
-  constructor({ matchRecipes, ingredients, appliances, ustensils }) {
-    this.matchRecipes = matchRecipes
-    this.ingredients = ingredients
-    this.appliances = appliances
-    this.ustensils = ustensils
-    this.buildFiltersList()
-    this.buildIngredientsMenu()
-    this.buildAppliancesMenu()
-    this.buildUstensilsMenu()
-    this.buildRecipesList()
+  constructor({ matchRecipes, ingredients, appliances, ustensils, filters }) {
+    this.buildFiltersList(filters)
+    this.buildIngredientsMenu(ingredients)
+    this.buildAppliancesMenu(appliances)
+    this.buildUstensilsMenu(ustensils)
+    this.buildRecipesList(matchRecipes)
   }
 
-  buildFiltersList() {
-    console.log("filters List")
+  buildFiltersList(filters) {
+    document.querySelector(".filters-list")?.remove()
+    config.uiNavSecondary.parentElement.insertBefore(createFiltersList(filters), config.uiNavSecondary)
   }
 
-  buildIngredientsMenu() {
-    const uiIngredientsList = createDropdownMenu({ filterTerms: this.ingredients, filterCat: "ingredients" })
+  buildIngredientsMenu(ingredients) {
     config.uiIngredientsMenu.querySelector(".dropdown-menu")?.remove()
-    config.uiIngredientsMenu.appendChild(uiIngredientsList)
+    config.uiIngredientsMenu.appendChild(createDropdownMenu({ filterTerms: ingredients, filterCat: "ingredients" }))
   }
 
-  buildAppliancesMenu() {
-    const uiAppliancesList = createDropdownMenu({ filterTerms: this.appliances, filterCat: "appliances" })
+  buildAppliancesMenu(appliances) {
     config.uiAppliancesMenu.querySelector(".dropdown-menu")?.remove()
-    config.uiAppliancesMenu.appendChild(uiAppliancesList)
+    config.uiAppliancesMenu.appendChild(createDropdownMenu({ filterTerms: appliances, filterCat: "appliances" }))
   }
 
-  buildUstensilsMenu() {
-    const uiUstensilsList = createDropdownMenu({ filterTerms: this.ustensils, filterCat: "ustensils" })
+  buildUstensilsMenu(ustensils) {
     config.uiUstensilsMenu.querySelector(".dropdown-menu")?.remove()
-    config.uiUstensilsMenu.appendChild(uiUstensilsList)
+    config.uiUstensilsMenu.appendChild(createDropdownMenu({ filterTerms: ustensils, filterCat: "ustensils" }))
   }
 
-  buildRecipesList() {
+  buildRecipesList(matchRecipes) {
     config.uiRecipesList.innerHTML = ""
-    this.matchRecipes.forEach(recipe => {
+    matchRecipes.forEach(recipe => {
       config.uiRecipesList.appendChild(CreateRecipe(recipe))
     })
   }

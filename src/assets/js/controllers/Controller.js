@@ -9,7 +9,7 @@ export default class {
    * Main function that loop through every recipes and return the data to render
    * Time complexity O(n) * O(1) * O(1) = O(n)
    *
-   * @return {{matchRecipes:object[],ingredients:object,appliances:object,ustensils:object}}
+   * @return {{matchRecipes:object[],ingredients:string[],appliances:string[],ustensils:string[],filters:object}}
    */
   getMatchDatas(filters) {
     const activeFilterCats = Object.keys(filters).filter(filterCat => filters[filterCat].length > 0)

@@ -2,55 +2,6 @@ import AllRecipes from "../data/recipes.js"
 import Recipe from "../models/Recipe.js"
 import View from "../views/View.js"
 
-export default class {
-  constructor() {}
-
-  /**
-   * Main function that loop through every recipes and return the data to render
-   * Time complexity O(n) * O(1) * O(1) = O(n)
-   *
-   * @return {{matchRecipes:object[],ingredients:object,appliances:object,ustensils:object}}
-   */
-  getMatchDatas(filters) {
-    const activeFilterCats = Object.keys(filters).filter(filterCat => filters[filterCat].length > 0)
-    const matchRecipes = []
-    let ingredientsObj = {}
-    let appliancesObj = {}
-    let ustensilsObj = {}
-
-    AllRecipes.forEach(element => {
-      let isMatch = true
-      const recipe = new Recipe(element)
-
-      activeFilterCats.forEach(filterCat => {
-        filters[filterCat].forEach(filterTerm => {
-          if (filterCat === "main" && !isName({ filterTerm, recipe }) && !isIngredient({ filterTerm, recipe }) && !isDescription({ filterTerm, recipe })) isMatch = false
-          else if (filterCat === "ingredients" && !isIngredient({ filterTerm, recipe })) isMatch = false
-          else if (filterCat === "appliances" && !isAppliance({ filterTerm, recipe })) isMatch = false
-          else if (filterCat === "ustensils" && !isUstensil({ filterTerm, recipe })) isMatch = false
-        })
-      })
-
-      if (isMatch) {
-        matchRecipes.push(recipe)
-        ingredientsObj = { ...ingredientsObj, ...recipe.ingredientsList }
-        appliancesObj = { ...appliancesObj, ...recipe.appliancesList }
-        ustensilsObj = { ...ustensilsObj, ...recipe.ustensilsList }
-      }
-    })
-
-    const ingredients = Object.keys(ingredientsObj).sort()
-    const appliances = Object.keys(appliancesObj).sort()
-    const ustensils = Object.keys(ustensilsObj).sort()
-
-    return { matchRecipes, ingredients, appliances, ustensils, filters }
-  }
-
-  render(filters) {
-    return new View(this.getMatchDatas(filters))
-  }
-}
-
 // SECTION TESTS
 
 /**
@@ -107,3 +58,48 @@ const isUstensil = ({ filterTerm, recipe }) => recipe.ustensils.some(ustensil =>
  * @returns {boolean} whether or not the term is include in the description of the recipe
  */
 const isDescription = ({ filterTerm, recipe }) => recipe.description.toLowerCase().includes(filterTerm.toLowerCase())
+
+/**
+ * Main function that loop through every recipes and return the data to render
+ * Time complexity O(n) * O(1) * O(1) = O(n)
+ *
+ * @return {{matchRecipes:object[],ingredients:object,appliances:object,ustensils:object}}
+ */
+const getMatchDatas = filters => {
+  const activeFilterCats = Object.keys(filters).filter(filterCat => filters[filterCat].length > 0)
+  const matchRecipes = []
+  let ingredientsObj = {}
+  let appliancesObj = {}
+  let ustensilsObj = {}
+
+  AllRecipes.forEach(element => {
+    let isMatch = true
+    const recipe = new Recipe(element)
+
+    activeFilterCats.forEach(filterCat => {
+      filters[filterCat].forEach(filterTerm => {
+        if (filterCat === "main" && !isName({ filterTerm, recipe }) && !isIngredient({ filterTerm, recipe }) && !isDescription({ filterTerm, recipe })) isMatch = false
+        else if (filterCat === "ingredients" && !isIngredient({ filterTerm, recipe })) isMatch = false
+        else if (filterCat === "appliances" && !isAppliance({ filterTerm, recipe })) isMatch = false
+        else if (filterCat === "ustensils" && !isUstensil({ filterTerm, recipe })) isMatch = false
+      })
+    })
+
+    if (isMatch) {
+      matchRecipes.push(recipe)
+      ingredientsObj = { ...ingredientsObj, ...recipe.ingredientsList }
+      appliancesObj = { ...appliancesObj, ...recipe.appliancesList }
+      ustensilsObj = { ...ustensilsObj, ...recipe.ustensilsList }
+    }
+  })
+
+  const ingredients = Object.keys(ingredientsObj).sort()
+  const appliances = Object.keys(appliancesObj).sort()
+  const ustensils = Object.keys(ustensilsObj).sort()
+
+  return { matchRecipes, ingredients, appliances, ustensils, filters }
+}
+
+const render = filters => View(getMatchDatas(filters))
+
+export default render

@@ -6,6 +6,7 @@ import dropdownModule from "./modules/dropdown.module.js"
 // VARIABLES
 
 const controller = new Controller()
+console.log(controller)
 
 /**
  * Search filters

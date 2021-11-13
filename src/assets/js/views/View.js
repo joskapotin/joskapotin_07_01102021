@@ -9,6 +9,7 @@ export default class {
     this.buildAppliancesMenu(appliances)
     this.buildUstensilsMenu(ustensils)
     this.buildRecipesList(matchRecipes)
+    console.log("test")
   }
 
   buildFiltersList(filters) {

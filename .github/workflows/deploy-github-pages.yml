@@ -3,7 +3,7 @@ name: Deploy to Github Pages
 on:
   push:
     branches:
-      - mvc # Set a branch name to trigger deployment
+      - main # Set a branch name to trigger deployment
 
 jobs:
   deploy:

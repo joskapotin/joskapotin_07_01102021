@@ -18,18 +18,18 @@ export default class {
     let appliancesObj = {}
     let ustensilsObj = {}
 
-    AllRecipes.forEach(element => {
+    for (const element of AllRecipes) {
       let isMatch = true
       const recipe = new Recipe(element)
 
-      activeFilterCats.forEach(filterCat => {
-        filters[filterCat].forEach(filterTerm => {
+      for (const filterCat of activeFilterCats) {
+        for (const filterTerm of filters[filterCat]) {
           if (filterCat === "main" && !isName({ filterTerm, recipe }) && !isIngredient({ filterTerm, recipe }) && !isDescription({ filterTerm, recipe })) isMatch = false
           else if (filterCat === "ingredients" && !isIngredient({ filterTerm, recipe })) isMatch = false
           else if (filterCat === "appliances" && !isAppliance({ filterTerm, recipe })) isMatch = false
           else if (filterCat === "ustensils" && !isUstensil({ filterTerm, recipe })) isMatch = false
-        })
-      })
+        }
+      }
 
       if (isMatch) {
         matchRecipes.push(recipe)
@@ -37,7 +37,7 @@ export default class {
         appliancesObj = { ...appliancesObj, ...recipe.appliancesList }
         ustensilsObj = { ...ustensilsObj, ...recipe.ustensilsList }
       }
-    })
+    }
 
     const ingredients = Object.keys(ingredientsObj).sort()
     const appliances = Object.keys(appliancesObj).sort()

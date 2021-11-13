@@ -1,8 +1,9 @@
+import { sanitize } from "../utils/utils.js"
 export default class {
-  constructor({ id, name, serving, ingredients, time, description, appliance, ustensils }) {
+  constructor({ id, name, servings, ingredients, time, description, appliance, ustensils }) {
     this.id = id
     this.name = name
-    this.serving = serving
+    this.servings = servings
     this.ingredients = ingredients
     this.time = time
     this.description = description
@@ -10,7 +11,21 @@ export default class {
     this.ustensils = ustensils
   }
 
-  get ingredients() {}
+  get ingredientsList() {
+    return this.ingredients.reduce((ingredients, element) => {
+      ingredients[sanitize(element.ingredient)] = true
+      return ingredients
+    }, {})
+  }
 
-  get ustensils() {}
+  get appliancesList() {
+    return Object.fromEntries([[sanitize(this.appliance), "true"]])
+  }
+
+  get ustensilsList() {
+    return this.ustensils.reduce((ustensils, ustensil) => {
+      ustensils[sanitize(ustensil)] = true
+      return ustensils
+    }, {})
+  }
 }

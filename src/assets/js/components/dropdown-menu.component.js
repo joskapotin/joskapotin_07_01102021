@@ -3,7 +3,7 @@
  * @param {{filterTerms: string[], filterCat: string}}
  * @returns {HTMLElement} dropdown menu
  */
-const uiDropdownMenu = ({ filterTerms, filterCat }) => {
+const createDropdownMenu = ({ filterTerms, filterCat }) => {
   const uiDropdownList = document.createElement("ul")
   uiDropdownList.classList.add("dropdown-menu")
 
@@ -18,4 +18,4 @@ const uiDropdownMenu = ({ filterTerms, filterCat }) => {
   return uiDropdownList
 }
 
-export default uiDropdownMenu
+export default createDropdownMenu

@@ -9,7 +9,7 @@ export default class {
    * Main function that loop through every recipes and return the data to render
    * Time complexity O(n) * O(1) * O(1) = O(n)
    *
-   * @return {{matchRecipes:object[],ingredients:string[],appliances:string[],ustensils:string[],filters:object}}
+   * @return {{matchRecipes:object[],ingredients:object,appliances:object,ustensils:object}}
    */
   getMatchDatas(filters) {
     const activeFilterCats = Object.keys(filters).filter(filterCat => filters[filterCat].length > 0)
@@ -18,18 +18,18 @@ export default class {
     let appliancesObj = {}
     let ustensilsObj = {}
 
-    for (const element of AllRecipes) {
+    AllRecipes.forEach(element => {
       let isMatch = true
       const recipe = new Recipe(element)
 
-      for (const filterCat of activeFilterCats) {
-        for (const filterTerm of filters[filterCat]) {
+      activeFilterCats.forEach(filterCat => {
+        filters[filterCat].forEach(filterTerm => {
           if (filterCat === "main" && !isName({ filterTerm, recipe }) && !isIngredient({ filterTerm, recipe }) && !isDescription({ filterTerm, recipe })) isMatch = false
           else if (filterCat === "ingredients" && !isIngredient({ filterTerm, recipe })) isMatch = false
           else if (filterCat === "appliances" && !isAppliance({ filterTerm, recipe })) isMatch = false
           else if (filterCat === "ustensils" && !isUstensil({ filterTerm, recipe })) isMatch = false
-        }
-      }
+        })
+      })
 
       if (isMatch) {
         matchRecipes.push(recipe)
@@ -37,7 +37,7 @@ export default class {
         appliancesObj = { ...appliancesObj, ...recipe.appliancesList }
         ustensilsObj = { ...ustensilsObj, ...recipe.ustensilsList }
       }
-    }
+    })
 
     const ingredients = Object.keys(ingredientsObj).sort()
     const appliances = Object.keys(appliancesObj).sort()

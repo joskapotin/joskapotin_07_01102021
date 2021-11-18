@@ -23,13 +23,12 @@
 }
 
 body {
+  padding-right: 1rem;
+  padding-left: 1rem;
   margin: 0;
   color: var(--cl-black);
   font-family: var(--ff-text);
-  font-size: 16px;
   font-weight: normal;
-  padding-left: 1rem;
-  padding-right: 1rem;
 }
 
 .container {

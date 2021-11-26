@@ -1,6 +1,7 @@
 {
-  "printWidth": 200,
-  "trailingComma": "all",
-  "arrowParens": "avoid",
-  "semi": true
+    "printWidth": 200,
+    "trailingComma": "es5",
+    "semi": false,
+    "singleQuote": false,
+    "arrowParens": "avoid"
 }

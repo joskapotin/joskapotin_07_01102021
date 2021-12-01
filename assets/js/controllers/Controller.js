@@ -60,32 +60,64 @@ const isUstensil = ({ filterTerm, recipe }) => recipe.ustensils.some(ustensil =>
 const isDescription = ({ filterTerm, recipe }) => recipe.description.toLowerCase().includes(filterTerm.toLowerCase())
 
 /**
+ *
+ * @param {object} obj - an object that contain the recipe the filters
+ * @param {object} obj.recipe - the recipe
+ * @param {object} obj.filters - the filters
+ * @returns {boolean} - whether or not the recipe match one of the filters
+ */
+const isMatchRecipe = ({ recipe, filters }) => {
+  const activeFilterCats = Object.keys(filters).filter(filterCat => filters[filterCat].length > 0)
+
+  let isMatch = true
+
+  activeFilterCats.forEach(filterCat => {
+    filters[filterCat].forEach(filterTerm => {
+      if (isMatch) {
+        switch (filterCat) {
+          case "main":
+            if (!isName({ filterTerm, recipe }) && !isIngredient({ filterTerm, recipe }) && !isDescription({ filterTerm, recipe })) isMatch = false
+            break
+
+          case "ingredients":
+            if (!isIngredient({ filterTerm, recipe })) isMatch = false
+            break
+
+          case "appliances":
+            if (!isAppliance({ filterTerm, recipe })) isMatch = false
+            break
+
+          case "ustensils":
+            if (!isUstensil({ filterTerm, recipe })) isMatch = false
+            break
+
+          default:
+            isMatch = true
+        }
+      }
+    })
+  })
+
+  return isMatch
+}
+
+/**
  * Main function that loop through every recipes and return the data to render
  * Time complexity O(n) * O(1) * O(1) = O(n)
  *
+ * @param {object} filters
  * @return {{matchRecipes:object[],ingredients:object,appliances:object,ustensils:object}}
  */
-const getMatchDatas = filters => {
-  const activeFilterCats = Object.keys(filters).filter(filterCat => filters[filterCat].length > 0)
+const getMatchRecipes = filters => {
   const matchRecipes = []
   let ingredientsObj = {}
   let appliancesObj = {}
   let ustensilsObj = {}
 
   AllRecipes.forEach(element => {
-    let isMatch = true
     const recipe = new Recipe(element)
 
-    activeFilterCats.forEach(filterCat => {
-      filters[filterCat].forEach(filterTerm => {
-        if (filterCat === "main" && !isName({ filterTerm, recipe }) && !isIngredient({ filterTerm, recipe }) && !isDescription({ filterTerm, recipe })) isMatch = false
-        else if (filterCat === "ingredients" && !isIngredient({ filterTerm, recipe })) isMatch = false
-        else if (filterCat === "appliances" && !isAppliance({ filterTerm, recipe })) isMatch = false
-        else if (filterCat === "ustensils" && !isUstensil({ filterTerm, recipe })) isMatch = false
-      })
-    })
-
-    if (isMatch) {
+    if (isMatchRecipe({ recipe, filters })) {
       matchRecipes.push(recipe)
       ingredientsObj = { ...ingredientsObj, ...recipe.ingredientsList }
       appliancesObj = { ...appliancesObj, ...recipe.appliancesList }
@@ -100,6 +132,6 @@ const getMatchDatas = filters => {
   return { matchRecipes, ingredients, appliances, ustensils, filters }
 }
 
-const render = filters => View(getMatchDatas(filters))
+const render = filters => View(getMatchRecipes(filters))
 
 export default render

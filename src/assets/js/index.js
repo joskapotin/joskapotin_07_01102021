@@ -1,11 +1,9 @@
 import config from "./config/config.js"
-import { sanitize } from "./utils/utils.js"
-import Controller from "./controllers/Controller.js"
+import sanitize from "./utils/utils.js"
+import render from "./controllers/Controller.js"
 import dropdownModule from "./modules/dropdown.module.js"
 
 // VARIABLES
-
-const controller = new Controller()
 
 /**
  * Search filters
@@ -31,7 +29,7 @@ config.uiSearchPrimary.addEventListener("input", e => {
     filters.main[0] = e.target.value
   }
 
-  controller.render(filters)
+  render(filters)
 })
 
 /**
@@ -55,7 +53,7 @@ document.addEventListener("click", e => {
     filters[filterCat].push(filterTerm)
   }
 
-  controller.render(filters)
+  render(filters)
 })
 
 /**
@@ -83,5 +81,5 @@ config.uiSecondaryMenus.forEach(menu => {
 })
 
 // INIT
-controller.render(filters)
+render(filters)
 dropdownModule()

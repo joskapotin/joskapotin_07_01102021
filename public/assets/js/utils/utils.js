@@ -8,4 +8,4 @@ const sanitize = string => {
   return string.toLowerCase().replace(regex, "")
 }
 
-export { sanitize }
+export default sanitize

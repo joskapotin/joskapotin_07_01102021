@@ -60,6 +60,7 @@ const isUstensil = ({ filterTerm, recipe }) => recipe.ustensils.some(ustensil =>
 const isDescription = ({ filterTerm, recipe }) => recipe.description.toLowerCase().includes(filterTerm.toLowerCase())
 
 /**
+ * Test if a recipe match any of the filters
  *
  * @param {object} obj - an object that contain the recipe the filters
  * @param {object} obj.recipe - the recipe
@@ -73,27 +74,26 @@ const isMatchRecipe = ({ recipe, filters }) => {
 
   activeFilterCats.forEach(filterCat => {
     filters[filterCat].forEach(filterTerm => {
-      if (isMatch) {
-        switch (filterCat) {
-          case "main":
-            if (!isName({ filterTerm, recipe }) && !isIngredient({ filterTerm, recipe }) && !isDescription({ filterTerm, recipe })) isMatch = false
-            break
+      switch (filterCat) {
+        case "main":
+          if (isName({ filterTerm, recipe }) || isIngredient({ filterTerm, recipe }) || isDescription({ filterTerm, recipe })) isMatch = true
+          else isMatch = false
+          break
 
-          case "ingredients":
-            if (!isIngredient({ filterTerm, recipe })) isMatch = false
-            break
+        case "ingredients":
+          isMatch = isIngredient({ filterTerm, recipe })
+          break
 
-          case "appliances":
-            if (!isAppliance({ filterTerm, recipe })) isMatch = false
-            break
+        case "appliances":
+          isMatch = isAppliance({ filterTerm, recipe })
+          break
 
-          case "ustensils":
-            if (!isUstensil({ filterTerm, recipe })) isMatch = false
-            break
+        case "ustensils":
+          isMatch = isUstensil({ filterTerm, recipe })
+          break
 
-          default:
-            isMatch = true
-        }
+        default:
+          isMatch = true
       }
     })
   })
@@ -128,6 +128,8 @@ const getMatchRecipes = filters => {
   const ingredients = Object.keys(ingredientsObj).sort()
   const appliances = Object.keys(appliancesObj).sort()
   const ustensils = Object.keys(ustensilsObj).sort()
+
+  console.log(matchRecipes)
 
   return { matchRecipes, ingredients, appliances, ustensils, filters }
 }

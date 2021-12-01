@@ -72,29 +72,32 @@ const isMatchRecipe = ({ recipe, filters }) => {
   let isMatch = true
 
   for (let i = 0; i < activeFilterCats.length; i++) {
-    const filterCat = activeFilterCats[0]
+    const filterCatName = activeFilterCats[i]
+    const filterCatArr = filters[filterCatName]
 
-    for (let j = 0; j < filters[filterCat].length; j++) {
-      const filterTerm = filters[filterCat][j]
-      switch (filterCat) {
-        case "main":
-          if (!isName({ filterTerm, recipe }) && !isIngredient({ filterTerm, recipe }) && !isDescription({ filterTerm, recipe })) isMatch = false
-          break
+    for (let j = 0; j < filterCatArr.length; j++) {
+      if (isMatch) {
+        const filterTerm = filterCatArr[j]
+        switch (filterCatName) {
+          case "main":
+            if (!isName({ filterTerm, recipe }) && !isIngredient({ filterTerm, recipe }) && !isDescription({ filterTerm, recipe })) isMatch = false
+            break
 
-        case "ingredients":
-          if (!isIngredient({ filterTerm, recipe })) isMatch = false
-          break
+          case "ingredients":
+            if (!isIngredient({ filterTerm, recipe })) isMatch = false
+            break
 
-        case "appliances":
-          if (!isAppliance({ filterTerm, recipe })) isMatch = false
-          break
+          case "appliances":
+            if (!isAppliance({ filterTerm, recipe })) isMatch = false
+            break
 
-        case "ustensils":
-          if (!isUstensil({ filterTerm, recipe })) isMatch = false
-          break
+          case "ustensils":
+            if (!isUstensil({ filterTerm, recipe })) isMatch = false
+            break
 
-        default:
-          isMatch = true
+          default:
+            isMatch = true
+        }
       }
     }
   }

@@ -1,4 +1,4 @@
-import allRecipes from "../data/recipes.js"
+import AllRecipes from "../data/recipes.js"
 import Recipe from "../models/Recipe.js"
 import View from "../views/View.js"
 
@@ -60,6 +60,7 @@ const isUstensil = ({ filterTerm, recipe }) => recipe.ustensils.some(ustensil =>
 const isDescription = ({ filterTerm, recipe }) => recipe.description.toLowerCase().includes(filterTerm.toLowerCase())
 
 /**
+ * Test if a recipe match any of the filters
  *
  * @param {object} obj - an object that contain the recipe the filters
  * @param {object} obj.recipe - the recipe
@@ -71,36 +72,31 @@ const isMatchRecipe = ({ recipe, filters }) => {
 
   let isMatch = true
 
-  for (let i = 0; i < activeFilterCats.length; i++) {
-    const filterCatName = activeFilterCats[i]
-    const filterCatArr = filters[filterCatName]
+  activeFilterCats.forEach(filterCat => {
+    filters[filterCat].forEach(filterTerm => {
+      switch (filterCat) {
+        case "main":
+          if (isName({ filterTerm, recipe }) || isIngredient({ filterTerm, recipe }) || isDescription({ filterTerm, recipe })) isMatch = true
+          else isMatch = false
+          break
 
-    for (let j = 0; j < filterCatArr.length; j++) {
-      if (isMatch) {
-        const filterTerm = filterCatArr[j]
-        switch (filterCatName) {
-          case "main":
-            if (!isName({ filterTerm, recipe }) && !isIngredient({ filterTerm, recipe }) && !isDescription({ filterTerm, recipe })) isMatch = false
-            break
+        case "ingredients":
+          isMatch = isIngredient({ filterTerm, recipe })
+          break
 
-          case "ingredients":
-            if (!isIngredient({ filterTerm, recipe })) isMatch = false
-            break
+        case "appliances":
+          isMatch = isAppliance({ filterTerm, recipe })
+          break
 
-          case "appliances":
-            if (!isAppliance({ filterTerm, recipe })) isMatch = false
-            break
+        case "ustensils":
+          isMatch = isUstensil({ filterTerm, recipe })
+          break
 
-          case "ustensils":
-            if (!isUstensil({ filterTerm, recipe })) isMatch = false
-            break
-
-          default:
-            isMatch = true
-        }
+        default:
+          isMatch = true
       }
-    }
-  }
+    })
+  })
 
   return isMatch
 }
@@ -118,8 +114,8 @@ const getMatchRecipes = filters => {
   let appliancesObj = {}
   let ustensilsObj = {}
 
-  for (let i = 0; i < allRecipes.length; i++) {
-    const recipe = new Recipe(allRecipes[i])
+  AllRecipes.forEach(element => {
+    const recipe = new Recipe(element)
 
     if (isMatchRecipe({ recipe, filters })) {
       matchRecipes.push(recipe)
@@ -127,11 +123,13 @@ const getMatchRecipes = filters => {
       appliancesObj = { ...appliancesObj, ...recipe.appliancesList }
       ustensilsObj = { ...ustensilsObj, ...recipe.ustensilsList }
     }
-  }
+  })
 
   const ingredients = Object.keys(ingredientsObj).sort()
   const appliances = Object.keys(appliancesObj).sort()
   const ustensils = Object.keys(ustensilsObj).sort()
+
+  console.log(matchRecipes)
 
   return { matchRecipes, ingredients, appliances, ustensils, filters }
 }

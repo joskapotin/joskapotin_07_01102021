@@ -19,13 +19,12 @@
 }
 
 body {
+  padding-right: 1rem;
+  padding-left: 1rem;
   margin: 0;
   color: var(--cl-black);
   font-family: var(--ff-text);
-  font-size: 16px;
   font-weight: normal;
-  padding-left: 1rem;
-  padding-right: 1rem;
 }
 
 .container {
@@ -245,7 +244,7 @@ body {
 .card__header span {
   flex-shrink: 0;
   padding-left: 1.6875rem;
-  background-image: url("/assets/images/clock.svg");
+  background-image: url("../images/clock.svg");
   background-position: center left;
   background-repeat: no-repeat;
   background-size: 20px 20px;

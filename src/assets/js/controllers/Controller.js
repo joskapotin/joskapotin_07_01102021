@@ -76,28 +76,27 @@ const isMatchRecipe = ({ recipe, filters }) => {
     const filterCatArr = filters[filterCatName]
 
     for (let j = 0; j < filterCatArr.length; j++) {
-      if (isMatch) {
-        const filterTerm = filterCatArr[j]
-        switch (filterCatName) {
-          case "main":
-            if (!isName({ filterTerm, recipe }) && !isIngredient({ filterTerm, recipe }) && !isDescription({ filterTerm, recipe })) isMatch = false
-            break
+      const filterTerm = filterCatArr[j]
+      switch (filterCatName) {
+        case "main":
+          if (isName({ filterTerm, recipe }) || isIngredient({ filterTerm, recipe }) || isDescription({ filterTerm, recipe })) isMatch = true
+          else isMatch = false
+          break
 
-          case "ingredients":
-            if (!isIngredient({ filterTerm, recipe })) isMatch = false
-            break
+        case "ingredients":
+          isMatch = isIngredient({ filterTerm, recipe })
+          break
 
-          case "appliances":
-            if (!isAppliance({ filterTerm, recipe })) isMatch = false
-            break
+        case "appliances":
+          isMatch = isAppliance({ filterTerm, recipe })
+          break
 
-          case "ustensils":
-            if (!isUstensil({ filterTerm, recipe })) isMatch = false
-            break
+        case "ustensils":
+          isMatch = isUstensil({ filterTerm, recipe })
+          break
 
-          default:
-            isMatch = true
-        }
+        default:
+          isMatch = true
       }
     }
   }

@@ -1,4 +1,4 @@
-import AllRecipes from "../data/recipes.js"
+import allRecipes from "../data/recipes.js"
 import Recipe from "../models/Recipe.js"
 import View from "../views/View.js"
 
@@ -60,7 +60,6 @@ const isUstensil = ({ filterTerm, recipe }) => recipe.ustensils.some(ustensil =>
 const isDescription = ({ filterTerm, recipe }) => recipe.description.toLowerCase().includes(filterTerm.toLowerCase())
 
 /**
- * Test if a recipe match any of the filters
  *
  * @param {object} obj - an object that contain the recipe the filters
  * @param {object} obj.recipe - the recipe
@@ -72,9 +71,13 @@ const isMatchRecipe = ({ recipe, filters }) => {
 
   let isMatch = true
 
-  activeFilterCats.forEach(filterCat => {
-    filters[filterCat].forEach(filterTerm => {
-      switch (filterCat) {
+  for (let i = 0; i < activeFilterCats.length; i++) {
+    const filterCatName = activeFilterCats[i]
+    const filterCatArr = filters[filterCatName]
+
+    for (let j = 0; j < filterCatArr.length; j++) {
+      const filterTerm = filterCatArr[j]
+      switch (filterCatName) {
         case "main":
           if (isName({ filterTerm, recipe }) || isIngredient({ filterTerm, recipe }) || isDescription({ filterTerm, recipe })) isMatch = true
           else isMatch = false
@@ -95,8 +98,8 @@ const isMatchRecipe = ({ recipe, filters }) => {
         default:
           isMatch = true
       }
-    })
-  })
+    }
+  }
 
   return isMatch
 }
@@ -114,8 +117,8 @@ const getMatchRecipes = filters => {
   let appliancesObj = {}
   let ustensilsObj = {}
 
-  AllRecipes.forEach(element => {
-    const recipe = new Recipe(element)
+  for (let i = 0; i < allRecipes.length; i++) {
+    const recipe = new Recipe(allRecipes[i])
 
     if (isMatchRecipe({ recipe, filters })) {
       matchRecipes.push(recipe)
@@ -123,13 +126,11 @@ const getMatchRecipes = filters => {
       appliancesObj = { ...appliancesObj, ...recipe.appliancesList }
       ustensilsObj = { ...ustensilsObj, ...recipe.ustensilsList }
     }
-  })
+  }
 
   const ingredients = Object.keys(ingredientsObj).sort()
   const appliances = Object.keys(appliancesObj).sort()
   const ustensils = Object.keys(ustensilsObj).sort()
-
-  console.log(matchRecipes)
 
   return { matchRecipes, ingredients, appliances, ustensils, filters }
 }

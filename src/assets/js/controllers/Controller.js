@@ -60,6 +60,47 @@ const isUstensil = ({ filterTerm, recipe }) => recipe.ustensils.some(ustensil =>
 const isDescription = ({ filterTerm, recipe }) => recipe.description.toLowerCase().includes(filterTerm.toLowerCase())
 
 /**
+ * Test if one term in an array is include in the name or in the ingredients or in the description of a recipe
+ *
+ * @param {object} obj - an object that contain the term to search and the recipe to search in
+ * @param {string[]} obj.filterTerms - terms to search
+ * @param {object} obj.recipe - object to search in
+ * @returns {boolean} whether or not one term is include in the name or in the ingredients or in the description of a recipe
+ */
+const isMatchMain = ({ filterTerms, recipe }) => filterTerms.some(filterTerm => isName({ filterTerm, recipe }) || isIngredient({ filterTerm, recipe }) || isDescription({ filterTerm, recipe }))
+
+/**
+ * Test if one term in an array is include in the ingredients
+ *
+ * @param {object} obj - an object that contain the term to search and the recipe to search in
+ * @param {string[]} obj.filterTerms - terms to search
+ * @param {object} obj.recipe - object to search in
+ * @returns {boolean} whether or not one term is include in the ingredients
+ */
+const isMatchIngredients = ({ filterTerms, recipe }) => filterTerms.some(filterTerm => isIngredient({ filterTerm, recipe }))
+
+/**
+ * Test if one term in an array is include in the appliances
+ *
+ * @param {object} obj - an object that contain the term to search and the recipe to search in
+ * @param {string[]} obj.filterTerms - terms to search
+ * @param {object} obj.recipe - object to search in
+ * @returns {boolean} whether or not one term is include in the appliance
+ */
+const isMatchAppliances = ({ filterTerms, recipe }) => filterTerms.some(filterTerm => isAppliance({ filterTerm, recipe }))
+
+/**
+ * Test if one term in an array is include in the ustensils
+ *
+ * @param {object} obj - an object that contain the term to search and the recipe to search in
+ * @param {string[]} obj.filterTerms - terms to search
+ * @param {object} obj.recipe - object to search in
+ * @returns {boolean} whether or not one term is include in the ustensils
+ */
+const isMatchUstensils = ({ filterTerms, recipe }) => filterTerms.some(filterTerm => isUstensil({ filterTerm, recipe }))
+
+/**
+ * Test if a recipe match any of the filters
  *
  * @param {object} obj - an object that contain the recipe the filters
  * @param {object} obj.recipe - the recipe
@@ -69,39 +110,39 @@ const isDescription = ({ filterTerm, recipe }) => recipe.description.toLowerCase
 const isMatchRecipe = ({ recipe, filters }) => {
   const activeFilterCats = Object.keys(filters).filter(filterCat => filters[filterCat].length > 0)
 
-  let isMatch = true
+  let mainSearchResult = true
+  let ingredientsSearchResult = true
+  let appliancesSearchResult = true
+  let ustensilsSearchResult = true
 
   for (let i = 0; i < activeFilterCats.length; i++) {
     const filterCatName = activeFilterCats[i]
-    const filterCatArr = filters[filterCatName]
+    const filterTerms = filters[filterCatName]
 
-    for (let j = 0; j < filterCatArr.length; j++) {
-      const filterTerm = filterCatArr[j]
-      switch (filterCatName) {
-        case "main":
-          if (isName({ filterTerm, recipe }) || isIngredient({ filterTerm, recipe }) || isDescription({ filterTerm, recipe })) isMatch = true
-          else isMatch = false
-          break
+    switch (filterCatName) {
+      case "main":
+        mainSearchResult = isMatchMain({ filterTerms, recipe })
+        break
 
-        case "ingredients":
-          isMatch = isIngredient({ filterTerm, recipe })
-          break
+      case "ingredients":
+        ingredientsSearchResult = isMatchIngredients({ filterTerms, recipe })
+        break
 
-        case "appliances":
-          isMatch = isAppliance({ filterTerm, recipe })
-          break
+      case "appliances":
+        appliancesSearchResult = isMatchAppliances({ filterTerms, recipe })
+        break
 
-        case "ustensils":
-          isMatch = isUstensil({ filterTerm, recipe })
-          break
+      case "ustensils":
+        ustensilsSearchResult = isMatchUstensils({ filterTerms, recipe })
+        break
 
-        default:
-          isMatch = true
-      }
+      default:
+        console.log("no filters")
     }
   }
 
-  return isMatch
+  if (mainSearchResult && ingredientsSearchResult && appliancesSearchResult && ustensilsSearchResult) return true
+  return false
 }
 
 /**

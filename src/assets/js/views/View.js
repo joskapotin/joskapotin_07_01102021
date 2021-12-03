@@ -1,14 +1,14 @@
 import config from "../config/config.js"
 import createDropdownMenu from "./components/dropdown-menu.component.js"
-import createFiltersList from "./components/filters-list.component.js"
+import createfilterList from "./components/filter-list.component.js"
 import CreateRecipe from "./components/recipe.component.js"
 
-export default ({ matchRecipes, ingredients, appliances, ustensils, filters }) => {
+export default ({ matchRecipes, ingredients, appliances, ustensils, filter }) => {
   /**
-   * Render filters list
+   * Render filter list
    */
-  document.querySelector(".filters-list")?.remove()
-  config.uiNavSecondary.parentElement.insertBefore(createFiltersList(filters), config.uiNavSecondary)
+  document.querySelector(".filter-list")?.remove()
+  config.uiNavSecondary.parentElement.insertBefore(createfilterList(filter), config.uiNavSecondary)
 
   /**
    * Render ingredients list

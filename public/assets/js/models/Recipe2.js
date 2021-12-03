@@ -48,19 +48,19 @@ export default class {
   }
 
   isMatchMain(filterTerms) {
-    return filterTerms.every(filterTerm => this.isName(filterTerm) || this.isIngredient(filterTerm) || this.isDescription(filterTerm))
+    return filterTerms.some(filterTerm => this.isName(filterTerm) || this.isIngredient(filterTerm) || this.isDescription(filterTerm))
   }
 
   isMatchIngredients(filterTerms) {
-    return filterTerms.every(filterTerm => this.isIngredient(filterTerm))
+    return filterTerms.some(filterTerm => this.isIngredient(filterTerm))
   }
 
   isMatchAppliances(filterTerms) {
-    return filterTerms.every(filterTerm => this.isAppliance(filterTerm))
+    return filterTerms.some(filterTerm => this.isAppliance(filterTerm))
   }
 
   isMatchUstensils(filterTerms) {
-    return filterTerms.every(filterTerm => this.isUstensil(filterTerm))
+    return filterTerms.some(filterTerm => this.isUstensil(filterTerm))
   }
 
   isMatchRecipe(filter) {
@@ -68,11 +68,22 @@ export default class {
     if (activeFilterCats.length === 0) return true
 
     const isMatch = ({ filterCat, filterTerms }) => {
-      if (filterCat === "main") return this.isMatchMain(filterTerms)
-      if (filterCat === "ingredients") return this.isMatchIngredients(filterTerms)
-      if (filterCat === "appliances") return this.isMatchAppliances(filterTerms)
-      if (filterCat === "ustensils") return this.isMatchAppliances(filterTerms)
-      return true
+      switch (filterCat) {
+        case "main":
+          return this.isMatchMain(filterTerms)
+
+        case "ingredients":
+          return this.isMatchIngredients(filterTerms)
+
+        case "appliances":
+          return this.isMatchAppliances(filterTerms)
+
+        case "ustensils":
+          return this.isMatchUstensils(filterTerms)
+
+        default:
+          return true
+      }
     }
 
     return !activeFilterCats.some(filterCat => !isMatch({ filterCat, filterTerms: filter[filterCat] }))

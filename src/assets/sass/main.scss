@@ -99,8 +99,8 @@ body {
   }
 }
 
-/* FILTERS LIST */
-.filters-list {
+/* FILTER LIST */
+.filter-list {
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -141,6 +141,7 @@ body {
 /* SECONDARY NAV */
 .nav-secondary {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
   margin-bottom: 1.5625rem;
   gap: 1.25rem;
@@ -214,6 +215,7 @@ body {
   transform: scaleY(0);
   transform-origin: top left;
   transition: transform 150ms ease-in-out;
+  z-index: 100;
 }
 
 .dropdown-menu__item {

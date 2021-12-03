@@ -6,10 +6,10 @@ import dropdownModule from "./modules/dropdown.module.js"
 // VARIABLES
 
 /**
- * Search filters
+ * Search filter
  * @type {{main:string[], ingredients:string[], appliances:string[], ustensils:string[]}}
  */
-const filters = {
+const filter = {
   main: [],
   ingredients: [],
   appliances: [],
@@ -24,12 +24,12 @@ const filters = {
  *
  */
 config.uiSearchPrimary.addEventListener("input", e => {
-  filters.main.length = 0
+  filter.main.length = 0
   if (e.target.value.length >= 3) {
-    filters.main[0] = e.target.value
+    e.target.value.split(" ").forEach(term => filter.main.push(term))
   }
 
-  render(filters)
+  render(filter)
 })
 
 /**
@@ -45,22 +45,22 @@ document.addEventListener("click", e => {
   const filterTerm = e.target.textContent
   const { filterCat } = e.target.dataset
 
-  // update filters object
+  // update filter object
   if (isFilterItem) {
-    const filterTermIndex = filters[filterCat].indexOf(filterTerm)
-    filters[filterCat].splice(filterTermIndex, 1)
-  } else if (!filters[filterCat].some(elem => elem === filterTerm)) {
-    filters[filterCat].push(filterTerm)
+    const filterTermIndex = filter[filterCat].indexOf(filterTerm)
+    filter[filterCat].splice(filterTermIndex, 1)
+  } else if (!filter[filterCat].some(elem => elem === filterTerm)) {
+    filter[filterCat].push(filterTerm)
   }
 
-  render(filters)
+  render(filter)
 })
 
 /**
  * filter secondary menu item
  * @param {HTMLElement} uiMenu - menu to filter
  */
-const filterSecondaryMenuItems = uiMenu => {
+const filterecondaryMenuItems = uiMenu => {
   const term = sanitize(uiMenu.value)
   const regex = new RegExp(`^${term}`)
   const menuItems = uiMenu.parentElement.querySelectorAll(".dropdown-menu__item")
@@ -76,10 +76,10 @@ const filterSecondaryMenuItems = uiMenu => {
 
 config.uiSecondaryMenus.forEach(menu => {
   menu.addEventListener("input", e => {
-    filterSecondaryMenuItems(e.target)
+    filterecondaryMenuItems(e.target)
   })
 })
 
 // INIT
-render(filters)
+render(filter)
 dropdownModule()

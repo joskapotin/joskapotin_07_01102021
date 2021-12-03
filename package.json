@@ -34,7 +34,7 @@
     "jslint:conf": "eslint --print-config"
   },
   "browserslist": [
-    "last 4 versions"
+    "last 6 versions"
   ],
   "devDependencies": {
     "autoprefixer": "^10.4.0",

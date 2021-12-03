@@ -19,13 +19,12 @@
 }
 
 body {
+  padding-right: 1rem;
+  padding-left: 1rem;
   margin: 0;
   color: var(--cl-black);
   font-family: var(--ff-text);
-  font-size: 16px;
   font-weight: normal;
-  padding-left: 1rem;
-  padding-right: 1rem;
 }
 
 .container {
@@ -94,8 +93,8 @@ body {
   opacity: 25%;
 }
 
-/* FILTERS LIST */
-.filters-list {
+/* FILTER LIST */
+.filter-list {
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -136,6 +135,7 @@ body {
 /* SECONDARY NAV */
 .nav-secondary {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
   margin-bottom: 1.5625rem;
   gap: 1.25rem;
@@ -204,6 +204,7 @@ body {
   transform: scaleY(0);
   transform-origin: top left;
   transition: transform 150ms ease-in-out;
+  z-index: 100;
 }
 
 .dropdown-menu__item {
@@ -245,7 +246,7 @@ body {
 .card__header span {
   flex-shrink: 0;
   padding-left: 1.6875rem;
-  background-image: url("/assets/images/clock.svg");
+  background-image: url("../images/clock.svg");
   background-position: center left;
   background-repeat: no-repeat;
   background-size: 20px 20px;

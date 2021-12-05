@@ -75,6 +75,7 @@ export default class {
       return true
     }
 
+    // if there is one fail test return false
     return !activeFilterCats.some(filterCat => !isMatch({ filterCat, filterTerms: filter[filterCat] }))
   }
 }

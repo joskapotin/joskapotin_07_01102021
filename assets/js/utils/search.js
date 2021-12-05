@@ -1,4 +1,4 @@
-import AllRecipes from "../data/recipes.js"
+import allRecipes from "../data/recipes.js"
 import Recipe from "../models/Recipe.js"
 import Matcher from "./matcher.js"
 
@@ -15,8 +15,8 @@ const getMatchRecipes = filter => {
   let appliancesObj = {}
   let ustensilsObj = {}
 
-  AllRecipes.forEach(element => {
-    const recipe = new Recipe(element)
+  for (let i = 0; i < allRecipes.length; i++) {
+    const recipe = new Recipe(allRecipes[i])
     const matcher = new Matcher(recipe)
 
     if (matcher.isMatchRecipe(filter)) {
@@ -25,7 +25,7 @@ const getMatchRecipes = filter => {
       appliancesObj = { ...appliancesObj, ...matcher.getRecipe().appliancesList }
       ustensilsObj = { ...ustensilsObj, ...matcher.getRecipe().ustensilsList }
     }
-  })
+  }
 
   const ingredients = Object.keys(ingredientsObj).sort()
   const appliances = Object.keys(appliancesObj).sort()

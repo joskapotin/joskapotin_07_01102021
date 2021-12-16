@@ -1,10 +1,10 @@
 import AllRecipes from "../data/recipes.js"
 import Recipe from "../models/Recipe.js"
-import Matcher from "./matcher.js"
+import View from "../views/View.js"
 
 /**
  * Main function that loop through every recipes and return the data to render
- * Time complexity O(n)
+ * Time complexity O(n) * O(1) * O(1) = O(n)
  *
  * @param {object} filter
  * @return {{matchRecipes:object[],ingredients:object,appliances:object,ustensils:object}}
@@ -17,13 +17,12 @@ const getMatchRecipes = filter => {
 
   AllRecipes.forEach(element => {
     const recipe = new Recipe(element)
-    const matcher = new Matcher(recipe)
 
-    if (matcher.isMatchRecipe(filter)) {
-      matchRecipes.push(matcher.getRecipe())
-      ingredientsObj = { ...ingredientsObj, ...matcher.getRecipe().ingredientsList }
-      appliancesObj = { ...appliancesObj, ...matcher.getRecipe().appliancesList }
-      ustensilsObj = { ...ustensilsObj, ...matcher.getRecipe().ustensilsList }
+    if (recipe.isMatchRecipe(filter)) {
+      matchRecipes.push(recipe)
+      ingredientsObj = { ...ingredientsObj, ...recipe.ingredientsList }
+      appliancesObj = { ...appliancesObj, ...recipe.appliancesList }
+      ustensilsObj = { ...ustensilsObj, ...recipe.ustensilsList }
     }
   })
 
@@ -34,4 +33,6 @@ const getMatchRecipes = filter => {
   return { matchRecipes, ingredients, appliances, ustensils, filter }
 }
 
-export default getMatchRecipes
+const render = filter => View(getMatchRecipes(filter))
+
+export default render

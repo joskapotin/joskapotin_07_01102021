@@ -3,6 +3,8 @@ import sanitize from "./utils/utils.js"
 import render from "./controllers/Controller.js"
 import dropdownModule from "./modules/dropdown.module.js"
 
+// VARIABLES
+
 /**
  * Search filter
  * @type {{main:string[], ingredients:string[], appliances:string[], ustensils:string[]}}

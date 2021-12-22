@@ -35,4 +35,12 @@ export default ({ matchRecipes, ingredients, appliances, ustensils, filter }) =>
   matchRecipes.forEach(recipe => {
     config.uiRecipesList.appendChild(CreateRecipe(recipe))
   })
+
+  // Display a message if no recipes found
+  if (matchRecipes.length === 0) {
+    config.uiRecipesList.insertAdjacentHTML(
+      "beforeend",
+      "<div class='no-result'><p>Aucune recette ne correspond à votre critère… <br/>vous pouvez chercher « tarte aux pommes », « poisson », etc.</p></div>"
+    )
+  }
 }
